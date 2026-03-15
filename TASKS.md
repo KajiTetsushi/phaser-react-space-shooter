@@ -1,9 +1,9 @@
 # Tasks
 
 ## Project Setup
-- [ ] download basic project files
-- [ ] running project on local web server
-- [ ] review basic project code
+- [x] download basic project files
+- [x] running project on local web server
+- [x] review basic project code
 - [ ] update game config
 - [ ] code planning
 
