@@ -5,7 +5,7 @@
 - [x] running project on local web server
 - [x] review basic project code
 - [x] update game config
-- [ ] code planning
+- [x] code planning
 
 ## Player
 - [ ] loading assets
