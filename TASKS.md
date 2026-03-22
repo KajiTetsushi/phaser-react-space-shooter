@@ -17,10 +17,10 @@
 ## Enemies
 - [ ] creating game objects
   - [x] type 1
-  - [ ] type 2
+  - [x] type 2
   - [ ] type 3
-- [ ] creating animations
-- [ ] basic AI movement
+- [x] creating animations
+- [x] basic AI movement
 - [ ] weapons
 - [ ] phaser update and delta time
 
