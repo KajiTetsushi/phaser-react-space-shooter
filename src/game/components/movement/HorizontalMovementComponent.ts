@@ -6,16 +6,26 @@ export default class HorizontalMovementComponent {
     #gameObject: GameObjects.GameObject;
     #inputComponent: InputComponent;
     #velocity: number;
+    #maxVelocity: number;
+    #drag: number;
 
-    constructor(gameObject: GameObjects.GameObject, inputComponent: InputComponent, velocity: number) {
+    constructor(
+        gameObject: GameObjects.GameObject,
+        inputComponent: InputComponent,
+        velocity: number,
+        maxVelocity: number,
+        drag: number = 0.01,
+    ) {
         this.#gameObject = gameObject;
         this.#inputComponent = inputComponent;
         this.#velocity = velocity;
+        this.#maxVelocity = maxVelocity;
+        this.#drag = drag;
 
         if (this.#gameObject.body instanceof Physics.Arcade.Body) {
             this.#gameObject.body.setDamping(true);
-            this.#gameObject.body.setDrag(0.01);
-            this.#gameObject.body.setMaxVelocity(200, 200);
+            this.#gameObject.body.setDrag(this.#drag);
+            this.#gameObject.body.setMaxVelocity(this.#maxVelocity);
         }
     }
 
@@ -29,9 +39,9 @@ export default class HorizontalMovementComponent {
     update() {
         if (this.#gameObject.body instanceof Physics.Arcade.Body) {
             if (this.#inputComponent.leftIsDown) {
-                this.#gameObject.body.velocity.x -= 20;
+                this.#gameObject.body.velocity.x -= this.#velocity;
             } else if (this.#inputComponent.rightIsDown) {
-                this.#gameObject.body.velocity.x += 20;
+                this.#gameObject.body.velocity.x += this.#velocity;
             } else {
                 this.#gameObject.body.setAngularAcceleration(0);
             }
