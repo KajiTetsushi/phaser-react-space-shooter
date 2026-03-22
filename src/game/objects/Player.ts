@@ -1,10 +1,11 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
+import type InputComponent from '../components/input/InputComponent';
 import KeyboardInputComponent from '../components/input/KeyboardInputComponent';
 import HorizontalMovementComponent from '../components/movement/HorizontalMovementComponent';
 import { PLAYER_CONFIG } from '../config';
 
 export default class Player extends GameObjects.Container {
-    #keyboardInputComponent: KeyboardInputComponent;
+    #inputComponent: InputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
@@ -35,10 +36,10 @@ export default class Player extends GameObjects.Container {
         }
         this.setDepth(2);
 
-        this.#keyboardInputComponent = new KeyboardInputComponent(this.scene);
+        this.#inputComponent = new KeyboardInputComponent(this.scene);
         this.#horizontalMovementComponent = new HorizontalMovementComponent(
             this,
-            this.#keyboardInputComponent,
+            this.#inputComponent,
             PLAYER_CONFIG.HORIZONTAL.VELOCITY,
             PLAYER_CONFIG.HORIZONTAL.VELOCITY_MAX,
             PLAYER_CONFIG.HORIZONTAL.DRAG,
@@ -55,7 +56,7 @@ export default class Player extends GameObjects.Container {
     }
 
     update(_timestamp: number, _delta: number) {
-        this.#keyboardInputComponent.update();
+        this.#inputComponent.update();
         this.#horizontalMovementComponent.update();
     }
 }

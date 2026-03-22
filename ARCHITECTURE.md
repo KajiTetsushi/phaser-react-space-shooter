@@ -8,7 +8,7 @@
 | ------------ | ---------- | ---------- | --------- | ---------- |
 | **Input**    | Keyboard   | A.I. 1     | A.I. 2    | A.I. 3     |
 | **Movement** | Horizontal | Horizontal | Horizonal | Horizontal |
-|              |            |            | Vertical  | Vertical   |
+|              |            |            | Vertical  | Follower   |
 | **Weapon**   | Upgradable | Blaster    | Blaster   | Plasma     |
 | **Health**   | Health     | Health     | Health    | Health     |
 | **Collider** | Collider   | Collider   | Collider  | Collider   |

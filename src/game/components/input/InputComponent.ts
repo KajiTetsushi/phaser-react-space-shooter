@@ -1,4 +1,4 @@
-export default class InputComponent {
+export default abstract class InputComponent {
     protected up: boolean;
     protected down: boolean;
     protected left: boolean;
@@ -36,4 +36,6 @@ export default class InputComponent {
     get shootIsDown() {
         return this.shoot;
     }
+
+    abstract update(): void;
 }

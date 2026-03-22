@@ -5,3 +5,13 @@ export const PLAYER_CONFIG = {
         DRAG: 0.01,
     },
 };
+
+export const ENEMY_CONFIG = {
+    SCOUT: {
+        VERTICAL: {
+            VELOCITY: 10,
+            VELOCITY_MAX: 100,
+            DRAG: 0.01,
+        },
+    },
+};
