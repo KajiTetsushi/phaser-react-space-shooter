@@ -33,7 +33,13 @@ export default class FighterEnemy extends GameObjects.Container {
         }
         this.setDepth(2);
 
-        this.#inputComponent = new FighterInputComponent(this, this.x, ENEMY_CONFIG.FIGHTER.HORIZONTAL.DRIFT_MAX);
+        this.#inputComponent = new FighterInputComponent(
+            this,
+            // The direction of the fighter's horizontal movement
+            // will rely on its current position.
+            this.x,
+            ENEMY_CONFIG.FIGHTER.HORIZONTAL.DRIFT_MAX,
+        );
         this.#horizontalMovementComponent = new HorizontalMovementComponent(
             this,
             this.#inputComponent,
