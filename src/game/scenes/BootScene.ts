@@ -6,7 +6,7 @@ export default class BootScene extends Scene {
     }
 
     preload() {
-        this.load.pack('asset_pack', 'assets/data/assets.json');
+        this.load.json('animations_json', 'assets/data/animations.json');
     }
 
     create() {
