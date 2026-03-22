@@ -10,13 +10,13 @@
 ## Player
 - [x] loading assets
 - [x] creating animations
-- [x] create game objects
+- [x] creating game objects
 - [x] keyboard input
 - [x] input-based movement
 
 ## Enemies
-- [ ] create game object
-- [ ] create animations
+- [ ] creating game objects
+- [ ] creating animations
 - [ ] basic AI movement
 - [ ] weapons
 - [ ] phaser update and delta time
