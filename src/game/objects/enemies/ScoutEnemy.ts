@@ -34,9 +34,9 @@ export default class ScoutEnemy extends GameObjects.Container {
         this.#verticalMovementComponent = new VerticalMovementComponent(
             this,
             this.#inputComponent,
-            ENEMY_CONFIG.SCOUT.VERTICAL_VELOCITY,
-            ENEMY_CONFIG.SCOUT.VERTICAL_VELOCITY_MAX,
-            ENEMY_CONFIG.SCOUT.DRAG,
+            ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY,
+            ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_MAX,
+            ENEMY_CONFIG.SCOUT.VERTICAL.DRAG,
         );
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);

@@ -8,8 +8,10 @@ export const PLAYER_CONFIG = {
 
 export const ENEMY_CONFIG = {
     SCOUT: {
-        VERTICAL_VELOCITY: 10,
-        VERTICAL_VELOCITY_MAX: 100,
-        DRAG: 0.01,
+        VERTICAL: {
+            VELOCITY: 10,
+            VELOCITY_MAX: 100,
+            DRAG: 0.01,
+        },
     },
 };
