@@ -39,8 +39,8 @@ export default class Player extends GameObjects.Container {
         this.#horizontalMovementComponent = new HorizontalMovementComponent(
             this,
             this.#keyboardInputComponent,
-            PLAYER_CONFIG.VELOCITY,
-            PLAYER_CONFIG.MAX_VELOCITY,
+            PLAYER_CONFIG.HORIZONTAL_VELOCITY,
+            PLAYER_CONFIG.HORIZONTAL_VELOCITY_MAX,
             PLAYER_CONFIG.DRAG,
         );
 
