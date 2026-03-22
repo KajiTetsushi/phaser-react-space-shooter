@@ -14,4 +14,17 @@ export const ENEMY_CONFIG = {
             DRAG: 0.01,
         },
     },
+    FIGHTER: {
+        HORIZONTAL: {
+            VELOCITY: 12,
+            VELOCITY_MAX: 120,
+            DRIFT_MAX: 40,
+            DRAG: 0.01,
+        },
+        VERTICAL: {
+            VELOCITY: 12,
+            VELOCITY_MAX: 120,
+            DRAG: 0.01,
+        },
+    },
 };
