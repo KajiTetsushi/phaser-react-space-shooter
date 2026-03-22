@@ -26,7 +26,7 @@ export default class Player extends GameObjects.Container {
             this.#shipSprite,
         ]);
 
-        scene.add.existing(this);
+        this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if (this.body instanceof Physics.Arcade.Body) {
             this.body.setSize(24, 24);
