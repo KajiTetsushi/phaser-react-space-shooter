@@ -20,7 +20,7 @@
   - [x] type 2
   - [ ] type 3
 - [ ] creating animations
-- [ ] basic AI movement
+- [x] basic AI movement
 - [ ] weapons
 - [ ] phaser update and delta time
 
