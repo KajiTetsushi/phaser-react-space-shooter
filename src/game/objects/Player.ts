@@ -1,11 +1,16 @@
-import { GameObjects, type Scene } from 'phaser';
+import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
+import KeyboardInputComponent from '../components/input/KeyboardInputComponent';
+import HorizontalMovementComponent from '../components/movement/HorizontalMovementComponent';
+import { PLAYER_CONFIG } from '../config';
 
 export default class Player extends GameObjects.Container {
+    #keyboardInputComponent: KeyboardInputComponent;
+    #horizontalMovementComponent: HorizontalMovementComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
     #shipEngineThrusterSprite: GameObjects.Sprite;
 
-    constructor(scene: Scene, _x: number, _y: number) {
+    constructor(scene: Scene) {
         // The player is centered horizontally and placed near the bottom of the screen.
         // Any sprite and animation that is added to this container will be positioned relative to this container.
         super(scene, scene.scale.width / 2, scene.scale.height - 32, []);
@@ -21,6 +26,36 @@ export default class Player extends GameObjects.Container {
             this.#shipSprite,
         ]);
 
-        scene.add.existing(this);
+        this.scene.add.existing(this);
+        this.scene.physics.add.existing(this);
+        if (this.body instanceof Physics.Arcade.Body) {
+            this.body.setSize(24, 24);
+            this.body.setOffset(-12, -12);
+            this.body.setCollideWorldBounds(true);
+        }
+        this.setDepth(2);
+
+        this.#keyboardInputComponent = new KeyboardInputComponent(this.scene);
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(
+            this,
+            this.#keyboardInputComponent,
+            PLAYER_CONFIG.HORIZONTAL.VELOCITY,
+            PLAYER_CONFIG.HORIZONTAL.VELOCITY_MAX,
+            PLAYER_CONFIG.HORIZONTAL.DRAG,
+        );
+
+        this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
+        this.once(
+            Scenes.Events.DESTROY,
+            () => {
+                this.scene.events.off(Scenes.Events.UPDATE, this.update, this);
+            },
+            this,
+        );
+    }
+
+    update(_timestamp: number, _delta: number) {
+        this.#keyboardInputComponent.update();
+        this.#horizontalMovementComponent.update();
     }
 }
