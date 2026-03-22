@@ -21,6 +21,8 @@
   - [ ] type 3
 - [x] creating animations
 - [x] basic AI movement
+
+## All Object types
 - [ ] weapons
 - [ ] phaser update and delta time
 
