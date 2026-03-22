@@ -8,7 +8,7 @@
 - [x] code planning
 
 ## Player
-- [x] loading assets
+- [ ] loading assets
 - [ ] creating animations
 - [ ] create game objects
 - [ ] create animations
