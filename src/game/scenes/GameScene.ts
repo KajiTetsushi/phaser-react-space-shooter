@@ -11,6 +11,6 @@ export default class GameScene extends Scene {
     }
 
     create() {
-        new Player(this, 0, 0);
+        new Player(this);
     }
 }
