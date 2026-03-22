@@ -6,6 +6,8 @@ export default class Player extends GameObjects.Container {
     #shipEngineThrusterSprite: GameObjects.Sprite;
 
     constructor(scene: Scene, _x: number, _y: number) {
+        // The player is centered horizontally and placed near the bottom of the screen.
+        // Any sprite and animation that is added to this container will be positioned relative to this container.
         super(scene, scene.scale.width / 2, scene.scale.height - 32, []);
 
         this.#shipSprite = scene.add.sprite(0, 0, 'ship');
