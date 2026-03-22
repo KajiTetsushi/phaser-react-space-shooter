@@ -1,6 +1,11 @@
-import { GameObjects, type Scene } from 'phaser';
+import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
+import KeyboardInputComponent from '../components/input/KeyboardInputComponent';
+import HorizontalMovementComponent from '../components/movement/HorizontalMovementComponent';
+import { PLAYER_CONFIG } from '../config';
 
 export default class Player extends GameObjects.Container {
+    #keyboardInputComponent: KeyboardInputComponent;
+    #horizontalMovementComponent: HorizontalMovementComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
     #shipEngineThrusterSprite: GameObjects.Sprite;
@@ -22,5 +27,35 @@ export default class Player extends GameObjects.Container {
         ]);
 
         scene.add.existing(this);
+        this.scene.physics.add.existing(this);
+        if (this.body instanceof Physics.Arcade.Body) {
+            this.body.setSize(24, 24);
+            this.body.setOffset(-12, -12);
+            this.body.setCollideWorldBounds(true);
+        }
+        this.setDepth(2);
+
+        this.#keyboardInputComponent = new KeyboardInputComponent(this.scene);
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(
+            this,
+            this.#keyboardInputComponent,
+            PLAYER_CONFIG.VELOCITY,
+            PLAYER_CONFIG.MAX_VELOCITY,
+            PLAYER_CONFIG.DRAG,
+        );
+
+        this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
+        this.once(
+            Scenes.Events.DESTROY,
+            () => {
+                this.scene.events.off(Scenes.Events.UPDATE, this.update, this);
+            },
+            this,
+        );
+    }
+
+    update(_timestamp: number, _delta: number) {
+        this.#keyboardInputComponent.update();
+        this.#horizontalMovementComponent.update();
     }
 }
