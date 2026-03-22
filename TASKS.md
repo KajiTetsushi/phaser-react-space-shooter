@@ -16,7 +16,7 @@
 
 ## Enemies
 - [ ] creating game objects
-  - [ ] type 1
+  - [x] type 1
   - [ ] type 2
   - [ ] type 3
 - [ ] creating animations
