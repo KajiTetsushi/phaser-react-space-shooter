@@ -1,5 +1,7 @@
 export const PLAYER_CONFIG = {
-    HORIZONTAL_VELOCITY: 20,
-    HORIZONTAL_VELOCITY_MAX: 200,
-    DRAG: 0.01,
+    HORIZONTAL: {
+        VELOCITY: 20,
+        VELOCITY_MAX: 200,
+        DRAG: 0.01,
+    },
 };
