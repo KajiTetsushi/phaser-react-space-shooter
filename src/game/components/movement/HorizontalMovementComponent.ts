@@ -14,7 +14,7 @@ export default class HorizontalMovementComponent {
         inputComponent: InputComponent,
         velocity: number,
         maxVelocity: number,
-        drag: number = 0.01,
+        drag: number,
     ) {
         this.#gameObject = gameObject;
         this.#inputComponent = inputComponent;
