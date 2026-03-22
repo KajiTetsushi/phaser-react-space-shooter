@@ -10,7 +10,7 @@
 ## Player
 - [x] loading assets
 - [x] creating animations
-- [ ] create game objects
+- [x] create game objects
 - [ ] create animations
 - [ ] input and player movement
 
