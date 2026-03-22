@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import Player from '../objects/Player';
 
 export default class GameScene extends Scene {
     constructor() {
@@ -10,6 +11,6 @@ export default class GameScene extends Scene {
     }
 
     create() {
-        this.add.image(100, 100, 'ship');
+        new Player(this, 0, 0);
     }
 }
