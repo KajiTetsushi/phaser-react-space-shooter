@@ -1,10 +1,11 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
 import ScoutInputComponent from '../../components/input/bots/ScoutInputComponent';
+import type InputComponent from '../../components/input/InputComponent';
 import VerticalMovementComponent from '../../components/movement/VeritcalMovementComponent';
 import { ENEMY_CONFIG } from '../../config';
 
 export default class ScoutEnemy extends GameObjects.Container {
-    #inputComponent: ScoutInputComponent;
+    #inputComponent: InputComponent;
     #verticalMovementComponent: VerticalMovementComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
