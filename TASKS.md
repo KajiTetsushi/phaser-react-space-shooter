@@ -11,7 +11,6 @@
 - [x] loading assets
 - [x] creating animations
 - [x] create game objects
-- [ ] create animations
 - [ ] input and player movement
 
 ## Enemies
