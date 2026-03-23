@@ -5,9 +5,13 @@ export const PLAYER_CONFIG = {
         DRAG: 0.01,
     },
     WEAPON: {
+        // TODO: PROJECTILE_SPEED
         SPEED: 300,
+        // TODO: WEAPON_COOLDOWN
         INTERVAL: 300,
+        // TODO: PROJECTILE_LIFESPAN
         LIFESPAN: 3,
+        // TODO: PROJECTIlE_RENDER_POOL_SIZE
         ROUNDS_RENDER_MAX: 10,
     },
 };
