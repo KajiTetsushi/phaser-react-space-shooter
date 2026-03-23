@@ -13,8 +13,8 @@ export default class GameScene extends Scene {
     }
 
     create() {
-        new Player(this);
-        new ScoutEnemy(this, this.scale.width / 2, 20);
-        new FighterEnemy(this, this.scale.width / 2, 20);
+        const player = new Player(this);
+        const scoutEnemy = new ScoutEnemy(this, this.scale.width / 2, 20);
+        const fighterEnemy = new FighterEnemy(this, this.scale.width / 2, 20);
     }
 }
