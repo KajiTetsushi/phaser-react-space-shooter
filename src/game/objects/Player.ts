@@ -47,12 +47,12 @@ export default class Player extends GameObjects.Container {
             PLAYER_CONFIG.HORIZONTAL.DRAG,
         );
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
-            speed: PLAYER_CONFIG.WEAPON.SPEED,
-            interval: PLAYER_CONFIG.WEAPON.INTERVAL,
-            lifespan: PLAYER_CONFIG.WEAPON.LIFESPAN,
-            maxCount: PLAYER_CONFIG.WEAPON.ROUNDS_RENDER_MAX,
-            flipY: false,
-            yOffset: -20,
+            weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
+            projectileSpeed: PLAYER_CONFIG.WEAPON.PROJECTILE_SPEED,
+            projectileLifespan: PLAYER_CONFIG.WEAPON.PROJECTILE_LIFESPAN,
+            projectilePoolSize: PLAYER_CONFIG.WEAPON.PROJECTILE_RENDER_POOL_SIZE,
+            trajectoryFlipY: false,
+            trajectoryYOffset: -20,
         });
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);

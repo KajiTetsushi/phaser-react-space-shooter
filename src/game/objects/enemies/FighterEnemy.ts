@@ -57,12 +57,12 @@ export default class FighterEnemy extends GameObjects.Container {
             ENEMY_CONFIG.FIGHTER.VERTICAL.DRAG,
         );
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
-            speed: ENEMY_CONFIG.FIGHTER.WEAPON.SPEED,
-            interval: ENEMY_CONFIG.FIGHTER.WEAPON.INTERVAL,
-            lifespan: ENEMY_CONFIG.FIGHTER.WEAPON.LIFESPAN,
-            maxCount: ENEMY_CONFIG.FIGHTER.WEAPON.ROUNDS_RENDER_MAX,
-            flipY: true,
-            yOffset: 10,
+            weaponCooldown: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_COOLDOWN,
+            projectileSpeed: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPEED,
+            projectileLifespan: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_LIFESPAN,
+            projectilePoolSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_RENDER_POOL_SIZE,
+            trajectoryFlipY: true,
+            trajectoryYOffset: 10,
         });
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);

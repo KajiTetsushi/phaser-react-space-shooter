@@ -2,19 +2,19 @@ import { GameObjects, Math as PhaserMath, Physics } from 'phaser';
 import type InputComponent from '../input/InputComponent';
 
 type BulletConfig = {
-    speed: number;
+    projectileSpeed: number;
     /**
      * In milliseconds. The minimum time between firing two consecutive bullets. This is used to control the firing rate of the weapon, preventing it from firing too rapidly and overwhelming the game with too many bullets at once.
      */
-    interval: number;
+    weaponCooldown: number;
     /**
      * In seconds. The time it takes for a bullet to disappear after being fired.
      * This is used to determine how long a bullet should remain active before being despawned and returned to the pool for reuse.
      */
-    lifespan: number;
-    maxCount: number;
-    yOffset: number;
-    flipY: boolean;
+    projectileLifespan: number;
+    projectilePoolSize: number;
+    trajectoryYOffset: number;
+    trajectoryFlipY: boolean;
 };
 
 export default class WeaponComponent {
@@ -41,7 +41,7 @@ export default class WeaponComponent {
         });
         this.#bulletGroup.createMultiple({
             key: 'bullet',
-            quantity: this.#bulletConfig.maxCount,
+            quantity: this.#bulletConfig.projectilePoolSize,
             active: false,
             visible: false,
         });
@@ -83,18 +83,18 @@ export default class WeaponComponent {
         }
 
         const x = this.#gameObject.x;
-        const y = this.#gameObject.y + this.#bulletConfig.yOffset;
+        const y = this.#gameObject.y + this.#bulletConfig.trajectoryYOffset;
         bullet.enableBody(true, x, y, true, true);
         if (bullet.body instanceof Physics.Arcade.Body) {
-            bullet.body.velocity.y -= this.#bulletConfig.speed;
+            bullet.body.velocity.y -= this.#bulletConfig.projectileSpeed;
             bullet.body.setSize(14, 18);
         }
-        bullet.setState(this.#bulletConfig.lifespan);
+        bullet.setState(this.#bulletConfig.projectileLifespan);
         bullet.play('bullet');
         bullet.setScale(0.8);
-        bullet.setFlipY(this.#bulletConfig.flipY);
+        bullet.setFlipY(this.#bulletConfig.trajectoryFlipY);
 
-        this.#fireBulletInterval = this.#bulletConfig.interval;
+        this.#fireBulletInterval = this.#bulletConfig.weaponCooldown;
     }
 
     /**

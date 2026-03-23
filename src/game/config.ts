@@ -5,14 +5,10 @@ export const PLAYER_CONFIG = {
         DRAG: 0.01,
     },
     WEAPON: {
-        // TODO: PROJECTILE_SPEED
-        SPEED: 300,
-        // TODO: WEAPON_COOLDOWN
-        INTERVAL: 300,
-        // TODO: PROJECTILE_LIFESPAN
-        LIFESPAN: 3,
-        // TODO: PROJECTIlE_RENDER_POOL_SIZE
-        ROUNDS_RENDER_MAX: 10,
+        WEAPON_COOLDOWN: 300,
+        PROJECTILE_SPEED: 300,
+        PROJECTILE_LIFESPAN: 3,
+        PROJECTILE_RENDER_POOL_SIZE: 10,
     },
 };
 
@@ -37,10 +33,10 @@ export const ENEMY_CONFIG = {
             DRAG: 0.01,
         },
         WEAPON: {
-            SPEED: -250,
-            INTERVAL: 2000,
-            LIFESPAN: 3,
-            ROUNDS_RENDER_MAX: 10,
+            WEAPON_COOLDOWN: 2000,
+            PROJECTILE_SPEED: -250,
+            PROJECTILE_LIFESPAN: 3,
+            PROJECTILE_RENDER_POOL_SIZE: 10,
         },
     },
 };
