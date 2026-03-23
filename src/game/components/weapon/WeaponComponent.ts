@@ -2,7 +2,6 @@ import { GameObjects, Math as PhaserMath, Physics } from 'phaser';
 import type InputComponent from '../input/InputComponent';
 
 type WeaponConfig = {
-    projectileSpeed: number;
     /**
      * In milliseconds. The minimum time between firing two consecutive projectiles. This is used to control the firing rate of the weapon, preventing it from firing too rapidly and overwhelming the game with too many projectiles at once.
      */
@@ -18,6 +17,8 @@ type WeaponConfig = {
         w: number;
         h: number;
     };
+    projectileScale: number;
+    projectileSpeed: number;
     trajectoryYOffset: number;
     trajectoryFlipY: boolean;
 };
@@ -99,7 +100,7 @@ export default class WeaponComponent {
         }
         projectile.setState(this.#weaponConfig.projectileLifespan);
         projectile.play(this.#weaponConfig.projectileAnimationKey);
-        projectile.setScale(0.8);
+        projectile.setScale(this.#weaponConfig.projectileScale);
         projectile.setFlipY(this.#weaponConfig.trajectoryFlipY);
 
         this.#propelProjectileInterval = this.#weaponConfig.weaponCooldown;

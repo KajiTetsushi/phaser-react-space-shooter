@@ -45,6 +45,7 @@ export default class FighterEnemy extends GameObjects.Container {
             weaponCooldown: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_COOLDOWN,
             projectileAnimationKey: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_ANIMATION_KEY,
             projectileHitboxSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_HITBOX_SIZE,
+            projectileScale: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SCALE,
             projectileSpeed: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPEED,
             projectileLifespan: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_LIFESPAN,
             projectilePoolSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_RENDER_POOL_SIZE,
