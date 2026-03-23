@@ -23,7 +23,7 @@
 - [x] basic AI movement
 
 ## All Object types
-- [ ] weapons
+- [x] weapons
 - [ ] phaser update and delta time
 
 ## Collisions
