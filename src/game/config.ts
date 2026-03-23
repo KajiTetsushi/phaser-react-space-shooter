@@ -4,6 +4,12 @@ export const PLAYER_CONFIG = {
         VELOCITY_MAX: 200,
         DRAG: 0.01,
     },
+    WEAPON: {
+        SPEED: 300,
+        INTERVAL: 300,
+        LIFESPAN: 3,
+        ROUNDS_RENDER_MAX: 10,
+    },
 };
 
 export const ENEMY_CONFIG = {

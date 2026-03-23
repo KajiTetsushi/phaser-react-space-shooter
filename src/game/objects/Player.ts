@@ -2,11 +2,13 @@ import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
 import type InputComponent from '../components/input/InputComponent';
 import KeyboardInputComponent from '../components/input/KeyboardInputComponent';
 import HorizontalMovementComponent from '../components/movement/HorizontalMovementComponent';
+import WeaponComponent from '../components/weapon/WeaponComponent';
 import { PLAYER_CONFIG } from '../config';
 
 export default class Player extends GameObjects.Container {
     #inputComponent: InputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
+    #weaponComponent: WeaponComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
     #shipEngineThrusterSprite: GameObjects.Sprite;
@@ -44,6 +46,14 @@ export default class Player extends GameObjects.Container {
             PLAYER_CONFIG.HORIZONTAL.VELOCITY_MAX,
             PLAYER_CONFIG.HORIZONTAL.DRAG,
         );
+        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
+            speed: PLAYER_CONFIG.WEAPON.SPEED,
+            interval: PLAYER_CONFIG.WEAPON.INTERVAL,
+            lifespan: PLAYER_CONFIG.WEAPON.LIFESPAN,
+            maxCount: PLAYER_CONFIG.WEAPON.ROUNDS_RENDER_MAX,
+            flipY: false,
+            yOffset: -20,
+        });
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
@@ -55,8 +65,9 @@ export default class Player extends GameObjects.Container {
         );
     }
 
-    update(_timestamp: number, _delta: number) {
+    update(_timestamp: number, delta: number) {
         this.#inputComponent.update();
         this.#horizontalMovementComponent.update();
+        this.#weaponComponent.update(delta);
     }
 }
