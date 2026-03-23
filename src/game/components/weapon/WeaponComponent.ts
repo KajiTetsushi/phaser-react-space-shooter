@@ -76,8 +76,12 @@ export default class WeaponComponent {
         bullet.enableBody(true, x, y, true, true);
         if (bullet.body instanceof Physics.Arcade.Body) {
             bullet.body.velocity.y -= this.#bulletConfig.speed;
+            bullet.body.setSize(14, 18);
         }
         bullet.setState(this.#bulletConfig.lifespan);
+        bullet.play('bullet');
+        bullet.setScale(0.8);
+        bullet.setFlipY(this.#bulletConfig.flipY);
 
         this.#fireBulletInterval = this.#bulletConfig.interval;
     }
