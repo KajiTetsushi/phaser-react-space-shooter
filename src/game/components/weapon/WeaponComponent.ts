@@ -3,7 +3,14 @@ import type InputComponent from '../input/InputComponent';
 
 type BulletConfig = {
     speed: number;
+    /**
+     * In milliseconds. The minimum time between firing two consecutive bullets. This is used to control the firing rate of the weapon, preventing it from firing too rapidly and overwhelming the game with too many bullets at once.
+     */
     interval: number;
+    /**
+     * In seconds. The time it takes for a bullet to disappear after being fired.
+     * This is used to determine how long a bullet should remain active before being despawned and returned to the pool for reuse.
+     */
     lifespan: number;
     maxCount: number;
     yOffset: number;
@@ -49,6 +56,10 @@ export default class WeaponComponent {
         );
     }
 
+    /**
+     * Called on each frame of the game loop to update the state of the weapon component.
+     * @param delta Timestep, in milliseconds, tied to the browser `requestAnimationFrame` callback, or roughly 60 times per second.
+     */
     update(delta: number) {
         this.#fireBullet(delta);
     }
@@ -86,6 +97,10 @@ export default class WeaponComponent {
         this.#fireBulletInterval = this.#bulletConfig.interval;
     }
 
+    /**
+     * Called on each physics world step to update the lifespan of each bullet.
+     * @param delta Timestep, in seconds, since the last world step, fixed to exactly 60Hz a.k.a. 1/60th of a second.
+     */
     worldStep(delta: number) {
         const bullets = this.#bulletGroup.getChildren() as Physics.Arcade.Sprite[];
         bullets.forEach(this.#decayBulletLifespan(delta));
