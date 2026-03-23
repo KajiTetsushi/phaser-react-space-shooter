@@ -8,7 +8,7 @@ type WeaponConfig = {
      */
     weaponCooldown: number;
     /**
-     * In seconds. The time it takes for a projectile to disappear after being fired.
+     * In seconds. The time it takes for a projectile to disappear after being propelled.
      * This is used to determine how long a projectile should remain active before being despawned and returned to the pool for reuse.
      */
     projectileLifespan: number;
@@ -22,13 +22,13 @@ export default class WeaponComponent {
     #inputComponent: InputComponent;
     #weaponConfig: WeaponConfig;
     /**
-     * Group to manage projectiles fired by this weapon. It serves as a pool of projectile sprites that can be reused to optimize performance.
+     * Group to manage projectiles propelled by this weapon. It serves as a pool of projectile sprites that can be reused to optimize performance.
      */
     #projectileGroup: Physics.Arcade.Group;
     /**
-     * Countdown timer for firing projectiles. When it reaches 0, a projectile can be fired and the timer is reset to the interval value.
+     * Countdown timer for firing projectiles. When it reaches 0, a projectile can be propelled and the timer is reset to the interval value.
      */
-    #fireProjectileInterval: number = 0;
+    #propelProjectileInterval: number = 0;
 
     constructor(gameObject: GameObjects.Container, inputComponent: InputComponent, projectileConfig: WeaponConfig) {
         this.#gameObject = gameObject;
@@ -61,13 +61,13 @@ export default class WeaponComponent {
      * @param delta Timestep, in milliseconds, tied to the browser `requestAnimationFrame` callback, or roughly 60 times per second.
      */
     update(delta: number) {
-        this.#fireProjectile(delta);
+        this.#propelProjectile(delta);
     }
 
-    #fireProjectile(delta: number) {
-        this.#fireProjectileInterval -= delta;
+    #propelProjectile(delta: number) {
+        this.#propelProjectileInterval -= delta;
 
-        if (this.#fireProjectileInterval > 0) {
+        if (this.#propelProjectileInterval > 0) {
             return;
         }
 
@@ -75,7 +75,7 @@ export default class WeaponComponent {
             return;
         }
 
-        // Get the first inactive projectile from the pool and fire it.
+        // Get the first inactive projectile from the pool and propel it.
         const projectile: Physics.Arcade.Sprite | undefined = this.#projectileGroup.getFirstDead(false);
 
         if (projectile == null) {
@@ -94,7 +94,7 @@ export default class WeaponComponent {
         projectile.setScale(0.8);
         projectile.setFlipY(this.#weaponConfig.trajectoryFlipY);
 
-        this.#fireProjectileInterval = this.#weaponConfig.weaponCooldown;
+        this.#propelProjectileInterval = this.#weaponConfig.weaponCooldown;
     }
 
     /**
