@@ -68,6 +68,14 @@ export default class Player extends GameObjects.Container {
         );
     }
 
+    get weaponComponent() {
+        return this.#weaponComponent;
+    }
+
+    get projectileGroup() {
+        return this.weaponComponent.projectileGroup;
+    }
+
     update(_timestamp: number, delta: number) {
         this.#inputComponent.update();
         this.#horizontalMovementComponent.update();

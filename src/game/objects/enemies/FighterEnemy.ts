@@ -63,6 +63,14 @@ export default class FighterEnemy extends GameObjects.Container {
         );
     }
 
+    get weaponComponent() {
+        return this.#weaponComponent;
+    }
+
+    get projectileGroup() {
+        return this.weaponComponent.projectileGroup;
+    }
+
     update(_timestamp: number, delta: number) {
         this.#inputComponent.update();
         this.#verticalMovementComponent.update();
