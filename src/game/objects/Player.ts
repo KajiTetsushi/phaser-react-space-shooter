@@ -49,6 +49,7 @@ export default class Player extends GameObjects.Container {
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
             weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
             projectileAnimationKey: PLAYER_CONFIG.WEAPON.PROJECTILE_ANIMATION_KEY,
+            projectileHitboxSize: PLAYER_CONFIG.WEAPON.PROJECTILE_HITBOX_SIZE,
             projectileSpeed: PLAYER_CONFIG.WEAPON.PROJECTILE_SPEED,
             projectileLifespan: PLAYER_CONFIG.WEAPON.PROJECTILE_LIFESPAN,
             projectilePoolSize: PLAYER_CONFIG.WEAPON.PROJECTILE_RENDER_POOL_SIZE,

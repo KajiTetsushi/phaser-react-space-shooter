@@ -14,6 +14,10 @@ type WeaponConfig = {
     projectileLifespan: number;
     projectilePoolSize: number;
     projectileAnimationKey: string;
+    projectileHitboxSize: {
+        w: number;
+        h: number;
+    };
     trajectoryYOffset: number;
     trajectoryFlipY: boolean;
 };
@@ -88,7 +92,10 @@ export default class WeaponComponent {
         projectile.enableBody(true, x, y, true, true);
         if (projectile.body instanceof Physics.Arcade.Body) {
             projectile.body.velocity.y -= this.#weaponConfig.projectileSpeed;
-            projectile.body.setSize(14, 18);
+            projectile.body.setSize(
+                this.#weaponConfig.projectileHitboxSize.w,
+                this.#weaponConfig.projectileHitboxSize.h,
+            );
         }
         projectile.setState(this.#weaponConfig.projectileLifespan);
         projectile.play(this.#weaponConfig.projectileAnimationKey);
