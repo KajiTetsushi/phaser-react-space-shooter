@@ -1,6 +1,9 @@
 import type { GameObjects } from 'phaser';
 import InputComponent from '../InputComponent';
 
+/**
+ * Scout bot AI input: downwards sideways zigzag flight pattern
+ */
 export default class ScoutInputComponent extends InputComponent {
     #gameObject: GameObjects.Container;
     #startX: number;

@@ -1,5 +1,8 @@
 import InputComponent from '../InputComponent';
 
+/**
+ * Fighter bot AI input: downwards sideways flight pattern, always firing
+ */
 export default class FighterInputComponent extends InputComponent {
     constructor() {
         super();
