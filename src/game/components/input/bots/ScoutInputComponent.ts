@@ -22,9 +22,9 @@ export default class ScoutInputComponent extends InputComponent {
 
     update() {
         if (this.#gameObject.x < this.#startX - this.#maxXDrift) {
-            this.#setXDirection('left');
-        } else if (this.#gameObject.x > this.#startX + this.#maxXDrift) {
             this.#setXDirection('right');
+        } else if (this.#gameObject.x > this.#startX + this.#maxXDrift) {
+            this.#setXDirection('left');
         }
     }
 
