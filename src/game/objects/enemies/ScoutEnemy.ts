@@ -1,11 +1,13 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
 import ScoutInputComponent from '../../components/input/bots/ScoutInputComponent';
 import type InputComponent from '../../components/input/InputComponent';
+import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
 import { ENEMY_CONFIG } from '../../config';
 
 export default class ScoutEnemy extends GameObjects.Container {
     #inputComponent: InputComponent;
+    #horizontalMovementComponent: HorizontalMovementComponent;
     #verticalMovementComponent: VerticalMovementComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
@@ -31,7 +33,20 @@ export default class ScoutEnemy extends GameObjects.Container {
         }
         this.setDepth(2);
 
-        this.#inputComponent = new ScoutInputComponent();
+        this.#inputComponent = new ScoutInputComponent(
+            this,
+            // The direction of the scout's horizontal movement
+            // will rely on its current position.
+            this.x,
+            ENEMY_CONFIG.SCOUT.HORIZONTAL.DRIFT_MAX,
+        );
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(
+            this,
+            this.#inputComponent,
+            ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY,
+            ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_MAX,
+            ENEMY_CONFIG.SCOUT.HORIZONTAL.DRAG,
+        );
         this.#verticalMovementComponent = new VerticalMovementComponent(
             this,
             this.#inputComponent,
@@ -52,6 +67,7 @@ export default class ScoutEnemy extends GameObjects.Container {
 
     update(_timestamp: number, _delta: number) {
         this.#inputComponent.update();
+        this.#horizontalMovementComponent.update();
         this.#verticalMovementComponent.update();
     }
 }

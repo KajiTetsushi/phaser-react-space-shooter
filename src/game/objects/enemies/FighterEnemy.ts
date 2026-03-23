@@ -1,14 +1,12 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
 import FighterInputComponent from '../../components/input/bots/FighterInputComponent';
 import type InputComponent from '../../components/input/InputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
 
 export default class FighterEnemy extends GameObjects.Container {
     #inputComponent: InputComponent;
-    #horizontalMovementComponent: HorizontalMovementComponent;
     #verticalMovementComponent: VerticalMovementComponent;
     #weaponComponent: WeaponComponent;
     #shipSprite: GameObjects.Sprite;
@@ -35,20 +33,7 @@ export default class FighterEnemy extends GameObjects.Container {
         }
         this.setDepth(2);
 
-        this.#inputComponent = new FighterInputComponent(
-            this,
-            // The direction of the fighter's horizontal movement
-            // will rely on its current position.
-            this.x,
-            ENEMY_CONFIG.FIGHTER.HORIZONTAL.DRIFT_MAX,
-        );
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.FIGHTER.HORIZONTAL.VELOCITY,
-            ENEMY_CONFIG.FIGHTER.HORIZONTAL.VELOCITY_MAX,
-            ENEMY_CONFIG.FIGHTER.HORIZONTAL.DRAG,
-        );
+        this.#inputComponent = new FighterInputComponent();
         this.#verticalMovementComponent = new VerticalMovementComponent(
             this,
             this.#inputComponent,
@@ -77,7 +62,6 @@ export default class FighterEnemy extends GameObjects.Container {
 
     update(_timestamp: number, delta: number) {
         this.#inputComponent.update();
-        this.#horizontalMovementComponent.update();
         this.#verticalMovementComponent.update();
         this.#weaponComponent.update(delta);
     }

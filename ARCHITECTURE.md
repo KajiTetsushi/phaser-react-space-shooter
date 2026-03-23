@@ -4,14 +4,14 @@
 
 ### Complex Objects
 
-| Type         | Player     | Enemy 1    | Enemy 2   | Enemy 3    |
-| ------------ | ---------- | ---------- | --------- | ---------- |
-| **Input**    | Keyboard   | A.I. 1     | A.I. 2    | A.I. 3     |
-| **Movement** | Horizontal | Horizontal | Horizonal | Horizontal |
-|              |            |            | Vertical  | Follower   |
-| **Weapon**   | Upgradable | Blaster    | Blaster   | Plasma     |
-| **Health**   | Health     | Health     | Health    | Health     |
-| **Collider** | Collider   | Collider   | Collider  | Collider   |
+| Type         | Player     | Enemy 1    | Enemy 2  | Enemy 3    |
+| ------------ | ---------- | ---------- | -------- | ---------- |
+| **Input**    | Keyboard   | A.I. 1     | A.I. 2   | A.I. 3     |
+| **Movement** | Horizontal | Horizontal | Vertical | Horizontal |
+|              |            | Vertical   |          | Follower   |
+| **Weapon**   | Upgradable | Blaster    | Blaster  | Plasma     |
+| **Health**   | Health     | Health     | Health   | Health     |
+| **Collider** | Collider   | Collider   | Collider | Collider   |
 
 ### Events
 

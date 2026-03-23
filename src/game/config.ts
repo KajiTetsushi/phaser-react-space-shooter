@@ -14,6 +14,12 @@ export const PLAYER_CONFIG = {
 
 export const ENEMY_CONFIG = {
     SCOUT: {
+        HORIZONTAL: {
+            VELOCITY: 12,
+            VELOCITY_MAX: 120,
+            DRIFT_MAX: 40,
+            DRAG: 0.01,
+        },
         VERTICAL: {
             VELOCITY: 10,
             VELOCITY_MAX: 100,
@@ -21,12 +27,6 @@ export const ENEMY_CONFIG = {
         },
     },
     FIGHTER: {
-        HORIZONTAL: {
-            VELOCITY: 12,
-            VELOCITY_MAX: 120,
-            DRIFT_MAX: 40,
-            DRAG: 0.01,
-        },
         VERTICAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,
