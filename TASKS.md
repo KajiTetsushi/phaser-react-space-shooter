@@ -23,8 +23,8 @@
 - [x] basic AI movement
 
 ## All Object types
-- [ ] weapons
-- [ ] phaser update and delta time
+- [x] weapons
+- [x] phaser update and delta time
 
 ## Collisions
 - [ ] collisions between enemies and player

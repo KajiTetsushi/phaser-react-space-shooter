@@ -3,12 +3,14 @@ import FighterInputComponent from '../../components/input/bots/FighterInputCompo
 import type InputComponent from '../../components/input/InputComponent';
 import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
+import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
 
 export default class FighterEnemy extends GameObjects.Container {
     #inputComponent: InputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
     #verticalMovementComponent: VerticalMovementComponent;
+    #weaponComponent: WeaponComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
 
@@ -54,6 +56,14 @@ export default class FighterEnemy extends GameObjects.Container {
             ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY_MAX,
             ENEMY_CONFIG.FIGHTER.VERTICAL.DRAG,
         );
+        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
+            weaponCooldown: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_COOLDOWN,
+            projectileSpeed: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPEED,
+            projectileLifespan: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_LIFESPAN,
+            projectilePoolSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_RENDER_POOL_SIZE,
+            trajectoryFlipY: true,
+            trajectoryYOffset: 10,
+        });
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
@@ -65,9 +75,10 @@ export default class FighterEnemy extends GameObjects.Container {
         );
     }
 
-    update(_timestamp: number, _delta: number) {
+    update(_timestamp: number, delta: number) {
         this.#inputComponent.update();
         this.#horizontalMovementComponent.update();
         this.#verticalMovementComponent.update();
+        this.#weaponComponent.update(delta);
     }
 }
