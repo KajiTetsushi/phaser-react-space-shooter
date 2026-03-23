@@ -36,5 +36,11 @@ export const ENEMY_CONFIG = {
             VELOCITY_MAX: 120,
             DRAG: 0.01,
         },
+        WEAPON: {
+            SPEED: -250,
+            INTERVAL: 2000,
+            LIFESPAN: 3,
+            ROUNDS_RENDER_MAX: 10,
+        },
     },
 };
