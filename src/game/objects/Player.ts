@@ -53,7 +53,7 @@ export default class Player extends GameObjects.Container {
             projectileScale: PLAYER_CONFIG.WEAPON.PROJECTILE_SCALE,
             projectileSpeed: PLAYER_CONFIG.WEAPON.PROJECTILE_SPEED,
             projectileLifespan: PLAYER_CONFIG.WEAPON.PROJECTILE_LIFESPAN,
-            projectilePoolSize: PLAYER_CONFIG.WEAPON.PROJECTILE_RENDER_POOL_SIZE,
+            projectileSpawnPoolSize: PLAYER_CONFIG.WEAPON.PROJECTILE_SPAWN_POOL_SIZE,
             trajectoryFlipY: false,
             trajectoryYOffset: -20,
         });

@@ -11,13 +11,13 @@ type WeaponConfig = {
      * This is used to determine how long a projectile should remain active before being despawned and returned to the pool for reuse.
      */
     projectileLifespan: number;
-    projectilePoolSize: number;
     projectileAnimationKey: string;
     projectileHitboxSize: {
         w: number;
         h: number;
     };
     projectileScale: number;
+    projectileSpawnPoolSize: number;
     projectileSpeed: number;
     trajectoryYOffset: number;
     trajectoryFlipY: boolean;
@@ -47,7 +47,7 @@ export default class WeaponComponent {
         });
         this.#projectileGroup.createMultiple({
             key: 'projectile',
-            quantity: this.#weaponConfig.projectilePoolSize,
+            quantity: this.#weaponConfig.projectileSpawnPoolSize,
             active: false,
             visible: false,
         });

@@ -48,7 +48,7 @@ export default class FighterEnemy extends GameObjects.Container {
             projectileScale: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SCALE,
             projectileSpeed: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPEED,
             projectileLifespan: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_LIFESPAN,
-            projectilePoolSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_RENDER_POOL_SIZE,
+            projectileSpawnPoolSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPAWN_POOL_SIZE,
             trajectoryFlipY: true,
             trajectoryYOffset: 10,
         });

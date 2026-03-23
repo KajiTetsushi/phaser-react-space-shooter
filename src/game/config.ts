@@ -11,10 +11,10 @@ export const PLAYER_CONFIG = {
             w: 14,
             h: 18,
         },
-        PROJECTILE_SCALE: 0.8,
-        PROJECTILE_SPEED: 300,
         PROJECTILE_LIFESPAN: 3,
-        PROJECTILE_RENDER_POOL_SIZE: 10,
+        PROJECTILE_SCALE: 0.8,
+        PROJECTILE_SPAWN_POOL_SIZE: 10,
+        PROJECTILE_SPEED: 300,
     },
 };
 
@@ -45,10 +45,10 @@ export const ENEMY_CONFIG = {
                 w: 14,
                 h: 18,
             },
-            PROJECTILE_SCALE: 0.8,
-            PROJECTILE_SPEED: -250,
             PROJECTILE_LIFESPAN: 3,
-            PROJECTILE_RENDER_POOL_SIZE: 10,
+            PROJECTILE_SCALE: 0.8,
+            PROJECTILE_SPAWN_POOL_SIZE: 10,
+            PROJECTILE_SPEED: -250,
         },
     },
 };
