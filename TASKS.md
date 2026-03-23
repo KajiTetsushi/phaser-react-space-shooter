@@ -24,7 +24,7 @@
 
 ## All Object types
 - [x] weapons
-- [ ] phaser update and delta time
+- [x] phaser update and delta time
 
 ## Collisions
 - [ ] collisions between enemies and player
