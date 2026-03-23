@@ -6,6 +6,7 @@ export const PLAYER_CONFIG = {
     },
     WEAPON: {
         WEAPON_COOLDOWN: 300,
+        PROJECTILE_ANIMATION_KEY: 'bullet',
         PROJECTILE_SPEED: 300,
         PROJECTILE_LIFESPAN: 3,
         PROJECTILE_RENDER_POOL_SIZE: 10,
@@ -34,6 +35,7 @@ export const ENEMY_CONFIG = {
         },
         WEAPON: {
             WEAPON_COOLDOWN: 2000,
+            PROJECTILE_ANIMATION_KEY: 'bullet',
             PROJECTILE_SPEED: -250,
             PROJECTILE_LIFESPAN: 3,
             PROJECTILE_RENDER_POOL_SIZE: 10,

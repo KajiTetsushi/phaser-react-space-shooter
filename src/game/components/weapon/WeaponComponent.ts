@@ -13,6 +13,7 @@ type WeaponConfig = {
      */
     projectileLifespan: number;
     projectilePoolSize: number;
+    projectileAnimationKey: string;
     trajectoryYOffset: number;
     trajectoryFlipY: boolean;
 };
@@ -90,7 +91,7 @@ export default class WeaponComponent {
             projectile.body.setSize(14, 18);
         }
         projectile.setState(this.#weaponConfig.projectileLifespan);
-        projectile.play('projectile');
+        projectile.play(this.#weaponConfig.projectileAnimationKey);
         projectile.setScale(0.8);
         projectile.setFlipY(this.#weaponConfig.trajectoryFlipY);
 

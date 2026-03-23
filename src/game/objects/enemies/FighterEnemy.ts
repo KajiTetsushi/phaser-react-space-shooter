@@ -43,6 +43,7 @@ export default class FighterEnemy extends GameObjects.Container {
         );
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
             weaponCooldown: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_COOLDOWN,
+            projectileAnimationKey: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_ANIMATION_KEY,
             projectileSpeed: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPEED,
             projectileLifespan: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_LIFESPAN,
             projectilePoolSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_RENDER_POOL_SIZE,
