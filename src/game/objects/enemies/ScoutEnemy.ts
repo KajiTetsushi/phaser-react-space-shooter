@@ -85,12 +85,20 @@ export default class ScoutEnemy extends GameObjects.Container {
         }
 
         if (this.#healthComponent.isHealthDepleted) {
-            this.setActive(false);
-            this.setVisible(false);
+            this.#die();
+            return;
         }
 
         this.#inputComponent.update();
         this.#horizontalMovementComponent.update();
         this.#verticalMovementComponent.update();
+    }
+
+    #die() {
+        this.setActive(false);
+        this.#shipEngineSprite.setVisible(false);
+        this.#shipSprite.play({
+            key: 'fighter_destroy',
+        });
     }
 }

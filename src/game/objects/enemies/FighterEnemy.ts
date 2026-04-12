@@ -91,12 +91,20 @@ export default class FighterEnemy extends GameObjects.Container {
         }
 
         if (this.#healthComponent.isHealthDepleted) {
-            this.setActive(false);
-            this.setVisible(false);
+            this.#die();
+            return;
         }
 
         this.#inputComponent.update();
         this.#verticalMovementComponent.update();
         this.#weaponComponent.update(delta);
+    }
+
+    #die() {
+        this.setActive(false);
+        this.#shipEngineSprite.setVisible(false);
+        this.#shipSprite.play({
+            key: 'fighter_destroy',
+        });
     }
 }
