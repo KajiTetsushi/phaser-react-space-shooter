@@ -36,7 +36,6 @@ export default class EnemySpawnerComponent {
             runChildUpdate: true,
             createCallback: (item) => {
                 const enemy = item as EnemyInstance;
-                console.log(enemy);
                 enemy.initialize(eventBusComponent);
             },
         });
