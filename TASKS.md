@@ -27,9 +27,9 @@
 - [x] phaser update and delta time
 
 ## Collisions
-- [ ] collisions between enemies and player
-- [ ] collisions between bullets and ships
-- [ ] health component
+- [x] collisions between enemies and player
+- [x] collisions between bullets and ships
+- [x] health component
 
 ## Enemy Spawners
 - [ ] use groups to spawn multiple enemies from object pool
