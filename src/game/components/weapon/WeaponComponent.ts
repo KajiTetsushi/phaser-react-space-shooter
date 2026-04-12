@@ -6,16 +6,16 @@ type WeaponConfig = {
      * In milliseconds. The minimum time between firing two consecutive projectiles. This is used to control the firing rate of the weapon, preventing it from firing too rapidly and overwhelming the game with too many projectiles at once.
      */
     weaponCooldown: number;
-    /**
-     * In seconds. The time it takes for a projectile to disappear after being propelled.
-     * This is used to determine how long a projectile should remain active before being despawned and returned to the pool for reuse.
-     */
-    projectileLifespan: number;
     projectileAnimationKey: string;
     projectileHitboxSize: {
         w: number;
         h: number;
     };
+    /**
+     * In seconds. The time it takes for a projectile to disappear after being propelled.
+     * This is used to determine how long a projectile should remain active before being despawned and returned to the pool for reuse.
+     */
+    projectileLifespan: number;
     projectileScale: number;
     projectileSpawnPoolSize: number;
     projectileSpeed: number;
