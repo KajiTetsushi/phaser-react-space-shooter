@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import EventBusComponent, { CUSTOM_EVENTS } from '../components/events/EventBusComponent';
+import EnemyDestroyedSpawnerComponent from '../components/spawners/EnemyDestroyedSpawnerComponent';
 import EnemySpawnerComponent from '../components/spawners/EnemySpawnerComponent';
 import { ENEMY_CONFIG } from '../config';
 import FighterEnemy from '../objects/enemies/FighterEnemy';
@@ -18,6 +19,8 @@ export default class GameScene extends Scene {
     create() {
         const eventBusComponent = new EventBusComponent();
         const player = new Player(this);
+
+        // enemy spawners
         const scoutEnemySpawner = new EnemySpawnerComponent(this, eventBusComponent, ScoutEnemy, {
             minViewportXBoundaryClearance: ENEMY_CONFIG.SCOUT.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
             recurringInterval: ENEMY_CONFIG.SCOUT.SPAWN.RECURRING_INTERVAL,
@@ -28,7 +31,9 @@ export default class GameScene extends Scene {
             recurringInterval: ENEMY_CONFIG.FIGHTER.SPAWN.RECURRING_INTERVAL,
             initialInterval: ENEMY_CONFIG.FIGHTER.SPAWN.INITIAL_INTERVAL,
         });
+        new EnemyDestroyedSpawnerComponent(this, eventBusComponent);
 
+        // ship-to-ship and ship-to-projectile collisions
         this.physics.add.overlap(player, scoutEnemySpawner.spawnGroup, (playerGameObject, enemyGameObject) => {
             if (!(playerGameObject instanceof Player) || !(enemyGameObject instanceof ScoutEnemy)) {
                 return;

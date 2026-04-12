@@ -67,6 +67,14 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
         return this.weaponComponent.projectileGroup;
     }
 
+    get shipAssetKey() {
+        return 'fighter';
+    }
+
+    get shipDestroyedAnimationKey() {
+        return 'fighter_destroy';
+    }
+
     initialize(eventBusComponent: EventBusComponent) {
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
@@ -112,7 +120,6 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
 
         if (this.#healthComponent.isHealthDepleted) {
             this.#die();
-            return;
         }
 
         this.#inputComponent.update();
@@ -123,5 +130,6 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
     #die() {
         this.setActive(false);
         this.setVisible(false);
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_DESTROYED, this);
     }
 }
