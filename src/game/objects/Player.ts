@@ -96,10 +96,6 @@ export default class Player extends GameObjects.Container {
 
         if (this.#healthComponent.isHealthDepleted) {
             this.#die();
-            this.setVisible(true);
-            this.#shipSprite.play({
-                key: 'explosion',
-            });
             return;
         }
 
@@ -111,9 +107,11 @@ export default class Player extends GameObjects.Container {
 
     #die() {
         this.setActive(false);
-        this.setVisible(false);
         this.#shipEngineSprite.setVisible(false);
         this.#shipEngineThrusterSprite.setVisible(false);
         this.#inputComponent.lockInput = true;
+        this.#shipSprite.play({
+            key: 'explosion',
+        });
     }
 }
