@@ -109,7 +109,7 @@ export default class Player extends GameObjects.Container {
         this.setActive(false);
         this.#shipEngineSprite.setVisible(false);
         this.#shipEngineThrusterSprite.setVisible(false);
-        this.#inputComponent.lockInput = true;
+        this.#inputComponent.setInputLocked(true);
         this.#shipSprite.play({
             key: 'explosion',
         });
