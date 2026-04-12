@@ -12,7 +12,7 @@ export default class HealthComponent {
     }
 
     get isHealthDepleted() {
-        return this.#current === 0;
+        return this.#current <= 0;
     }
 
     reset() {
