@@ -138,4 +138,8 @@ export default class WeaponComponent {
             }
         };
     }
+
+    destroyProjectile(projectile: Physics.Arcade.Sprite) {
+        projectile.setState(0);
+    }
 }

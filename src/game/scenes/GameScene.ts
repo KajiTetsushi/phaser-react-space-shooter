@@ -38,14 +38,46 @@ export default class GameScene extends Scene {
             player,
             fighterEnemy.projectileGroup,
             (playerGameObject, enemyProjectileGameObject) => {
-                console.log('player collided with enemy projectile', playerGameObject, enemyProjectileGameObject);
+                if (
+                    !(playerGameObject instanceof Player) ||
+                    !(enemyProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
+                ) {
+                    return;
+                }
+
+                fighterEnemy.weaponComponent.destroyProjectile(enemyProjectileGameObject);
+                playerGameObject.colliderComponent.collideWithEnemyProjectile();
+            },
+        );
+        this.physics.add.overlap(
+            // TODO: Scale up.
+            scoutEnemy,
+            player.projectileGroup,
+            (enemyGameObject, playerProjectileGameObject) => {
+                if (
+                    !(enemyGameObject instanceof ScoutEnemy) ||
+                    !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
+                ) {
+                    return;
+                }
+
+                player.weaponComponent.destroyProjectile(playerProjectileGameObject);
+                enemyGameObject.colliderComponent.collideWithEnemyProjectile();
             },
         );
         this.physics.add.overlap(
             fighterEnemy,
             player.projectileGroup,
             (enemyGameObject, playerProjectileGameObject) => {
-                console.log('enemy collided with player projectile', enemyGameObject, playerProjectileGameObject);
+                if (
+                    !(enemyGameObject instanceof FighterEnemy) ||
+                    !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
+                ) {
+                    return;
+                }
+
+                player.weaponComponent.destroyProjectile(playerProjectileGameObject);
+                enemyGameObject.colliderComponent.collideWithEnemyProjectile();
             },
         );
     }
