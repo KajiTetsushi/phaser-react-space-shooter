@@ -34,11 +34,19 @@ export default class GameScene extends Scene {
                 return;
             }
 
+            if (!playerGameObject.active || !enemyGameObject.active) {
+                return;
+            }
+
             playerGameObject.colliderComponent.collideWithEnemyShip();
             enemyGameObject.colliderComponent.collideWithEnemyShip();
         });
         this.physics.add.overlap(player, fighterEnemySpawner.spawnGroup, (playerGameObject, enemyGameObject) => {
             if (!(playerGameObject instanceof Player) || !(enemyGameObject instanceof FighterEnemy)) {
+                return;
+            }
+
+            if (!playerGameObject.active || !enemyGameObject.active) {
                 return;
             }
 
@@ -63,6 +71,10 @@ export default class GameScene extends Scene {
                         return;
                     }
 
+                    if (!playerGameObject.active || !enemyProjectileGameObject.active) {
+                        return;
+                    }
+
                     fighterEnemy.weaponComponent.destroyProjectile(enemyProjectileGameObject);
                     playerGameObject.colliderComponent.collideWithEnemyProjectile();
                 },
@@ -79,6 +91,10 @@ export default class GameScene extends Scene {
                     return;
                 }
 
+                if (!enemyGameObject.active || !playerProjectileGameObject.active) {
+                    return;
+                }
+
                 player.weaponComponent.destroyProjectile(playerProjectileGameObject);
                 enemyGameObject.colliderComponent.collideWithEnemyProjectile();
             },
@@ -91,6 +107,10 @@ export default class GameScene extends Scene {
                     !(enemyGameObject instanceof FighterEnemy) ||
                     !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
                 ) {
+                    return;
+                }
+
+                if (!enemyGameObject.active || !playerProjectileGameObject.active) {
                     return;
                 }
 
