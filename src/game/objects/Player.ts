@@ -103,6 +103,7 @@ export default class Player extends GameObjects.Container {
             return;
         }
 
+        this.#shipSprite.setFrame(PLAYER_CONFIG.HEALTH - this.#healthComponent.health);
         this.#inputComponent.update();
         this.#horizontalMovementComponent.update();
         this.#weaponComponent.update(delta);
