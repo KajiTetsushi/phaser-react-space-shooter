@@ -11,8 +11,8 @@ export default class KeyboardInputComponent extends InputComponent {
         this.#cursorKeys = scene.input.keyboard!.createCursorKeys();
     }
 
-    set lockInput(locked: boolean) {
-        this.#inputLocked = locked;
+    setInputLocked(value: boolean) {
+        this.#inputLocked = value;
     }
 
     update() {
