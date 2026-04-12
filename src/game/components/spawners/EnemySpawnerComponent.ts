@@ -82,7 +82,7 @@ export default class EnemySpawnerComponent {
             this.#config.minViewportXBoundaryClearance,
             this.#scene.scale.width - this.#config.minViewportXBoundaryClearance,
         );
-        const enemy = this.#group.get(x, -20);
+        const enemy: EnemyInstance = this.#group.get(x, -20);
         enemy.reset();
         this.#intervalCountdown = this.#config.recurringInterval;
     }
