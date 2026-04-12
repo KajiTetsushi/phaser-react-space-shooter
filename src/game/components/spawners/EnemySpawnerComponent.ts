@@ -36,7 +36,6 @@ export default class EnemySpawnerComponent {
             runChildUpdate: true,
             createCallback: (item) => {
                 const enemy = item as EnemyInstance;
-                console.log(enemy);
                 enemy.initialize(eventBusComponent);
             },
         });
@@ -82,7 +81,7 @@ export default class EnemySpawnerComponent {
             this.#config.minViewportXBoundaryClearance,
             this.#scene.scale.width - this.#config.minViewportXBoundaryClearance,
         );
-        const enemy = this.#group.get(x, -20);
+        const enemy: EnemyInstance = this.#group.get(x, -20);
         enemy.reset();
         this.#intervalCountdown = this.#config.recurringInterval;
     }
