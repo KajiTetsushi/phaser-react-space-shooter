@@ -24,6 +24,7 @@ export default class EnemySpawnerComponent {
     constructor(
         scene: Scene,
         eventBusComponent: EventBusComponent,
+        playerPositionCallback: () => { x: number; y: number },
         spawnClass: EnemyConstructor,
         spawnConfig: EnemySpawnerConfig,
     ) {
@@ -38,7 +39,7 @@ export default class EnemySpawnerComponent {
             runChildUpdate: true,
             createCallback: (item) => {
                 const enemy = item as EnemyInstance;
-                enemy.initialize(eventBusComponent);
+                enemy.initialize(eventBusComponent, playerPositionCallback);
             },
         });
 

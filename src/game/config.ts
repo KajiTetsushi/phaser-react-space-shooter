@@ -76,4 +76,35 @@ export const ENEMY_CONFIG = {
             INITIAL_INTERVAL: 6000,
         },
     },
+    GUNSHIP: {
+        HEALTH: 8,
+        HORIZONTAL: {
+            VELOCITY: 2,
+            VELOCITY_MAX: 20,
+            DRIFT_MAX: 12,
+            DRAG: 0.01,
+        },
+        VERTICAL: {
+            VELOCITY: 12,
+            VELOCITY_MAX: 120,
+            DRAG: 0.01,
+        },
+        WEAPON: {
+            WEAPON_COOLDOWN: 200,
+            PROJECTILE_ANIMATION_KEY: 'bullet',
+            PROJECTILE_HITBOX_SIZE: {
+                w: 14,
+                h: 18,
+            },
+            PROJECTILE_LIFESPAN: 3,
+            PROJECTILE_SCALE: 0.8,
+            PROJECTILE_SPAWN_POOL_SIZE: 10,
+            PROJECTILE_SPEED: -500,
+        },
+        SPAWN: {
+            MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
+            RECURRING_INTERVAL: Infinity,
+            INITIAL_INTERVAL: 8000,
+        },
+    },
 };

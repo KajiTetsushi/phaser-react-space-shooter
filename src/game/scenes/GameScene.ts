@@ -5,6 +5,7 @@ import EnemySpawnerComponent from '../components/spawners/EnemySpawnerComponent'
 import { ENEMY_CONFIG } from '../config';
 import AudioManager from '../objects/AudioManager';
 import FighterEnemy from '../objects/enemies/FighterEnemy';
+import GunshipEnemy from '../objects/enemies/GunshipEnemy';
 import ScoutEnemy from '../objects/enemies/ScoutEnemy';
 import Player from '../objects/Player';
 import Lives from '../objects/ui/Lives';
@@ -24,17 +25,30 @@ export default class GameScene extends Scene {
 
         const eventBusComponent = new EventBusComponent();
         const player = new Player(this, eventBusComponent);
+        const getPlayerPosition = () => {
+            return {
+                x: player.x,
+                y: player.y,
+            };
+        };
+
+        const spawnerComponentArgs = [this, eventBusComponent, getPlayerPosition] as const;
 
         // enemy spawners
-        const scoutEnemySpawner = new EnemySpawnerComponent(this, eventBusComponent, ScoutEnemy, {
+        const scoutEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, ScoutEnemy, {
             minViewportXBoundaryClearance: ENEMY_CONFIG.SCOUT.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
             recurringInterval: ENEMY_CONFIG.SCOUT.SPAWN.RECURRING_INTERVAL,
             initialInterval: ENEMY_CONFIG.SCOUT.SPAWN.INITIAL_INTERVAL,
         });
-        const fighterEnemySpawner = new EnemySpawnerComponent(this, eventBusComponent, FighterEnemy, {
+        const fighterEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, FighterEnemy, {
             minViewportXBoundaryClearance: ENEMY_CONFIG.FIGHTER.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
             recurringInterval: ENEMY_CONFIG.FIGHTER.SPAWN.RECURRING_INTERVAL,
             initialInterval: ENEMY_CONFIG.FIGHTER.SPAWN.INITIAL_INTERVAL,
+        });
+        const gunshipEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, GunshipEnemy, {
+            minViewportXBoundaryClearance: ENEMY_CONFIG.GUNSHIP.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
+            recurringInterval: ENEMY_CONFIG.GUNSHIP.SPAWN.RECURRING_INTERVAL,
+            initialInterval: ENEMY_CONFIG.GUNSHIP.SPAWN.INITIAL_INTERVAL,
         });
         new EnemyDestroyedSpawnerComponent(this, eventBusComponent);
 

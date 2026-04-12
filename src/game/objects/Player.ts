@@ -84,6 +84,10 @@ export default class Player extends GameObjects.Container {
         this.#eventBusComponent.on(CUSTOM_EVENTS.PLAYER_SPAWN, this.#spawn, this);
     }
 
+    get inputComponent() {
+        return this.#inputComponent;
+    }
+
     get colliderComponent() {
         return this.#colliderComponent;
     }

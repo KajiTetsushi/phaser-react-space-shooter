@@ -6,7 +6,7 @@ export interface EnemyImplementable {
     shipAssetKey: string;
     shipDestroyedAnimationKey: string;
     shipDestroyedSoundKey: string;
-    initialize(eventBusComponent: EventBusComponent): void;
+    initialize(eventBusComponent: EventBusComponent, playerPositionCallback: () => { x: number; y: number }): void;
     reset(): void;
 }
 
