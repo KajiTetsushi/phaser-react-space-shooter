@@ -1,4 +1,6 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
+import ColliderComponent from '../components/collider/ColliderComponent';
+import HealthComponent from '../components/health/HealthComponent';
 import type InputComponent from '../components/input/InputComponent';
 import KeyboardInputComponent from '../components/input/KeyboardInputComponent';
 import HorizontalMovementComponent from '../components/movement/HorizontalMovementComponent';
@@ -8,6 +10,8 @@ import { PLAYER_CONFIG } from '../config';
 export default class Player extends GameObjects.Container {
     #inputComponent: InputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
+    #healthComponent: HealthComponent;
+    #colliderComponent: ColliderComponent;
     #weaponComponent: WeaponComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
@@ -57,6 +61,8 @@ export default class Player extends GameObjects.Container {
             trajectoryFlipY: false,
             trajectoryYOffset: -20,
         });
+        this.#healthComponent = new HealthComponent(PLAYER_CONFIG.HEALTH);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
@@ -68,6 +74,14 @@ export default class Player extends GameObjects.Container {
         );
     }
 
+    get colliderComponent() {
+        return this.#colliderComponent;
+    }
+
+    get healthComponent() {
+        return this.#healthComponent;
+    }
+
     get weaponComponent() {
         return this.#weaponComponent;
     }
@@ -77,6 +91,15 @@ export default class Player extends GameObjects.Container {
     }
 
     update(_timestamp: number, delta: number) {
+        if (!this.active) {
+            return;
+        }
+
+        if (this.#healthComponent.isDead) {
+            this.setActive(false);
+            this.setVisible(false);
+        }
+
         this.#inputComponent.update();
         this.#horizontalMovementComponent.update();
         this.#weaponComponent.update(delta);

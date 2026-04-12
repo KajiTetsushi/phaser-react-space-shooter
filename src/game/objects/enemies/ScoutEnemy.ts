@@ -1,4 +1,6 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
+import ColliderComponent from '../../components/collider/ColliderComponent';
+import HealthComponent from '../../components/health/HealthComponent';
 import ScoutInputComponent from '../../components/input/bots/ScoutInputComponent';
 import type InputComponent from '../../components/input/InputComponent';
 import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
@@ -9,6 +11,8 @@ export default class ScoutEnemy extends GameObjects.Container {
     #inputComponent: InputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
     #verticalMovementComponent: VerticalMovementComponent;
+    #healthComponent: HealthComponent;
+    #colliderComponent: ColliderComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
 
@@ -54,6 +58,8 @@ export default class ScoutEnemy extends GameObjects.Container {
             ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_MAX,
             ENEMY_CONFIG.SCOUT.VERTICAL.DRAG,
         );
+        this.#healthComponent = new HealthComponent(ENEMY_CONFIG.SCOUT.HEALTH);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
@@ -65,7 +71,24 @@ export default class ScoutEnemy extends GameObjects.Container {
         );
     }
 
+    get colliderComponent() {
+        return this.#colliderComponent;
+    }
+
+    get healthComponent() {
+        return this.#healthComponent;
+    }
+
     update(_timestamp: number, _delta: number) {
+        if (!this.active) {
+            return;
+        }
+
+        if (this.#healthComponent.isDead) {
+            this.setActive(false);
+            this.setVisible(false);
+        }
+
         this.#inputComponent.update();
         this.#horizontalMovementComponent.update();
         this.#verticalMovementComponent.update();

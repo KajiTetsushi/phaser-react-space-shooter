@@ -18,10 +18,20 @@ export default class GameScene extends Scene {
         const fighterEnemy = new FighterEnemy(this, this.scale.width / 2, 20);
 
         this.physics.add.overlap(player, scoutEnemy, (playerGameObject, enemyGameObject) => {
-            console.log('player collided with enemy', playerGameObject, enemyGameObject);
+            if (!(playerGameObject instanceof Player) || !(enemyGameObject instanceof ScoutEnemy)) {
+                return;
+            }
+
+            playerGameObject.colliderComponent.collideWithEnemyShip();
+            enemyGameObject.colliderComponent.collideWithEnemyShip();
         });
         this.physics.add.overlap(player, fighterEnemy, (playerGameObject, enemyGameObject) => {
-            console.log('player collided with enemy', playerGameObject, enemyGameObject);
+            if (!(playerGameObject instanceof Player) || !(enemyGameObject instanceof FighterEnemy)) {
+                return;
+            }
+
+            playerGameObject.colliderComponent.collideWithEnemyShip();
+            enemyGameObject.colliderComponent.collideWithEnemyShip();
         });
         // NOTE: Phaser always passes an independent sprite first, followed by a sprite from a sprite group.
         this.physics.add.overlap(
