@@ -2,6 +2,8 @@ import type { GameObjects, Scene } from 'phaser';
 import type EventBusComponent from '../../components/events/EventBusComponent';
 
 export interface EnemyImplementable {
+    shipAssetKey: string;
+    shipDestroyedAnimationKey: string;
     initialize(eventBusComponent: EventBusComponent): void;
     reset(): void;
 }

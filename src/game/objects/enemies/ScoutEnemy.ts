@@ -59,6 +59,14 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
         return this.#healthComponent;
     }
 
+    get shipAssetKey() {
+        return 'scout';
+    }
+
+    get shipDestroyedAnimationKey() {
+        return 'scout_destroy';
+    }
+
     initialize(eventBusComponent: EventBusComponent) {
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
@@ -108,7 +116,6 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
 
         if (this.#healthComponent.isHealthDepleted) {
             this.#die();
-            return;
         }
 
         this.#inputComponent.update();
@@ -119,5 +126,6 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
     #die() {
         this.setActive(false);
         this.setVisible(false);
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_DESTROYED, this);
     }
 }
