@@ -2,9 +2,9 @@ export default class HealthComponent {
     #initial: number;
     #current: number;
 
-    constructor(points: number) {
-        this.#initial = points;
-        this.#current = points;
+    constructor(hitPoints: number) {
+        this.#initial = hitPoints;
+        this.#current = hitPoints;
     }
 
     get health() {
