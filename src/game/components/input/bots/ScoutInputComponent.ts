@@ -20,6 +20,10 @@ export default class ScoutInputComponent extends InputComponent {
         this.#setXDirection(Math.random() < 0.5 ? 'left' : 'right');
     }
 
+    setStartX(startX: number) {
+        this.#startX = startX;
+    }
+
     update() {
         if (this.#gameObject.x < this.#startX - this.#maxXDrift) {
             this.#setXDirection('right');
