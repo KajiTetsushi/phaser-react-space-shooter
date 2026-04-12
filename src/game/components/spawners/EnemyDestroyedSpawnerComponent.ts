@@ -12,7 +12,7 @@ export default class EnemyDestroyedSpawnerComponent {
         this.#scene = scene;
         this.#eventBusComponent = eventBusComponent;
 
-        this.#group = scene.add.group({
+        this.#group = this.#scene.add.group({
             name: `${this.constructor.name}-${MathUtils.RND.uuid()}`,
         });
 
