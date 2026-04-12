@@ -35,7 +35,7 @@
 - [x] use groups to spawn multiple enemies from object pool
 - [x] update collisions to support groups
 - [x] event bus component
-- [ ] use groups for managing ship explosions
+- [x] use groups for managing ship explosions
 
 ## UI & Audio
 - [ ] implement scoring
