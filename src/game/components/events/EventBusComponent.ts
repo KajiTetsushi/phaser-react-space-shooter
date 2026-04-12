@@ -5,4 +5,11 @@ export const CUSTOM_EVENTS = Object.freeze({
     ENEMY_DESTROYED: 'enemy_destroyed',
 });
 
+/**
+ * Uses the native Phaser 3 EventEmitter class to allow communication
+ * between the various components in our game.
+ *
+ * For example, this event bus can be used for notifying the UI when
+ * an enemy is destroyed so we can update the score in our game.
+ */
 export default class EventBusComponent extends Events.EventEmitter {}
