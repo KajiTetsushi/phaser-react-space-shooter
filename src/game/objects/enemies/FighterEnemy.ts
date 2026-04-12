@@ -1,4 +1,6 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
+import ColliderComponent from '../../components/collider/ColliderComponent';
+import HealthComponent from '../../components/health/HealthComponent';
 import FighterInputComponent from '../../components/input/bots/FighterInputComponent';
 import type InputComponent from '../../components/input/InputComponent';
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
@@ -8,6 +10,8 @@ import { ENEMY_CONFIG } from '../../config';
 export default class FighterEnemy extends GameObjects.Container {
     #inputComponent: InputComponent;
     #verticalMovementComponent: VerticalMovementComponent;
+    #healthComponent: HealthComponent;
+    #colliderComponent: ColliderComponent;
     #weaponComponent: WeaponComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
@@ -52,6 +56,8 @@ export default class FighterEnemy extends GameObjects.Container {
             trajectoryFlipY: true,
             trajectoryYOffset: 10,
         });
+        this.#healthComponent = new HealthComponent(ENEMY_CONFIG.FIGHTER.HEALTH);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
@@ -63,9 +69,42 @@ export default class FighterEnemy extends GameObjects.Container {
         );
     }
 
+    get colliderComponent() {
+        return this.#colliderComponent;
+    }
+
+    get healthComponent() {
+        return this.#healthComponent;
+    }
+
+    get weaponComponent() {
+        return this.#weaponComponent;
+    }
+
+    get projectileGroup() {
+        return this.weaponComponent.projectileGroup;
+    }
+
     update(_timestamp: number, delta: number) {
+        if (!this.active) {
+            return;
+        }
+
+        if (this.#healthComponent.isHealthDepleted) {
+            this.#die();
+            return;
+        }
+
         this.#inputComponent.update();
         this.#verticalMovementComponent.update();
         this.#weaponComponent.update(delta);
+    }
+
+    #die() {
+        this.setActive(false);
+        this.#shipEngineSprite.setVisible(false);
+        this.#shipSprite.play({
+            key: 'fighter_destroy',
+        });
     }
 }

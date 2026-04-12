@@ -1,13 +1,16 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
-import type InputComponent from '../components/input/InputComponent';
+import ColliderComponent from '../components/collider/ColliderComponent';
+import HealthComponent from '../components/health/HealthComponent';
 import KeyboardInputComponent from '../components/input/KeyboardInputComponent';
 import HorizontalMovementComponent from '../components/movement/HorizontalMovementComponent';
 import WeaponComponent from '../components/weapon/WeaponComponent';
 import { PLAYER_CONFIG } from '../config';
 
 export default class Player extends GameObjects.Container {
-    #inputComponent: InputComponent;
+    #inputComponent: KeyboardInputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
+    #healthComponent: HealthComponent;
+    #colliderComponent: ColliderComponent;
     #weaponComponent: WeaponComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
@@ -57,6 +60,8 @@ export default class Player extends GameObjects.Container {
             trajectoryFlipY: false,
             trajectoryYOffset: -20,
         });
+        this.#healthComponent = new HealthComponent(PLAYER_CONFIG.HEALTH);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
@@ -68,9 +73,45 @@ export default class Player extends GameObjects.Container {
         );
     }
 
+    get colliderComponent() {
+        return this.#colliderComponent;
+    }
+
+    get healthComponent() {
+        return this.#healthComponent;
+    }
+
+    get weaponComponent() {
+        return this.#weaponComponent;
+    }
+
+    get projectileGroup() {
+        return this.weaponComponent.projectileGroup;
+    }
+
     update(_timestamp: number, delta: number) {
+        if (!this.active) {
+            return;
+        }
+
+        if (this.#healthComponent.isHealthDepleted) {
+            this.#die();
+            return;
+        }
+
+        this.#shipSprite.setFrame(PLAYER_CONFIG.HEALTH - this.#healthComponent.health);
         this.#inputComponent.update();
         this.#horizontalMovementComponent.update();
         this.#weaponComponent.update(delta);
+    }
+
+    #die() {
+        this.setActive(false);
+        this.#shipEngineSprite.setVisible(false);
+        this.#shipEngineThrusterSprite.setVisible(false);
+        this.#inputComponent.setInputLocked(true);
+        this.#shipSprite.play({
+            key: 'explosion',
+        });
     }
 }
