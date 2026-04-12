@@ -1,14 +1,18 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
 import ColliderComponent from '../../components/collider/ColliderComponent';
+import type EventBusComponent from '../../components/events/EventBusComponent';
+import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import FighterInputComponent from '../../components/input/bots/FighterInputComponent';
-import type InputComponent from '../../components/input/InputComponent';
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
+import type { EnemyImplementable } from './types';
 
-export default class FighterEnemy extends GameObjects.Container {
-    #inputComponent: InputComponent;
+export default class FighterEnemy extends GameObjects.Container implements EnemyImplementable {
+    #isInitialized = false;
+    #eventBusComponent: EventBusComponent;
+    #inputComponent: FighterInputComponent;
     #verticalMovementComponent: VerticalMovementComponent;
     #healthComponent: HealthComponent;
     #colliderComponent: ColliderComponent;
@@ -37,28 +41,6 @@ export default class FighterEnemy extends GameObjects.Container {
         }
         this.setDepth(2);
 
-        this.#inputComponent = new FighterInputComponent();
-        this.#verticalMovementComponent = new VerticalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY,
-            ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY_MAX,
-            ENEMY_CONFIG.FIGHTER.VERTICAL.DRAG,
-        );
-        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
-            weaponCooldown: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_COOLDOWN,
-            projectileAnimationKey: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_ANIMATION_KEY,
-            projectileHitboxSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_HITBOX_SIZE,
-            projectileScale: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SCALE,
-            projectileSpeed: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPEED,
-            projectileLifespan: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_LIFESPAN,
-            projectileSpawnPoolSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPAWN_POOL_SIZE,
-            trajectoryFlipY: true,
-            trajectoryYOffset: 10,
-        });
-        this.#healthComponent = new HealthComponent(ENEMY_CONFIG.FIGHTER.HEALTH);
-        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
-
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
             Scenes.Events.DESTROY,
@@ -85,7 +67,45 @@ export default class FighterEnemy extends GameObjects.Container {
         return this.weaponComponent.projectileGroup;
     }
 
+    initialize(eventBusComponent: EventBusComponent) {
+        this.#isInitialized = true;
+        this.#eventBusComponent = eventBusComponent;
+        this.#inputComponent = new FighterInputComponent();
+        this.#verticalMovementComponent = new VerticalMovementComponent(
+            this,
+            this.#inputComponent,
+            ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY,
+            ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY_MAX,
+            ENEMY_CONFIG.FIGHTER.VERTICAL.DRAG,
+        );
+        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
+            weaponCooldown: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_COOLDOWN,
+            projectileAnimationKey: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_ANIMATION_KEY,
+            projectileHitboxSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_HITBOX_SIZE,
+            projectileScale: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SCALE,
+            projectileSpeed: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPEED,
+            projectileLifespan: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_LIFESPAN,
+            projectileSpawnPoolSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPAWN_POOL_SIZE,
+            trajectoryFlipY: true,
+            trajectoryYOffset: 10,
+        });
+        this.#healthComponent = new HealthComponent(ENEMY_CONFIG.FIGHTER.HEALTH);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this);
+    }
+
+    reset() {
+        this.setActive(true);
+        this.setVisible(true);
+        this.#healthComponent.reset();
+        this.#verticalMovementComponent.reset();
+    }
+
     update(_timestamp: number, delta: number) {
+        if (!this.#isInitialized) {
+            return;
+        }
+
         if (!this.active) {
             return;
         }
@@ -102,9 +122,6 @@ export default class FighterEnemy extends GameObjects.Container {
 
     #die() {
         this.setActive(false);
-        this.#shipEngineSprite.setVisible(false);
-        this.#shipSprite.play({
-            key: 'fighter_destroy',
-        });
+        this.setVisible(false);
     }
 }

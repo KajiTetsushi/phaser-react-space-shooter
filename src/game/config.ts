@@ -33,6 +33,11 @@ export const ENEMY_CONFIG = {
             VELOCITY_MAX: 100,
             DRAG: 0.01,
         },
+        SPAWN: {
+            MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
+            RECURRING_INTERVAL: 5000,
+            INITIAL_INTERVAL: 1000,
+        },
     },
     FIGHTER: {
         HEALTH: 2,
@@ -52,6 +57,11 @@ export const ENEMY_CONFIG = {
             PROJECTILE_SCALE: 0.8,
             PROJECTILE_SPAWN_POOL_SIZE: 10,
             PROJECTILE_SPEED: -250,
+        },
+        SPAWN: {
+            MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
+            RECURRING_INTERVAL: 3000,
+            INITIAL_INTERVAL: 6000,
         },
     },
 };

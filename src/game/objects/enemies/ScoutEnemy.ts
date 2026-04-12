@@ -1,14 +1,18 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
 import ColliderComponent from '../../components/collider/ColliderComponent';
+import type EventBusComponent from '../../components/events/EventBusComponent';
+import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import ScoutInputComponent from '../../components/input/bots/ScoutInputComponent';
-import type InputComponent from '../../components/input/InputComponent';
 import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
 import { ENEMY_CONFIG } from '../../config';
+import type { EnemyImplementable } from './types';
 
-export default class ScoutEnemy extends GameObjects.Container {
-    #inputComponent: InputComponent;
+export default class ScoutEnemy extends GameObjects.Container implements EnemyImplementable {
+    #isInitialized = false;
+    #eventBusComponent: EventBusComponent;
+    #inputComponent: ScoutInputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
     #verticalMovementComponent: VerticalMovementComponent;
     #healthComponent: HealthComponent;
@@ -37,6 +41,27 @@ export default class ScoutEnemy extends GameObjects.Container {
         }
         this.setDepth(2);
 
+        this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
+        this.once(
+            Scenes.Events.DESTROY,
+            () => {
+                this.scene.events.off(Scenes.Events.UPDATE, this.update, this);
+            },
+            this,
+        );
+    }
+
+    get colliderComponent() {
+        return this.#colliderComponent;
+    }
+
+    get healthComponent() {
+        return this.#healthComponent;
+    }
+
+    initialize(eventBusComponent: EventBusComponent) {
+        this.#isInitialized = true;
+        this.#eventBusComponent = eventBusComponent;
         this.#inputComponent = new ScoutInputComponent(
             this,
             // The direction of the scout's horizontal movement
@@ -60,26 +85,23 @@ export default class ScoutEnemy extends GameObjects.Container {
         );
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.SCOUT.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent);
-
-        this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
-        this.once(
-            Scenes.Events.DESTROY,
-            () => {
-                this.scene.events.off(Scenes.Events.UPDATE, this.update, this);
-            },
-            this,
-        );
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this);
     }
 
-    get colliderComponent() {
-        return this.#colliderComponent;
-    }
-
-    get healthComponent() {
-        return this.#healthComponent;
+    reset() {
+        this.setActive(true);
+        this.setVisible(true);
+        this.#horizontalMovementComponent.reset();
+        this.#verticalMovementComponent.reset();
+        this.#healthComponent.reset();
+        this.#inputComponent.setStartX(this.x);
     }
 
     update(_timestamp: number, _delta: number) {
+        if (!this.#isInitialized) {
+            return;
+        }
+
         if (!this.active) {
             return;
         }
@@ -96,9 +118,6 @@ export default class ScoutEnemy extends GameObjects.Container {
 
     #die() {
         this.setActive(false);
-        this.#shipEngineSprite.setVisible(false);
-        this.#shipSprite.play({
-            key: 'fighter_destroy',
-        });
+        this.setVisible(false);
     }
 }

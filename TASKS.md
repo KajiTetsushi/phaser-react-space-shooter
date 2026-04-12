@@ -32,10 +32,10 @@
 - [x] health component
 
 ## Enemy Spawners
-- [ ] use groups to spawn multiple enemies from object pool
-- [ ] create group for ship explosions
-- [ ] update collisions to support groups
-- [ ] event bus component
+- [x] use groups to spawn multiple enemies from object pool
+- [x] update collisions to support groups
+- [x] event bus component
+- [ ] use groups for managing ship explosions
 
 ## UI & Audio
 - [ ] implement scoring

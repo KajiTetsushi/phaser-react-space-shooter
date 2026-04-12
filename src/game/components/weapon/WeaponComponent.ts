@@ -1,4 +1,4 @@
-import { GameObjects, Math as PhaserMath, Physics } from 'phaser';
+import { GameObjects, Math as MathUtils, Physics } from 'phaser';
 import type InputComponent from '../input/InputComponent';
 
 type WeaponConfig = {
@@ -42,7 +42,7 @@ export default class WeaponComponent {
         this.#weaponConfig = projectileConfig;
 
         this.#projectileGroup = this.#gameObject.scene.physics.add.group({
-            name: `projectiles-${PhaserMath.RND.uuid()}`,
+            name: `projectiles-${MathUtils.RND.uuid()}`,
             enable: false,
         });
         this.#projectileGroup.createMultiple({
