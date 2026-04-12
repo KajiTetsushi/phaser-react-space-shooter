@@ -21,9 +21,9 @@ export default class EnemySpawnerComponent {
 
     constructor(
         scene: Scene,
+        eventBusComponent: EventBusComponent,
         spawnClass: EnemyConstructor,
         spawnConfig: EnemySpawnerConfig,
-        eventBusComponent: EventBusComponent,
     ) {
         this.#scene = scene;
 
