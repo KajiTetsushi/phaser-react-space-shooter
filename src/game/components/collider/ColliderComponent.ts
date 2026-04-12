@@ -8,18 +8,18 @@ export default class ColliderComponent {
     }
 
     collideWithEnemyShip() {
-        if (this.#healthComponent.isDead) {
+        if (this.#healthComponent.isHealthDepleted) {
             return;
         }
 
-        this.#healthComponent.die();
+        this.#healthComponent.takeDamage('one-hit-kill');
     }
 
     collideWithEnemyProjectile() {
-        if (this.#healthComponent.isDead) {
+        if (this.#healthComponent.isHealthDepleted) {
             return;
         }
 
-        this.#healthComponent.takeDamage();
+        this.#healthComponent.takeDamage(1);
     }
 }

@@ -94,7 +94,7 @@ export default class Player extends GameObjects.Container {
             return;
         }
 
-        if (this.#healthComponent.isDead) {
+        if (this.#healthComponent.isHealthDepleted) {
             this.#hide();
             this.setVisible(true);
             this.#shipSprite.play({

@@ -90,7 +90,7 @@ export default class FighterEnemy extends GameObjects.Container {
             return;
         }
 
-        if (this.#healthComponent.isDead) {
+        if (this.#healthComponent.isHealthDepleted) {
             this.setActive(false);
             this.setVisible(false);
         }

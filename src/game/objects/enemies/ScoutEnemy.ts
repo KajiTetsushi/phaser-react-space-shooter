@@ -84,7 +84,7 @@ export default class ScoutEnemy extends GameObjects.Container {
             return;
         }
 
-        if (this.#healthComponent.isDead) {
+        if (this.#healthComponent.isHealthDepleted) {
             this.setActive(false);
             this.setVisible(false);
         }

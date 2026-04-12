@@ -1,7 +1,6 @@
 export default class HealthComponent {
     #initial: number;
     #current: number;
-    #isDead: boolean = false;
 
     constructor(points: number) {
         this.#initial = points;
@@ -12,29 +11,23 @@ export default class HealthComponent {
         return this.#current;
     }
 
-    get isDead() {
-        return this.#isDead;
+    get isHealthDepleted() {
+        return this.#current === 0;
     }
 
     reset() {
         this.#current = this.#initial;
-        this.#isDead = false;
     }
 
-    takeDamage() {
-        if (this.#isDead) {
+    takeDamage(amount: number | 'one-hit-kill' = 1) {
+        if (this.isHealthDepleted) {
             return;
         }
 
-        this.#current--;
-
-        if (this.#current <= 0) {
-            this.#isDead = true;
+        if (amount === 'one-hit-kill') {
+            this.#current = 0;
+        } else {
+            this.#current -= amount;
         }
-    }
-
-    die() {
-        this.#current = 0;
-        this.#isDead = true;
     }
 }
