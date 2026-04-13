@@ -1,13 +1,7 @@
 import { GameObjects } from 'phaser';
 import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
-import { ENEMY_CONFIG } from '../../config';
 import type { EnemyInstance } from '../enemies/types';
-
-const ENEMY_SCORES = {
-    ScoutEnemy: ENEMY_CONFIG.SCOUT.SCORE,
-    FighterEnemy: ENEMY_CONFIG.FIGHTER.SCORE,
-};
 
 export default class Score extends GameObjects.Text {
     #score: number;
@@ -25,7 +19,7 @@ export default class Score extends GameObjects.Text {
         this.setOrigin();
 
         this.#eventBusComponent.on(CUSTOM_EVENTS.ENEMY_DESTROYED, (enemy: EnemyInstance) => {
-            this.#score += ENEMY_SCORES[enemy.constructor.name as keyof typeof ENEMY_SCORES];
+            this.#score += enemy.score;
             this.setText(this.#score.toString());
         });
     }
