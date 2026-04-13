@@ -17,6 +17,10 @@ export default class GameScene extends Scene {
     }
 
     create() {
+        this.add.sprite(0, 0, 'bg1').setOrigin(0, 1).setAlpha(0.7).setAngle(90).setScale(1, 1.25);
+        this.add.sprite(0, 0, 'bg2').setOrigin(0, 1).setAlpha(0.7).setAngle(90).setScale(1, 1.25);
+        this.add.sprite(0, 0, 'bg3').setOrigin(0, 1).setAlpha(0.7).setAngle(90).setScale(1, 1.25);
+
         const eventBusComponent = new EventBusComponent();
         const player = new Player(this);
 
