@@ -1,6 +1,7 @@
 import { type GameObjects, Math as MathUtils, Physics, type Scene, Scenes } from 'phaser';
 import type { EnemyConstructor, EnemyInstance } from '../../objects/enemies/types';
 import type EventBusComponent from '../events/EventBusComponent';
+import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 
 export type EnemySpawnerConfig = Readonly<{
     // TODO: Consider adding some variance to the spawn interval and max center x offset to make the game feel less predictable.
@@ -18,6 +19,7 @@ export default class EnemySpawnerComponent {
     #config: EnemySpawnerConfig;
     #intervalCountdown: number;
     #group: GameObjects.Group;
+    #disabled = false;
 
     constructor(
         scene: Scene,
@@ -50,6 +52,10 @@ export default class EnemySpawnerComponent {
             },
             this,
         );
+
+        eventBusComponent.on(CUSTOM_EVENTS.GAME_OVER, () => {
+            this.#disabled = true;
+        });
     }
 
     get spawnGroup() {
@@ -71,6 +77,10 @@ export default class EnemySpawnerComponent {
     }
 
     update(_timestamp: number, delta: number) {
+        if (this.#disabled) {
+            return;
+        }
+
         this.#intervalCountdown -= delta;
 
         if (this.#intervalCountdown > 0) {

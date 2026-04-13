@@ -1,5 +1,7 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
 import ColliderComponent from '../components/collider/ColliderComponent';
+import type EventBusComponent from '../components/events/EventBusComponent';
+import { CUSTOM_EVENTS } from '../components/events/EventBusComponent';
 import HealthComponent from '../components/health/HealthComponent';
 import KeyboardInputComponent from '../components/input/KeyboardInputComponent';
 import HorizontalMovementComponent from '../components/movement/HorizontalMovementComponent';
@@ -11,15 +13,18 @@ export default class Player extends GameObjects.Container {
     #horizontalMovementComponent: HorizontalMovementComponent;
     #healthComponent: HealthComponent;
     #colliderComponent: ColliderComponent;
+    #eventBusComponent: EventBusComponent;
     #weaponComponent: WeaponComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
     #shipEngineThrusterSprite: GameObjects.Sprite;
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, eventBusComponent: EventBusComponent) {
         // The player is centered horizontally and placed near the bottom of the screen.
         // Any sprite and animation that is added to this container will be positioned relative to this container.
         super(scene, scene.scale.width / 2, scene.scale.height - 32, []);
+
+        this.#eventBusComponent = eventBusComponent;
 
         this.#shipSprite = scene.add.sprite(0, 0, 'ship');
         this.#shipEngineSprite = scene.add.sprite(0, 0, 'ship_engine');
@@ -71,6 +76,9 @@ export default class Player extends GameObjects.Container {
             },
             this,
         );
+
+        this.#hide();
+        this.#eventBusComponent.on(CUSTOM_EVENTS.PLAYER_SPAWN, this.#spawn, this);
     }
 
     get colliderComponent() {
@@ -113,5 +121,26 @@ export default class Player extends GameObjects.Container {
         this.#shipSprite.play({
             key: 'explosion',
         });
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.PLAYER_DESTROYED);
+    }
+
+    #spawn() {
+        this.setActive(true);
+        this.setVisible(true);
+        this.#shipSprite.setVisible(true);
+        this.#shipEngineSprite.setVisible(true);
+        this.#shipEngineThrusterSprite.setVisible(true);
+        this.#inputComponent.setInputLocked(false);
+        this.#shipSprite.setTexture('ship', 0);
+        this.setPosition(this.scene.scale.width / 2, this.scene.scale.height - 32);
+        this.#healthComponent.reset();
+    }
+
+    #hide() {
+        this.setActive(false);
+        this.setVisible(false);
+        this.#shipEngineSprite.setVisible(false);
+        this.#shipEngineThrusterSprite.setVisible(false);
+        this.#inputComponent.setInputLocked(true);
     }
 }
