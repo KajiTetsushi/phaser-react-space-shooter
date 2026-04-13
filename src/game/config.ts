@@ -1,5 +1,7 @@
 export const PLAYER_CONFIG = {
+    LIVES: 3,
     HEALTH: 4,
+    RESPAWN_DELAY: 1500,
     HORIZONTAL: {
         VELOCITY: 20,
         VELOCITY_MAX: 200,

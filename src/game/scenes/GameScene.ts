@@ -6,6 +6,7 @@ import { ENEMY_CONFIG } from '../config';
 import FighterEnemy from '../objects/enemies/FighterEnemy';
 import ScoutEnemy from '../objects/enemies/ScoutEnemy';
 import Player from '../objects/Player';
+import Lives from '../objects/ui/Lives';
 import Score from '../objects/ui/Score';
 
 export default class GameScene extends Scene {
@@ -21,7 +22,7 @@ export default class GameScene extends Scene {
         this.#createBackground();
 
         const eventBusComponent = new EventBusComponent();
-        const player = new Player(this);
+        const player = new Player(this, eventBusComponent);
 
         // enemy spawners
         const scoutEnemySpawner = new EnemySpawnerComponent(this, eventBusComponent, ScoutEnemy, {
@@ -128,6 +129,7 @@ export default class GameScene extends Scene {
         );
 
         new Score(this, eventBusComponent);
+        new Lives(this, eventBusComponent);
     }
 
     #createBackground() {
