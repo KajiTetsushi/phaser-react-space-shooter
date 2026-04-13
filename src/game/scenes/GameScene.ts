@@ -6,6 +6,7 @@ import { ENEMY_CONFIG } from '../config';
 import FighterEnemy from '../objects/enemies/FighterEnemy';
 import ScoutEnemy from '../objects/enemies/ScoutEnemy';
 import Player from '../objects/Player';
+import Score from '../objects/ui/Score';
 
 export default class GameScene extends Scene {
     constructor() {
@@ -125,6 +126,8 @@ export default class GameScene extends Scene {
                 enemyGameObject.colliderComponent.collideWithEnemyProjectile();
             },
         );
+
+        new Score(this, eventBusComponent);
     }
 
     #createBackground() {

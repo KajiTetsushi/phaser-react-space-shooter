@@ -67,6 +67,10 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
         return 'scout_destroy';
     }
 
+    get score() {
+        return ENEMY_CONFIG.SCOUT.SCORE;
+    }
+
     initialize(eventBusComponent: EventBusComponent) {
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;

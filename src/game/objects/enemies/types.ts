@@ -2,6 +2,7 @@ import type { GameObjects, Scene } from 'phaser';
 import type EventBusComponent from '../../components/events/EventBusComponent';
 
 export interface EnemyImplementable {
+    get score(): number;
     shipAssetKey: string;
     shipDestroyedAnimationKey: string;
     initialize(eventBusComponent: EventBusComponent): void;

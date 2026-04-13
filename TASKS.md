@@ -38,7 +38,7 @@
 - [x] use groups for managing ship explosions
 
 ## UI & Audio
-- [ ] implement scoring
+- [x] implement scoring
 - [ ] player lives
 - [ ] game audio
 - [x] backgrounds

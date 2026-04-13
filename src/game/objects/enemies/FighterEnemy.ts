@@ -75,6 +75,10 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
         return 'fighter_destroy';
     }
 
+    get score() {
+        return ENEMY_CONFIG.FIGHTER.SCORE;
+    }
+
     initialize(eventBusComponent: EventBusComponent) {
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;

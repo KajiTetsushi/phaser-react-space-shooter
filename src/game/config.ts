@@ -22,6 +22,7 @@ export const PLAYER_CONFIG = {
 export const ENEMY_CONFIG = {
     SCOUT: {
         HEALTH: 2,
+        SCORE: 100,
         HORIZONTAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,
@@ -41,6 +42,7 @@ export const ENEMY_CONFIG = {
     },
     FIGHTER: {
         HEALTH: 2,
+        SCORE: 200,
         VERTICAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,
