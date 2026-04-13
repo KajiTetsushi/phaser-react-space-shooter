@@ -41,7 +41,7 @@
 - [ ] implement scoring
 - [ ] player lives
 - [ ] game audio
-- [ ] backgrounds
+- [x] backgrounds
 
 ## Enhancement Ideas
 - [ ] weapon powerups
