@@ -122,15 +122,6 @@ export default class Player extends GameObjects.Container {
             key: 'explosion',
         });
         this.#eventBusComponent.emit(CUSTOM_EVENTS.PLAYER_DESTROYED);
-
-        this.#shipSprite.once(
-            'animationcomplete',
-            () => {
-                // this.setVisible(false);
-                this.#eventBusComponent.emit(CUSTOM_EVENTS.GAME_OVER);
-            },
-            this,
-        );
     }
 
     #spawn() {
