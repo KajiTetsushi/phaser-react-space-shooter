@@ -39,7 +39,7 @@
 
 ## UI & Audio
 - [x] implement scoring
-- [ ] player lives
+- [x] player lives
 - [ ] game audio
 - [x] backgrounds
 
