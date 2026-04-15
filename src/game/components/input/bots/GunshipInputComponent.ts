@@ -6,30 +6,17 @@ import InputComponent from '../InputComponent';
  */
 export default class GunshipInputComponent extends InputComponent {
     #gameObject: GameObjects.Container;
-    #startY: number;
-    #maxXDrift: number;
     #playerPositionCallback: () => { x: number; y: number };
 
-    constructor(
-        gameObject: GameObjects.Container,
-        startY: number,
-        maxXDrift: number,
-        playerPositionCallback: () => { x: number; y: number },
-    ) {
+    constructor(gameObject: GameObjects.Container, playerPositionCallback: () => { x: number; y: number }) {
         super();
 
         this.#gameObject = gameObject;
-        this.#startY = startY;
-        this.#maxXDrift = Math.abs(maxXDrift);
         this.#playerPositionCallback = playerPositionCallback;
 
         this.down = true;
         this.shoot = true;
         // this.#setXDirection(Math.random() < 0.5 ? 'left' : 'right');
-    }
-
-    setStartY(startY: number) {
-        this.#startY = startY;
     }
 
     update() {

@@ -82,7 +82,7 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
     initialize(eventBusComponent: EventBusComponent, playerPositionCallback: () => { x: number; y: number }) {
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
-        this.#inputComponent = new GunshipInputComponent(this, 0, 100, playerPositionCallback);
+        this.#inputComponent = new GunshipInputComponent(this, playerPositionCallback);
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
             weaponCooldown: ENEMY_CONFIG.GUNSHIP.WEAPON.WEAPON_COOLDOWN,
             projectileAnimationKey: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_ANIMATION_KEY,
