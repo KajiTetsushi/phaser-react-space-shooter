@@ -93,13 +93,13 @@ export const ENEMY_CONFIG = {
         },
         WEAPON: {
             WEAPON_COOLDOWN: 200,
-            PROJECTILE_ANIMATION_KEY: 'bullet',
+            PROJECTILE_ANIMATION_KEY: 'enemy-bullet',
             PROJECTILE_HITBOX_SIZE: {
-                w: 14,
-                h: 18,
+                w: 15,
+                h: 15,
             },
             PROJECTILE_LIFESPAN: 3,
-            PROJECTILE_SCALE: 0.8,
+            PROJECTILE_SCALE: 1.5,
             PROJECTILE_SPAWN_POOL_SIZE: 10,
             PROJECTILE_SPEED: -500,
         },
