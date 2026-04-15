@@ -78,6 +78,7 @@ export const ENEMY_CONFIG = {
     },
     GUNSHIP: {
         HEALTH: 8,
+        SCORE: 500,
         HORIZONTAL: {
             VELOCITY: 2,
             VELOCITY_MAX: 20,

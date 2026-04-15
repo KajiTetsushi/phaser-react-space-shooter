@@ -73,7 +73,11 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
     }
 
     get shipDestroyedAnimationKey() {
-        return 'ship_destroy';
+        return 'explosion';
+    }
+
+    get score(): number {
+        return ENEMY_CONFIG.GUNSHIP.SCORE;
     }
 
     initialize(eventBusComponent: EventBusComponent, playerPositionCallback: () => { x: number; y: number }) {
