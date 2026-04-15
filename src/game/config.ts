@@ -43,7 +43,7 @@ export const ENEMY_CONFIG = {
         },
         SPAWN: {
             MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
-            RECURRING_INTERVAL: 5000,
+            RECURRING_INTERVAL: 2000,
             INITIAL_INTERVAL: 1000,
         },
     },
@@ -72,8 +72,8 @@ export const ENEMY_CONFIG = {
         },
         SPAWN: {
             MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
-            RECURRING_INTERVAL: 3000,
-            INITIAL_INTERVAL: 6000,
+            RECURRING_INTERVAL: 4000,
+            INITIAL_INTERVAL: 3000,
         },
     },
     GUNSHIP: {
