@@ -46,6 +46,7 @@ export default class GameScene extends Scene {
             initialInterval: ENEMY_CONFIG.FIGHTER.SPAWN.INITIAL_INTERVAL,
         });
         const gunshipEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, GunshipEnemy, {
+            maxOnScreen: ENEMY_CONFIG.GUNSHIP.SPAWN.MAX_ON_SCREEN,
             minViewportXBoundaryClearance: ENEMY_CONFIG.GUNSHIP.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
             recurringInterval: ENEMY_CONFIG.GUNSHIP.SPAWN.RECURRING_INTERVAL,
             initialInterval: ENEMY_CONFIG.GUNSHIP.SPAWN.INITIAL_INTERVAL,

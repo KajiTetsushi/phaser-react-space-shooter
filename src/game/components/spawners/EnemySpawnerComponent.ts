@@ -7,7 +7,7 @@ export type EnemySpawnerConfig = Readonly<{
     // TODO: Consider adding some variance to the spawn interval and max center x offset to make the game feel less predictable.
     // interval: 2000,
     // intervalVariance: 0.5,
-    // maxOnScreen: 5,
+    maxOnScreen?: number;
     minViewportXBoundaryClearance: number;
     recurringInterval: number;
     initialInterval: number;
@@ -80,6 +80,12 @@ export default class EnemySpawnerComponent {
 
     update(_timestamp: number, delta: number) {
         if (this.#disabled) {
+            return;
+        }
+
+        const { maxOnScreen } = this.#config;
+        const activeEnemyCount = this.#group.getChildren().filter((enemy) => enemy.active).length;
+        if (maxOnScreen && activeEnemyCount >= maxOnScreen) {
             return;
         }
 

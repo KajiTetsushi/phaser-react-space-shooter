@@ -103,8 +103,9 @@ export const ENEMY_CONFIG = {
             PROJECTILE_SPEED: -500,
         },
         SPAWN: {
+            MAX_ON_SCREEN: 3,
             MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
-            RECURRING_INTERVAL: Infinity,
+            RECURRING_INTERVAL: 2000,
             INITIAL_INTERVAL: 8000,
         },
     },
