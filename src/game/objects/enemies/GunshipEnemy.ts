@@ -4,7 +4,6 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import GunshipInputComponent from '../../components/input/bots/GunshipInputComponent';
-import type InputComponent from '../../components/input/InputComponent';
 import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';

@@ -77,16 +77,27 @@ export default class GameScene extends Scene {
             playerGameObject.colliderComponent.collideWithEnemyShip();
             enemyGameObject.colliderComponent.collideWithEnemyShip();
         });
-        // NOTE: Phaser always passes an independent sprite first, followed by a sprite from a sprite group.
-        eventBusComponent.on(CUSTOM_EVENTS.ENEMY_INIT, (enemyGameObject: Phaser.GameObjects.GameObject) => {
-            if (!(enemyGameObject instanceof FighterEnemy)) {
+        this.physics.add.overlap(player, gunshipEnemySpawner.spawnGroup, (playerGameObject, enemyGameObject) => {
+            if (!(playerGameObject instanceof Player) || !(enemyGameObject instanceof FighterEnemy)) {
                 return;
             }
 
-            const fighterEnemy = enemyGameObject as FighterEnemy;
+            if (!playerGameObject.active || !enemyGameObject.active) {
+                return;
+            }
+
+            playerGameObject.colliderComponent.collideWithEnemyShip();
+            enemyGameObject.colliderComponent.collideWithEnemyShip();
+        });
+        // NOTE: Phaser always passes an independent sprite first, followed by a sprite from a sprite group.
+        eventBusComponent.on(CUSTOM_EVENTS.ENEMY_INIT, (enemyGameObject: Phaser.GameObjects.GameObject) => {
+            if (!(enemyGameObject instanceof FighterEnemy) && !(enemyGameObject instanceof GunshipEnemy)) {
+                return;
+            }
+
             this.physics.add.overlap(
                 player,
-                fighterEnemy.projectileGroup,
+                enemyGameObject.projectileGroup,
                 (playerGameObject, enemyProjectileGameObject) => {
                     if (
                         !(playerGameObject instanceof Player) ||
@@ -99,7 +110,7 @@ export default class GameScene extends Scene {
                         return;
                     }
 
-                    fighterEnemy.weaponComponent.destroyProjectile(enemyProjectileGameObject);
+                    enemyGameObject.weaponComponent.destroyProjectile(enemyProjectileGameObject);
                     playerGameObject.colliderComponent.collideWithEnemyProjectile();
                 },
             );
@@ -129,6 +140,25 @@ export default class GameScene extends Scene {
             (enemyGameObject, playerProjectileGameObject) => {
                 if (
                     !(enemyGameObject instanceof FighterEnemy) ||
+                    !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
+                ) {
+                    return;
+                }
+
+                if (!enemyGameObject.active || !playerProjectileGameObject.active) {
+                    return;
+                }
+
+                player.weaponComponent.destroyProjectile(playerProjectileGameObject);
+                enemyGameObject.colliderComponent.collideWithEnemyProjectile();
+            },
+        );
+        this.physics.add.overlap(
+            gunshipEnemySpawner.spawnGroup,
+            player.projectileGroup,
+            (enemyGameObject, playerProjectileGameObject) => {
+                if (
+                    !(enemyGameObject instanceof GunshipEnemy) ||
                     !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
                 ) {
                     return;
