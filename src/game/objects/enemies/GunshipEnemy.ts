@@ -24,8 +24,9 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
         const y = MathUtils.RND.between(50, 100);
         super(scene, x, y, []);
 
-        this.#shipSprite = scene.add.sprite(0, 0, 'ship').setFlipY(true);
-        this.#shipEngineSprite = scene.add.sprite(0, 0, 'ship_engine').setFlipY(true);
+        this.#shipSprite = scene.add.sprite(0, 0, 'fighter');
+        this.#shipEngineSprite = scene.add.sprite(0, 0, 'fighter_engine').setFlipY(true);
+        this.#shipEngineSprite.play('fighter_engine');
         this.add([
             // Ship is on top, so it's added last.
             this.#shipEngineSprite,
@@ -68,11 +69,11 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
     }
 
     get shipAssetKey() {
-        return 'ship';
+        return 'fighter';
     }
 
     get shipDestroyedAnimationKey() {
-        return 'explosion';
+        return 'fighter_destroy';
     }
 
     get score(): number {
