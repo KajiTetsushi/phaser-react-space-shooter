@@ -1,4 +1,4 @@
-import { GameObjects, Math as MathUtils, Physics, type Scene, Scenes } from 'phaser';
+import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
 import ColliderComponent from '../../components/collider/ColliderComponent';
 import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
@@ -20,8 +20,7 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
 
-    constructor(scene: Scene, x: number) {
-        const y = MathUtils.RND.between(50, 100);
+    constructor(scene: Scene, x: number, y: number) {
         super(scene, x, y, []);
 
         this.#shipSprite = scene.add.sprite(0, 0, 'fighter');

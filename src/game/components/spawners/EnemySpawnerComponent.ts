@@ -1,4 +1,5 @@
 import { type GameObjects, Math as MathUtils, Physics, type Scene, Scenes } from 'phaser';
+import { ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG } from '../../config';
 import type { EnemyConstructor, EnemyInstance } from '../../objects/enemies/types';
 import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
@@ -8,6 +9,8 @@ export type EnemySpawnerConfig = Readonly<{
     // interval: 2000,
     // intervalVariance: 0.5,
     maxOnScreen?: number;
+    minViewportY?: number;
+    maxViewportY?: number;
     minViewportXBoundaryClearance: number;
     recurringInterval: number;
     initialInterval: number;
@@ -95,13 +98,28 @@ export default class EnemySpawnerComponent {
             return;
         }
 
+        const { x, y } = this.spawnCoords;
+        // Find unspawned/despawned enemy from the resource pool to respawn.
+        const enemy: EnemyInstance = this.#group.get(x, y);
+        enemy.reset();
+        this.#intervalCountdown = this.#config.recurringInterval;
+    }
+
+    get spawnCoords() {
         const x = MathUtils.RND.between(
             this.#config.minViewportXBoundaryClearance,
             this.#scene.scale.width - this.#config.minViewportXBoundaryClearance,
         );
-        // Find unspawned/despawned enemy from the resource pool to respawn.
-        const enemy: EnemyInstance = this.#group.get(x, -20);
-        enemy.reset();
-        this.#intervalCountdown = this.#config.recurringInterval;
+
+        const { minViewportY, maxViewportY } = this.#config;
+        const y =
+            minViewportY && maxViewportY
+                ? MathUtils.RND.between(this.#config.minViewportY ?? 0, this.#config.maxViewportY ?? 0)
+                : ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG;
+
+        return {
+            x,
+            y,
+        };
     }
 }

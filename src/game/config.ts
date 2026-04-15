@@ -24,6 +24,7 @@ export const PLAYER_CONFIG = {
     },
 };
 
+export const ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG = -20;
 export const ENEMY_CONFIG = {
     SCOUT: {
         HEALTH: 2,
@@ -104,6 +105,8 @@ export const ENEMY_CONFIG = {
         },
         SPAWN: {
             MAX_ON_SCREEN: 3,
+            MIN_VIEWPORT_Y: 50,
+            MAX_VIEWPORT_Y: 100,
             MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
             RECURRING_INTERVAL: 2000,
             INITIAL_INTERVAL: 8000,
