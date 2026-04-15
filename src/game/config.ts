@@ -92,7 +92,10 @@ export const ENEMY_CONFIG = {
             DRAG: 0.01,
         },
         WEAPON: {
-            WEAPON_COOLDOWN: 200,
+            WEAPON_COOLDOWN: {
+                MIN: 50,
+                MAX: 500,
+            },
             PROJECTILE_ANIMATION_KEY: 'enemy-bullet',
             PROJECTILE_HITBOX_SIZE: {
                 w: 15,
@@ -100,7 +103,7 @@ export const ENEMY_CONFIG = {
             },
             PROJECTILE_LIFESPAN: 3,
             PROJECTILE_SCALE: 1.5,
-            PROJECTILE_SPAWN_POOL_SIZE: 10,
+            PROJECTILE_SPAWN_POOL_SIZE: 14,
             PROJECTILE_SPEED: -500,
         },
         SPAWN: {
