@@ -32,9 +32,8 @@ export default class GameScene extends Scene {
             };
         };
 
-        const spawnerComponentArgs = [this, eventBusComponent, getPlayerPosition] as const;
-
         // enemy spawners
+        const spawnerComponentArgs = [this, eventBusComponent, getPlayerPosition] as const;
         const scoutEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, ScoutEnemy, {
             minViewportXBoundaryClearance: ENEMY_CONFIG.SCOUT.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
             recurringInterval: ENEMY_CONFIG.SCOUT.SPAWN.RECURRING_INTERVAL,
@@ -55,7 +54,7 @@ export default class GameScene extends Scene {
         });
         new EnemyDestroyedSpawnerComponent(this, eventBusComponent);
 
-        // ship-to-ship and ship-to-projectile collisions
+        // ship-to-ship collisions
         this.physics.add.overlap(player, scoutEnemySpawner.spawnGroup, (playerGameObject, enemyGameObject) => {
             if (!(playerGameObject instanceof Player) || !(enemyGameObject instanceof ScoutEnemy)) {
                 return;
@@ -92,7 +91,9 @@ export default class GameScene extends Scene {
             playerGameObject.colliderComponent.collideWithEnemyShip();
             enemyGameObject.colliderComponent.collideWithEnemyShip();
         });
+
         // NOTE: Phaser always passes an independent sprite first, followed by a sprite from a sprite group.
+        // ship-to-projectile collisions
         eventBusComponent.on(CUSTOM_EVENTS.ENEMY_INIT, (enemyGameObject: Phaser.GameObjects.GameObject) => {
             if (!(enemyGameObject instanceof FighterEnemy) && !(enemyGameObject instanceof GunshipEnemy)) {
                 return;
