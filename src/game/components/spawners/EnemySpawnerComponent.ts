@@ -70,6 +70,7 @@ export default class EnemySpawnerComponent {
                 return;
             }
 
+            // When the enemy leaves the scene viewport, despawn it and return it back to the resource pool.
             if (enemy.y > this.#scene.scale.height + 50) {
                 enemy.setActive(false);
                 enemy.setVisible(false);
@@ -92,6 +93,7 @@ export default class EnemySpawnerComponent {
             this.#config.minViewportXBoundaryClearance,
             this.#scene.scale.width - this.#config.minViewportXBoundaryClearance,
         );
+        // Find unspawned/despawned enemy from the resource pool to respawn.
         const enemy: EnemyInstance = this.#group.get(x, -20);
         enemy.reset();
         this.#intervalCountdown = this.#config.recurringInterval;
