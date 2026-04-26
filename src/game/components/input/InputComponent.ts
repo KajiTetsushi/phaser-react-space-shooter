@@ -37,5 +37,15 @@ export default abstract class InputComponent {
         return this.shoot;
     }
 
+    protected setXDirection(direction: 'left' | 'right') {
+        this.left = direction === 'left';
+        this.right = direction === 'right';
+    }
+
+    protected setYDirection(direction: 'up' | 'down') {
+        this.up = direction === 'up';
+        this.down = direction === 'down';
+    }
+
     abstract update(): void;
 }
