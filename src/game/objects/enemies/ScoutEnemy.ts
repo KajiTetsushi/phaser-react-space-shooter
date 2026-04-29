@@ -96,7 +96,7 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
             ENEMY_CONFIG.SCOUT.VERTICAL.DRAG,
         );
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.SCOUT.HEALTH);
-        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent);
         this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this);
     }
 

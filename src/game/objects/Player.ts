@@ -54,7 +54,7 @@ export default class Player extends GameObjects.Container {
             PLAYER_CONFIG.HORIZONTAL.VELOCITY_MAX,
             PLAYER_CONFIG.HORIZONTAL.DRAG,
         );
-        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
+        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
             weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
             projectileAnimationKey: PLAYER_CONFIG.WEAPON.PROJECTILE_ANIMATION_KEY,
             projectileHitboxSize: PLAYER_CONFIG.WEAPON.PROJECTILE_HITBOX_SIZE,
@@ -66,7 +66,7 @@ export default class Player extends GameObjects.Container {
             trajectoryYOffset: -20,
         });
         this.#healthComponent = new HealthComponent(PLAYER_CONFIG.HEALTH);
-        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent);
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(

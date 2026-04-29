@@ -1,4 +1,6 @@
 import { GameObjects, Math as MathUtils, Physics } from 'phaser';
+import type EventBusComponent from '../events/EventBusComponent';
+import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 import type InputComponent from '../input/InputComponent';
 
 type WeaponConfig = {
@@ -25,6 +27,7 @@ type WeaponConfig = {
 
 export default class WeaponComponent {
     #gameObject: GameObjects.Container;
+    #eventBusComponent: EventBusComponent;
     #inputComponent: InputComponent;
     #weaponConfig: WeaponConfig;
     /**
@@ -36,9 +39,15 @@ export default class WeaponComponent {
      */
     #propelProjectileInterval: number = 0;
 
-    constructor(gameObject: GameObjects.Container, inputComponent: InputComponent, projectileConfig: WeaponConfig) {
+    constructor(
+        gameObject: GameObjects.Container,
+        inputComponent: InputComponent,
+        eventBusComponent: EventBusComponent,
+        projectileConfig: WeaponConfig,
+    ) {
         this.#gameObject = gameObject;
         this.#inputComponent = inputComponent;
+        this.#eventBusComponent = eventBusComponent;
         this.#weaponConfig = projectileConfig;
 
         this.#projectileGroup = this.#gameObject.scene.physics.add.group({
@@ -108,6 +117,7 @@ export default class WeaponComponent {
         projectile.setFlipY(this.#weaponConfig.trajectoryFlipY);
 
         this.#propelProjectileInterval = this.#weaponConfig.weaponCooldown;
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_SHOOT);
     }
 
     /**
