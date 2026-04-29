@@ -75,6 +75,10 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
         return 'fighter_destroy';
     }
 
+    get shipDestroyedSoundKey() {
+        return ENEMY_CONFIG.FIGHTER.EXPLOSION_SOUND;
+    }
+
     get score() {
         return ENEMY_CONFIG.FIGHTER.SCORE;
     }

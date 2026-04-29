@@ -28,6 +28,7 @@ export const ENEMY_CONFIG = {
         HEALTH: 2,
         SCORE: 100,
         HIT_SOUND: 'hit',
+        EXPLOSION_SOUND: 'explosion',
         HORIZONTAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,
@@ -49,6 +50,7 @@ export const ENEMY_CONFIG = {
         HEALTH: 2,
         SCORE: 200,
         HIT_SOUND: 'hit',
+        EXPLOSION_SOUND: 'explosion',
         VERTICAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,

@@ -67,6 +67,10 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
         return 'scout_destroy';
     }
 
+    get shipDestroyedSoundKey() {
+        return ENEMY_CONFIG.SCOUT.EXPLOSION_SOUND;
+    }
+
     get score() {
         return ENEMY_CONFIG.SCOUT.SCORE;
     }
