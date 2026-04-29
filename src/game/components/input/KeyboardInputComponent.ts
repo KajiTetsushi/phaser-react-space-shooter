@@ -3,7 +3,7 @@ import { Input, type Scene, type Types } from 'phaser';
 import InputComponent from './InputComponent';
 
 export default class KeyboardInputComponent extends InputComponent {
-    #cursorKeys!: Types.Input.Keyboard.CursorKeys & {
+    #cursorKeys: Types.Input.Keyboard.CursorKeys & {
         w: Input.Keyboard.Key; // alt up
         s: Input.Keyboard.Key; // alt down
         a: Input.Keyboard.Key; // alt left
