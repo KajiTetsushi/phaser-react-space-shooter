@@ -1,12 +1,13 @@
 import type { GameObjects, Scene } from 'phaser';
 import type EventBusComponent from '../../components/events/EventBusComponent';
+import type { GetGameObjectPosition } from '../types';
 
 export interface EnemyImplementable {
     get score(): number;
     shipAssetKey: string;
     shipDestroyedAnimationKey: string;
     shipDestroyedSoundKey: string;
-    initialize(eventBusComponent: EventBusComponent, playerPositionCallback: () => { x: number; y: number }): void;
+    initialize(eventBusComponent: EventBusComponent, playerPositionCallback: GetGameObjectPosition): void;
     reset(): void;
 }
 

@@ -1,6 +1,7 @@
 import { type GameObjects, Math as MathUtils, Physics, type Scene, Scenes } from 'phaser';
 import { ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG } from '../../config';
 import type { EnemyConstructor, EnemyInstance } from '../../objects/enemies/types';
+import type { GetGameObjectPosition } from '../../objects/types';
 import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 
@@ -27,7 +28,7 @@ export default class EnemySpawnerComponent {
     constructor(
         scene: Scene,
         eventBusComponent: EventBusComponent,
-        playerPositionCallback: () => { x: number; y: number },
+        getPlayerPosition: GetGameObjectPosition,
         spawnClass: EnemyConstructor,
         spawnConfig: EnemySpawnerConfig,
     ) {
@@ -42,7 +43,7 @@ export default class EnemySpawnerComponent {
             runChildUpdate: true,
             createCallback: (item) => {
                 const enemy = item as EnemyInstance;
-                enemy.initialize(eventBusComponent, playerPositionCallback);
+                enemy.initialize(eventBusComponent, getPlayerPosition);
             },
         });
 

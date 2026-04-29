@@ -1,4 +1,5 @@
 import type { GameObjects } from 'phaser';
+import type { GetGameObjectPosition } from '../../../objects/types';
 import InputComponent from '../InputComponent';
 
 /**
@@ -6,20 +7,20 @@ import InputComponent from '../InputComponent';
  */
 export default class GunshipInputComponent extends InputComponent {
     #gameObject: GameObjects.Container;
-    #playerPositionCallback: () => { x: number; y: number };
+    #getPlayerPosition: GetGameObjectPosition;
 
-    constructor(gameObject: GameObjects.Container, playerPositionCallback: () => { x: number; y: number }) {
+    constructor(gameObject: GameObjects.Container, getPlayerPosition: GetGameObjectPosition) {
         super();
 
         this.#gameObject = gameObject;
-        this.#playerPositionCallback = playerPositionCallback;
+        this.#getPlayerPosition = getPlayerPosition;
 
         this.shoot = true;
         // this.#setXDirection(Math.random() < 0.5 ? 'left' : 'right');
     }
 
     update() {
-        const playerPosition = this.#playerPositionCallback();
+        const playerPosition = this.#getPlayerPosition();
 
         // Follow the master input component's horizontal movement pattern.
         if (playerPosition.x < this.#gameObject.x) {

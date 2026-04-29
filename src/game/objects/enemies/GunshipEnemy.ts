@@ -7,6 +7,7 @@ import GunshipInputComponent from '../../components/input/bots/GunshipInputCompo
 import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
+import type { GetGameObjectPosition } from '../types';
 import type { EnemyImplementable } from './types';
 
 export default class GunshipEnemy extends GameObjects.Container implements EnemyImplementable {
@@ -79,10 +80,10 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
         return ENEMY_CONFIG.GUNSHIP.SCORE;
     }
 
-    initialize(eventBusComponent: EventBusComponent, playerPositionCallback: () => { x: number; y: number }) {
+    initialize(eventBusComponent: EventBusComponent, getPlayerPosition: GetGameObjectPosition) {
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
-        this.#inputComponent = new GunshipInputComponent(this, playerPositionCallback);
+        this.#inputComponent = new GunshipInputComponent(this, getPlayerPosition);
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
             weaponCooldown: ENEMY_CONFIG.GUNSHIP.WEAPON.WEAPON_COOLDOWN,
             projectileAnimationKey: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_ANIMATION_KEY,
