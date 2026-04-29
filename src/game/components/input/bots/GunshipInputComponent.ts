@@ -14,7 +14,6 @@ export default class GunshipInputComponent extends InputComponent {
         this.#gameObject = gameObject;
         this.#playerPositionCallback = playerPositionCallback;
 
-        this.down = true;
         this.shoot = true;
         // this.#setXDirection(Math.random() < 0.5 ? 'left' : 'right');
     }
