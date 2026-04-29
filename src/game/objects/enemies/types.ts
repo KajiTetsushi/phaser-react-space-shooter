@@ -5,6 +5,7 @@ export interface EnemyImplementable {
     get score(): number;
     shipAssetKey: string;
     shipDestroyedAnimationKey: string;
+    shipDestroyedSoundKey: string;
     initialize(eventBusComponent: EventBusComponent): void;
     reset(): void;
 }

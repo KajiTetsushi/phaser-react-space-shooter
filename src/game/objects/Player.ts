@@ -54,8 +54,9 @@ export default class Player extends GameObjects.Container {
             PLAYER_CONFIG.HORIZONTAL.VELOCITY_MAX,
             PLAYER_CONFIG.HORIZONTAL.DRAG,
         );
-        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
+        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
             weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
+            weaponReport: PLAYER_CONFIG.WEAPON.WEAPON_REPORT,
             projectileAnimationKey: PLAYER_CONFIG.WEAPON.PROJECTILE_ANIMATION_KEY,
             projectileHitboxSize: PLAYER_CONFIG.WEAPON.PROJECTILE_HITBOX_SIZE,
             projectileScale: PLAYER_CONFIG.WEAPON.PROJECTILE_SCALE,
@@ -66,7 +67,9 @@ export default class Player extends GameObjects.Container {
             trajectoryYOffset: -20,
         });
         this.#healthComponent = new HealthComponent(PLAYER_CONFIG.HEALTH);
-        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
+            hitSound: PLAYER_CONFIG.HIT_SOUND,
+        });
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
@@ -121,6 +124,7 @@ export default class Player extends GameObjects.Container {
         this.#shipSprite.play({
             key: 'explosion',
         });
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_EXPLOSION, PLAYER_CONFIG.EXPLOSION_SOUND);
         this.#eventBusComponent.emit(CUSTOM_EVENTS.PLAYER_DESTROYED);
     }
 

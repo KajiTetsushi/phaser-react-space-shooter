@@ -40,7 +40,7 @@
 ## UI & Audio
 - [x] implement scoring
 - [x] player lives
-- [ ] game audio
+- [x] game audio
 - [x] backgrounds
 
 ## Enhancement Ideas

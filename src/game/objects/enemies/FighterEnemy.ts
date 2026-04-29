@@ -75,6 +75,10 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
         return 'fighter_destroy';
     }
 
+    get shipDestroyedSoundKey() {
+        return ENEMY_CONFIG.FIGHTER.EXPLOSION_SOUND;
+    }
+
     get score() {
         return ENEMY_CONFIG.FIGHTER.SCORE;
     }
@@ -90,8 +94,9 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
             ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY_MAX,
             ENEMY_CONFIG.FIGHTER.VERTICAL.DRAG,
         );
-        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
+        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
             weaponCooldown: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_COOLDOWN,
+            weaponReport: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_REPORT,
             projectileAnimationKey: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_ANIMATION_KEY,
             projectileHitboxSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_HITBOX_SIZE,
             projectileScale: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SCALE,
@@ -102,7 +107,9 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
             trajectoryYOffset: 10,
         });
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.FIGHTER.HEALTH);
-        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
+            hitSound: ENEMY_CONFIG.SCOUT.HIT_SOUND,
+        });
         this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this);
     }
 

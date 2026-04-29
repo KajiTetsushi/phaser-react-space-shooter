@@ -3,6 +3,7 @@ import EventBusComponent, { CUSTOM_EVENTS } from '../components/events/EventBusC
 import EnemyDestroyedSpawnerComponent from '../components/spawners/EnemyDestroyedSpawnerComponent';
 import EnemySpawnerComponent from '../components/spawners/EnemySpawnerComponent';
 import { ENEMY_CONFIG } from '../config';
+import AudioManager from '../objects/AudioManager';
 import FighterEnemy from '../objects/enemies/FighterEnemy';
 import ScoutEnemy from '../objects/enemies/ScoutEnemy';
 import Player from '../objects/Player';
@@ -130,6 +131,7 @@ export default class GameScene extends Scene {
 
         new Score(this, eventBusComponent);
         new Lives(this, eventBusComponent);
+        new AudioManager(this, eventBusComponent);
     }
 
     #createBackground() {

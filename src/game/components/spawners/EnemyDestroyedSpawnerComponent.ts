@@ -21,6 +21,7 @@ export default class EnemyDestroyedSpawnerComponent {
             gameObject.play({
                 key: enemy.shipDestroyedAnimationKey,
             });
+            this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_EXPLOSION, enemy.shipDestroyedSoundKey);
         });
     }
 }

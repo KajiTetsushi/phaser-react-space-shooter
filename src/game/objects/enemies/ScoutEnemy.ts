@@ -67,6 +67,10 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
         return 'scout_destroy';
     }
 
+    get shipDestroyedSoundKey() {
+        return ENEMY_CONFIG.SCOUT.EXPLOSION_SOUND;
+    }
+
     get score() {
         return ENEMY_CONFIG.SCOUT.SCORE;
     }
@@ -96,7 +100,9 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
             ENEMY_CONFIG.SCOUT.VERTICAL.DRAG,
         );
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.SCOUT.HEALTH);
-        this.#colliderComponent = new ColliderComponent(this.#healthComponent);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
+            hitSound: ENEMY_CONFIG.SCOUT.HIT_SOUND,
+        });
         this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this);
     }
 

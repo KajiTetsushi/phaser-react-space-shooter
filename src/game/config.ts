@@ -2,6 +2,8 @@ export const PLAYER_CONFIG = {
     LIVES: 3,
     HEALTH: 4,
     RESPAWN_DELAY: 1500,
+    HIT_SOUND: 'hit',
+    EXPLOSION_SOUND: 'explosion',
     HORIZONTAL: {
         VELOCITY: 20,
         VELOCITY_MAX: 200,
@@ -9,6 +11,7 @@ export const PLAYER_CONFIG = {
     },
     WEAPON: {
         WEAPON_COOLDOWN: 300,
+        WEAPON_REPORT: 'shot2',
         PROJECTILE_ANIMATION_KEY: 'bullet',
         PROJECTILE_HITBOX_SIZE: {
             w: 14,
@@ -25,6 +28,8 @@ export const ENEMY_CONFIG = {
     SCOUT: {
         HEALTH: 2,
         SCORE: 100,
+        HIT_SOUND: 'hit',
+        EXPLOSION_SOUND: 'explosion',
         HORIZONTAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,
@@ -45,6 +50,8 @@ export const ENEMY_CONFIG = {
     FIGHTER: {
         HEALTH: 2,
         SCORE: 200,
+        HIT_SOUND: 'hit',
+        EXPLOSION_SOUND: 'explosion',
         VERTICAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,
@@ -52,6 +59,7 @@ export const ENEMY_CONFIG = {
         },
         WEAPON: {
             WEAPON_COOLDOWN: 2000,
+            WEAPON_REPORT: 'shot1',
             PROJECTILE_ANIMATION_KEY: 'bullet',
             PROJECTILE_HITBOX_SIZE: {
                 w: 14,
