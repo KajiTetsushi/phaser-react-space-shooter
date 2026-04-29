@@ -2,6 +2,7 @@ export const PLAYER_CONFIG = {
     LIVES: 3,
     HEALTH: 4,
     RESPAWN_DELAY: 1500,
+    HIT_SOUND: 'hit',
     HORIZONTAL: {
         VELOCITY: 20,
         VELOCITY_MAX: 200,
@@ -26,6 +27,7 @@ export const ENEMY_CONFIG = {
     SCOUT: {
         HEALTH: 2,
         SCORE: 100,
+        HIT_SOUND: 'hit',
         HORIZONTAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,
@@ -46,6 +48,7 @@ export const ENEMY_CONFIG = {
     FIGHTER: {
         HEALTH: 2,
         SCORE: 200,
+        HIT_SOUND: 'hit',
         VERTICAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,

@@ -103,7 +103,9 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
             trajectoryYOffset: 10,
         });
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.FIGHTER.HEALTH);
-        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
+            hitSound: ENEMY_CONFIG.SCOUT.HIT_SOUND,
+        });
         this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this);
     }
 

@@ -67,7 +67,9 @@ export default class Player extends GameObjects.Container {
             trajectoryYOffset: -20,
         });
         this.#healthComponent = new HealthComponent(PLAYER_CONFIG.HEALTH);
-        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent);
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
+            hitSound: PLAYER_CONFIG.HIT_SOUND,
+        });
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
