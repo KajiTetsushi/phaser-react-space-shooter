@@ -124,6 +124,7 @@ export default class Player extends GameObjects.Container {
         this.#shipSprite.play({
             key: 'explosion',
         });
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_EXPLOSION, PLAYER_CONFIG.EXPLOSION_SOUND);
         this.#eventBusComponent.emit(CUSTOM_EVENTS.PLAYER_DESTROYED);
     }
 

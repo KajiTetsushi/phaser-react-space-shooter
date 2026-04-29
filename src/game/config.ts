@@ -3,6 +3,7 @@ export const PLAYER_CONFIG = {
     HEALTH: 4,
     RESPAWN_DELAY: 1500,
     HIT_SOUND: 'hit',
+    EXPLOSION_SOUND: 'explosion',
     HORIZONTAL: {
         VELOCITY: 20,
         VELOCITY_MAX: 200,

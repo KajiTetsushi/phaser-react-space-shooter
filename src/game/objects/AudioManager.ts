@@ -11,9 +11,6 @@ export default class AudioManager {
         this.#scene.sound.play('bg', { volume: 0.025, loop: true });
 
         this.#eventBusComponent = eventBusComponent;
-        this.#eventBusComponent.on(CUSTOM_EVENTS.PLAYER_DESTROYED, () => {
-            this.#scene.sound.play('explosion', { volume: 0.05 });
-        });
         this.#eventBusComponent.on(CUSTOM_EVENTS.SHIP_EXPLOSION, (explosionSound: string) => {
             this.#scene.sound.play(explosionSound, { volume: 0.05 });
         });
