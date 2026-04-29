@@ -8,6 +8,7 @@ type WeaponConfig = {
      * In milliseconds. The minimum time between firing two consecutive projectiles. This is used to control the firing rate of the weapon, preventing it from firing too rapidly and overwhelming the game with too many projectiles at once.
      */
     weaponCooldown: number;
+    weaponReport: string;
     projectileAnimationKey: string;
     projectileHitboxSize: {
         w: number;
@@ -117,7 +118,7 @@ export default class WeaponComponent {
         projectile.setFlipY(this.#weaponConfig.trajectoryFlipY);
 
         this.#propelProjectileInterval = this.#weaponConfig.weaponCooldown;
-        this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_SHOOT);
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_SHOOT, this.#weaponConfig.weaponReport);
     }
 
     /**

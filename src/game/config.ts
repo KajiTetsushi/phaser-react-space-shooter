@@ -9,6 +9,7 @@ export const PLAYER_CONFIG = {
     },
     WEAPON: {
         WEAPON_COOLDOWN: 300,
+        WEAPON_REPORT: 'shot2',
         PROJECTILE_ANIMATION_KEY: 'bullet',
         PROJECTILE_HITBOX_SIZE: {
             w: 14,
@@ -52,6 +53,7 @@ export const ENEMY_CONFIG = {
         },
         WEAPON: {
             WEAPON_COOLDOWN: 2000,
+            WEAPON_REPORT: 'shot1',
             PROJECTILE_ANIMATION_KEY: 'bullet',
             PROJECTILE_HITBOX_SIZE: {
                 w: 14,

@@ -92,6 +92,7 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
         );
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
             weaponCooldown: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_COOLDOWN,
+            weaponReport: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_REPORT,
             projectileAnimationKey: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_ANIMATION_KEY,
             projectileHitboxSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_HITBOX_SIZE,
             projectileScale: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SCALE,

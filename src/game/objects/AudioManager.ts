@@ -20,8 +20,8 @@ export default class AudioManager {
         this.#eventBusComponent.on(CUSTOM_EVENTS.SHIP_HIT, () => {
             this.#scene.sound.play('hit', { volume: 0.025 });
         });
-        this.#eventBusComponent.on(CUSTOM_EVENTS.SHIP_SHOOT, () => {
-            this.#scene.sound.play('shot1', { volume: 0.0125 });
+        this.#eventBusComponent.on(CUSTOM_EVENTS.SHIP_SHOOT, (weaponReport: string) => {
+            this.#scene.sound.play(weaponReport, { volume: 0.0125 });
         });
     }
 }
