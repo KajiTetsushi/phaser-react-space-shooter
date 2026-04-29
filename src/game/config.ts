@@ -92,7 +92,7 @@ export const ENEMY_CONFIG = {
             DRAG: 0.01,
         },
         WEAPON: {
-            WEAPON_COOLDOWN: 200,
+            WEAPON_COOLDOWN: 50,
             PROJECTILE_ANIMATION_KEY: 'enemy-bullet',
             PROJECTILE_HITBOX_SIZE: {
                 w: 15,
@@ -100,16 +100,16 @@ export const ENEMY_CONFIG = {
             },
             PROJECTILE_LIFESPAN: 3,
             PROJECTILE_SCALE: 1.5,
-            PROJECTILE_SPAWN_POOL_SIZE: 10,
+            PROJECTILE_SPAWN_POOL_SIZE: 18,
             PROJECTILE_SPEED: -500,
         },
         SPAWN: {
-            MAX_ON_SCREEN: 3,
+            MAX_ON_SCREEN: 2,
             MIN_VIEWPORT_Y: 50,
             MAX_VIEWPORT_Y: 100,
             MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
             RECURRING_INTERVAL: 2000,
-            INITIAL_INTERVAL: 8000,
+            INITIAL_INTERVAL: 2000,
         },
     },
 };

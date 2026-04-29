@@ -126,7 +126,7 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
             this.#die();
         }
 
-        this.#inputComponent.update();
+        this.#inputComponent.update(delta);
         this.#horizontalMovementComponent.update();
         this.#weaponComponent.update(delta);
     }
