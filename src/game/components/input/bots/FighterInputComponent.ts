@@ -6,7 +6,7 @@ import InputComponent from '../InputComponent';
 export default class FighterInputComponent extends InputComponent {
     constructor() {
         super();
-        this.down = true;
+        this.setYDirection('down');
         this.shoot = true;
     }
 
