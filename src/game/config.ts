@@ -28,8 +28,18 @@ export const ENEMY_CONFIG = {
     SCOUT: {
         HEALTH: 2,
         SCORE: 100,
+        SHIP_KEY: 'scout',
+        SHIP_SCALE: 1,
+        SHIP_ENGINE_KEY: 'scout_engine',
+        SHIP_ENGINE_SCALE: 1,
         HIT_SOUND: 'hit',
+        EXPLOSION_ANIMATION_KEY: 'scout_destroy',
+        EXPLOSION_ANIMATION_SCALE: 1,
         EXPLOSION_SOUND: 'explosion',
+        HITBOX_SIZE: {
+            WIDTH: 24,
+            HEIGHT: 24,
+        },
         HORIZONTAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,
@@ -50,8 +60,18 @@ export const ENEMY_CONFIG = {
     FIGHTER: {
         HEALTH: 2,
         SCORE: 200,
+        SHIP_KEY: 'fighter',
+        SHIP_SCALE: 1,
+        SHIP_ENGINE_KEY: 'fighter_engine',
+        SHIP_ENGINE_SCALE: 1,
         HIT_SOUND: 'hit',
+        EXPLOSION_ANIMATION_KEY: 'fighter_destroy',
+        EXPLOSION_ANIMATION_SCALE: 3,
         EXPLOSION_SOUND: 'explosion',
+        HITBOX_SIZE: {
+            WIDTH: 24,
+            HEIGHT: 24,
+        },
         VERTICAL: {
             VELOCITY: 12,
             VELOCITY_MAX: 120,

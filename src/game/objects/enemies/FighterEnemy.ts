@@ -23,9 +23,14 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
     constructor(scene: Scene, x: number, y: number) {
         super(scene, x, y, []);
 
-        this.#shipSprite = scene.add.sprite(0, 0, 'fighter');
-        this.#shipEngineSprite = scene.add.sprite(0, 0, 'fighter_engine').setFlipY(true);
-        this.#shipEngineSprite.play('fighter_engine');
+        this.#shipSprite = scene.add
+            .sprite(0, 0, ENEMY_CONFIG.FIGHTER.SHIP_KEY)
+            .setScale(ENEMY_CONFIG.FIGHTER.SHIP_SCALE);
+        this.#shipEngineSprite = scene.add
+            .sprite(0, 0, ENEMY_CONFIG.FIGHTER.SHIP_ENGINE_KEY)
+            .setScale(ENEMY_CONFIG.FIGHTER.SHIP_ENGINE_SCALE)
+            .setFlipY(true);
+        this.#shipEngineSprite.play(ENEMY_CONFIG.FIGHTER.SHIP_ENGINE_KEY);
         this.add([
             // Ship is on top, so it's added last.
             this.#shipEngineSprite,
@@ -35,8 +40,11 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if (this.body instanceof Physics.Arcade.Body) {
-            this.body.setSize(24, 24);
-            this.body.setOffset(-12, -12);
+            this.body.setSize(ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.WIDTH, ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.HEIGHT);
+            this.body.setOffset(
+                -ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.WIDTH / 2,
+                -ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.HEIGHT / 2,
+            );
             this.body.setCollideWorldBounds(false);
         }
         this.setDepth(2);
@@ -68,11 +76,15 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
     }
 
     get shipAssetKey() {
-        return 'fighter';
+        return ENEMY_CONFIG.FIGHTER.SHIP_KEY;
     }
 
     get shipDestroyedAnimationKey() {
-        return 'fighter_destroy';
+        return ENEMY_CONFIG.FIGHTER.EXPLOSION_ANIMATION_KEY;
+    }
+
+    get shipDestroyedAnimationScale() {
+        return ENEMY_CONFIG.FIGHTER.EXPLOSION_ANIMATION_SCALE;
     }
 
     get shipDestroyedSoundKey() {

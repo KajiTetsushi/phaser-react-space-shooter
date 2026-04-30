@@ -1,4 +1,4 @@
-import { Math as MathUtils, type Scene } from 'phaser';
+import { type GameObjects, Math as MathUtils, type Scene } from 'phaser';
 import type { EnemyInstance } from '../../objects/enemies/types';
 import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
@@ -17,10 +17,8 @@ export default class EnemyDestroyedSpawnerComponent {
         });
 
         this.#eventBusComponent.on(CUSTOM_EVENTS.ENEMY_DESTROYED, (enemy: EnemyInstance) => {
-            const gameObject = this.#group.get(enemy.x, enemy.y, enemy.shipAssetKey, 0);
-            gameObject.play({
-                key: enemy.shipDestroyedAnimationKey,
-            });
+            const gameObject: GameObjects.Sprite | null = this.#group.get(enemy.x, enemy.y, enemy.shipAssetKey, 0);
+            gameObject?.play(enemy.shipDestroyedAnimationKey).setScale(enemy.shipDestroyedAnimationScale);
             this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_EXPLOSION, enemy.shipDestroyedSoundKey);
         });
     }
