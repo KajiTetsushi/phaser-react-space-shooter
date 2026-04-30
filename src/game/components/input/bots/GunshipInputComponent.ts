@@ -24,19 +24,14 @@ export default class GunshipInputComponent extends InputComponent {
 
         // Follow the master input component's horizontal movement pattern.
         if (playerPosition.x < this.#gameObject.x) {
-            this.#setXDirection('left');
+            this.setXDirection('left');
         } else if (playerPosition.x > this.#gameObject.x) {
-            this.#setXDirection('right');
+            this.setXDirection('right');
         }
 
         this.#fireRandomly(delta);
 
         // TODO: Randomize the gunship's horizontal movement pattern by adding some random chance to change direction every update cycle.
-    }
-
-    #setXDirection(direction: 'left' | 'right') {
-        this.left = direction === 'left';
-        this.right = direction === 'right';
     }
 
     #fireRandomly(delta: number) {
