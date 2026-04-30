@@ -1,6 +1,6 @@
 import { Input, type Scene, type Types } from 'phaser';
 
-import InputComponent from './InputComponent';
+import InputComponent, { type XDirection, type YDirection } from './InputComponent';
 
 export default class KeyboardInputComponent extends InputComponent {
     #cursorKeys: Types.Input.Keyboard.CursorKeys & {
@@ -37,13 +37,13 @@ export default class KeyboardInputComponent extends InputComponent {
         this.shoot = this.#cursorKeys.space.isDown;
     }
 
-    get selectedXDirection(): Parameters<InputComponent['setXDirection']>[0] {
+    get selectedXDirection(): XDirection {
         const leftIsDown = this.#cursorKeys.left.isDown || this.#cursorKeys.a.isDown;
         const rightIsDown = this.#cursorKeys.right.isDown || this.#cursorKeys.d.isDown;
 
         // Deadlock
         if (leftIsDown && rightIsDown) {
-            return null;
+            return 'neutral';
         }
 
         if (leftIsDown) {
@@ -55,16 +55,16 @@ export default class KeyboardInputComponent extends InputComponent {
         }
 
         // Released
-        return null;
+        return 'neutral';
     }
 
-    get selectedYDirection(): Parameters<InputComponent['setYDirection']>[0] {
+    get selectedYDirection(): YDirection {
         const upIsDown = this.#cursorKeys.up.isDown || this.#cursorKeys.w.isDown;
         const downIsDown = this.#cursorKeys.down.isDown || this.#cursorKeys.s.isDown;
 
         // Deadlock
         if (upIsDown && downIsDown) {
-            return null;
+            return 'neutral';
         }
 
         if (upIsDown) {
@@ -76,6 +76,6 @@ export default class KeyboardInputComponent extends InputComponent {
         }
 
         // Released
-        return null;
+        return 'neutral';
     }
 }
