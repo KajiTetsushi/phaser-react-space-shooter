@@ -23,9 +23,12 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
     constructor(scene: Scene, x: number, y: number) {
         super(scene, x, y, []);
 
-        this.#shipSprite = scene.add.sprite(0, 0, 'scout');
-        this.#shipEngineSprite = scene.add.sprite(0, 0, 'scout_engine').setFlipY(true);
-        this.#shipEngineSprite.play('scout_engine');
+        this.#shipSprite = scene.add.sprite(0, 0, ENEMY_CONFIG.SCOUT.SHIP_KEY).setScale(ENEMY_CONFIG.SCOUT.SHIP_SCALE);
+        this.#shipEngineSprite = scene.add
+            .sprite(0, 0, ENEMY_CONFIG.SCOUT.SHIP_ENGINE_KEY)
+            .setScale(ENEMY_CONFIG.SCOUT.SHIP_ENGINE_SCALE)
+            .setFlipY(true);
+        this.#shipEngineSprite.play(ENEMY_CONFIG.SCOUT.SHIP_ENGINE_KEY);
         this.add([
             // Ship is on top, so it's added last.
             this.#shipEngineSprite,
@@ -35,8 +38,8 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if (this.body instanceof Physics.Arcade.Body) {
-            this.body.setSize(24, 24);
-            this.body.setOffset(-12, -12);
+            this.body.setSize(ENEMY_CONFIG.SCOUT.HITBOX_SIZE.WIDTH, ENEMY_CONFIG.SCOUT.HITBOX_SIZE.HEIGHT);
+            this.body.setOffset(-ENEMY_CONFIG.SCOUT.HITBOX_SIZE.WIDTH / 2, -ENEMY_CONFIG.SCOUT.HITBOX_SIZE.HEIGHT / 2);
             this.body.setCollideWorldBounds(false);
         }
         this.setDepth(2);
@@ -60,11 +63,15 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
     }
 
     get shipAssetKey() {
-        return 'scout';
+        return ENEMY_CONFIG.SCOUT.SHIP_KEY;
     }
 
     get shipDestroyedAnimationKey() {
-        return 'scout_destroy';
+        return ENEMY_CONFIG.SCOUT.EXPLOSION_ANIMATION_KEY;
+    }
+
+    get shipDestroyedAnimationScale() {
+        return ENEMY_CONFIG.SCOUT.EXPLOSION_ANIMATION_SCALE;
     }
 
     get shipDestroyedSoundKey() {
