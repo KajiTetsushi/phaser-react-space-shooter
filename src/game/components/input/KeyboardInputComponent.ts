@@ -32,10 +32,50 @@ export default class KeyboardInputComponent extends InputComponent {
             return;
         }
 
-        this.up = this.#cursorKeys.up.isDown || this.#cursorKeys.w.isDown;
-        this.down = this.#cursorKeys.down.isDown || this.#cursorKeys.s.isDown;
-        this.left = this.#cursorKeys.left.isDown || this.#cursorKeys.a.isDown;
-        this.right = this.#cursorKeys.right.isDown || this.#cursorKeys.d.isDown;
+        this.setXDirection(this.selectedXDirection);
+        this.setYDirection(this.selectedYDirection);
         this.shoot = this.#cursorKeys.space.isDown;
+    }
+
+    get selectedXDirection(): Parameters<InputComponent['setXDirection']>[0] {
+        const leftIsDown = this.#cursorKeys.left.isDown || this.#cursorKeys.a.isDown;
+        const rightIsDown = this.#cursorKeys.right.isDown || this.#cursorKeys.d.isDown;
+
+        // Deadlock
+        if (leftIsDown && rightIsDown) {
+            return null;
+        }
+
+        if (leftIsDown) {
+            return 'left';
+        }
+
+        if (rightIsDown) {
+            return 'right';
+        }
+
+        // Released
+        return null;
+    }
+
+    get selectedYDirection(): Parameters<InputComponent['setYDirection']>[0] {
+        const upIsDown = this.#cursorKeys.up.isDown || this.#cursorKeys.w.isDown;
+        const downIsDown = this.#cursorKeys.down.isDown || this.#cursorKeys.s.isDown;
+
+        // Deadlock
+        if (upIsDown && downIsDown) {
+            return null;
+        }
+
+        if (upIsDown) {
+            return 'up';
+        }
+
+        if (downIsDown) {
+            return 'down';
+        }
+
+        // Released
+        return null;
     }
 }
