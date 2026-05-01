@@ -3,9 +3,10 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 
 export interface EnemyImplementable {
     get score(): number;
-    shipAssetKey: string;
-    shipDestroyedAnimationKey: string;
-    shipDestroyedSoundKey: string;
+    get shipAssetKey(): string;
+    get shipDestroyedAnimationKey(): string;
+    get shipDestroyedAnimationScale(): number;
+    get shipDestroyedSoundKey(): string;
     initialize(eventBusComponent: EventBusComponent): void;
     reset(): void;
 }
