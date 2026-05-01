@@ -50,5 +50,5 @@ export default abstract class InputComponent {
         this.down = direction === 'down';
     }
 
-    abstract update(): void;
+    abstract update(delta: number): void;
 }
