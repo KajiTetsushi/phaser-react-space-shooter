@@ -19,7 +19,7 @@ export const PLAYER_CONFIG = {
         },
         PROJECTILE_LIFESPAN: 3,
         PROJECTILE_SCALE: 0.8,
-        PROJECTILE_SPAWN_POOL_SIZE: 10,
+        PROJECTILE_SPAWN_POOL_SIZE: 60,
         PROJECTILE_SPEED: 300,
     },
 };

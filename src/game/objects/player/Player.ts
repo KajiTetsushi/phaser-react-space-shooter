@@ -59,6 +59,7 @@ export default class Player extends GameObjects.Container implements PlayerImple
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
             weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
             weaponReport: PLAYER_CONFIG.WEAPON.WEAPON_REPORT,
+            weaponCluster: 3,
             projectileAnimationKey: PLAYER_CONFIG.WEAPON.PROJECTILE_ANIMATION_KEY,
             projectileHitboxSize: PLAYER_CONFIG.WEAPON.PROJECTILE_HITBOX_SIZE,
             projectileScale: PLAYER_CONFIG.WEAPON.PROJECTILE_SCALE,

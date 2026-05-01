@@ -9,6 +9,7 @@ type WeaponConfig = {
      */
     weaponCooldown: number;
     weaponReport: string;
+    weaponCluster?: number;
     projectileAnimationKey: string;
     projectileHitboxSize: {
         w: number;
@@ -81,10 +82,10 @@ export default class WeaponComponent {
      * @param delta Timestep, in milliseconds, tied to the browser `requestAnimationFrame` callback, or roughly 60 times per second.
      */
     update(delta: number) {
-        this.#propelProjectile(delta);
+        this.#propelProjectiles(delta);
     }
 
-    #propelProjectile(delta: number) {
+    #propelProjectiles(delta: number) {
         this.#propelProjectileInterval -= delta;
 
         if (this.#propelProjectileInterval > 0) {
@@ -95,6 +96,26 @@ export default class WeaponComponent {
             return;
         }
 
+        const { weaponCluster = 1 } = this.#weaponConfig;
+
+        for (let iteration = 0; iteration < weaponCluster; iteration++) {
+            const weaponBurstSequence = iteration % weaponCluster;
+            const xOffset = (() => {
+                if (weaponBurstSequence === 0) {
+                    return 0;
+                } else if (weaponBurstSequence < weaponCluster / 2) {
+                    return weaponBurstSequence * 10;
+                } else {
+                    return (weaponCluster - weaponBurstSequence) * -10;
+                }
+            })();
+            this.#propelProjectile(xOffset);
+        }
+
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_SHOOT, this.#weaponConfig.weaponReport);
+    }
+
+    #propelProjectile(xOffset: number = 0) {
         // Get the first inactive projectile from the pool and propel it.
         const projectile: Physics.Arcade.Sprite | undefined = this.#projectileGroup.getFirstDead(false);
 
@@ -102,7 +123,7 @@ export default class WeaponComponent {
             return;
         }
 
-        const x = this.#gameObject.x;
+        const x = this.#gameObject.x + xOffset;
         const y = this.#gameObject.y + this.#weaponConfig.trajectoryYOffset;
         projectile.enableBody(true, x, y, true, true);
         if (projectile.body instanceof Physics.Arcade.Body) {
@@ -118,7 +139,6 @@ export default class WeaponComponent {
         projectile.setFlipY(this.#weaponConfig.trajectoryFlipY);
 
         this.#propelProjectileInterval = this.#weaponConfig.weaponCooldown;
-        this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_SHOOT, this.#weaponConfig.weaponReport);
     }
 
     /**
