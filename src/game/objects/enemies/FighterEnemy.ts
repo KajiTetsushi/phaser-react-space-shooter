@@ -7,7 +7,7 @@ import FighterInputComponent from '../../components/input/bots/FighterInputCompo
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
-import type { EnemyImplementable } from './types';
+import type { EnemyImplementable } from './enemies.types';
 
 export default class FighterEnemy extends GameObjects.Container implements EnemyImplementable {
     #isInitialized = false;

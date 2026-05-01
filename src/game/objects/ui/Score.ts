@@ -1,7 +1,7 @@
 import { GameObjects } from 'phaser';
 import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
-import type { EnemyInstance } from '../enemies/types';
+import type { EnemyInstance } from '../enemies/enemies.types';
 
 export default class Score extends GameObjects.Text {
     #score: number;

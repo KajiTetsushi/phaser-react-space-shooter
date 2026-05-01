@@ -7,7 +7,7 @@ import ScoutInputComponent from '../../components/input/bots/ScoutInputComponent
 import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
 import { ENEMY_CONFIG } from '../../config';
-import type { EnemyImplementable } from './types';
+import type { EnemyImplementable } from './enemies.types';
 
 export default class ScoutEnemy extends GameObjects.Container implements EnemyImplementable {
     #isInitialized = false;

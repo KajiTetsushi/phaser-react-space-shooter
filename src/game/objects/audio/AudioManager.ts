@@ -1,6 +1,6 @@
 import type { Scene } from 'phaser';
-import type EventBusComponent from '../components/events/EventBusComponent';
-import { CUSTOM_EVENTS } from '../components/events/EventBusComponent';
+import type EventBusComponent from '../../components/events/EventBusComponent';
+import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 
 export default class AudioManager {
     #scene: Scene;
