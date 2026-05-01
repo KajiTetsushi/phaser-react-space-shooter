@@ -103,7 +103,6 @@ export default class Player extends GameObjects.Container implements PlayerImple
     }
 
     getPosition(): GameObjectPosition {
-        console.log('Player.getPosition');
         return {
             x: this.x,
             y: this.y,
