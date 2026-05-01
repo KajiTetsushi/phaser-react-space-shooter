@@ -6,7 +6,7 @@ import { ENEMY_CONFIG } from '../config';
 import AudioManager from '../objects/AudioManager';
 import FighterEnemy from '../objects/enemies/FighterEnemy';
 import ScoutEnemy from '../objects/enemies/ScoutEnemy';
-import Player from '../objects/Player';
+import Player from '../objects/player/Player';
 import Lives from '../objects/ui/Lives';
 import Score from '../objects/ui/Score';
 

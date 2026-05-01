@@ -1,12 +1,12 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
-import ColliderComponent from '../components/collider/ColliderComponent';
-import type EventBusComponent from '../components/events/EventBusComponent';
-import { CUSTOM_EVENTS } from '../components/events/EventBusComponent';
-import HealthComponent from '../components/health/HealthComponent';
-import KeyboardInputComponent from '../components/input/KeyboardInputComponent';
-import HorizontalMovementComponent from '../components/movement/HorizontalMovementComponent';
-import WeaponComponent from '../components/weapon/WeaponComponent';
-import { PLAYER_CONFIG } from '../config';
+import ColliderComponent from '../../components/collider/ColliderComponent';
+import type EventBusComponent from '../../components/events/EventBusComponent';
+import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
+import HealthComponent from '../../components/health/HealthComponent';
+import KeyboardInputComponent from '../../components/input/KeyboardInputComponent';
+import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
+import WeaponComponent from '../../components/weapon/WeaponComponent';
+import { PLAYER_CONFIG } from '../../config';
 
 export default class Player extends GameObjects.Container {
     #inputComponent: KeyboardInputComponent;
