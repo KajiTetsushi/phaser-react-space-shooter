@@ -27,7 +27,7 @@ export const PLAYER_CONFIG = {
 export const ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG = -20;
 export const ENEMY_CONFIG = {
     SCOUT: {
-        HEALTH: 2,
+        HEALTH: 1,
         SCORE: 100,
         SHIP_KEY: 'scout',
         SHIP_SCALE: 1,
@@ -59,7 +59,7 @@ export const ENEMY_CONFIG = {
         },
     },
     FIGHTER: {
-        HEALTH: 2,
+        HEALTH: 1,
         SCORE: 200,
         SHIP_KEY: 'fighter',
         SHIP_SCALE: 1,
@@ -114,7 +114,7 @@ export const ENEMY_CONFIG = {
         },
         HORIZONTAL: {
             VELOCITY: 2,
-            VELOCITY_MAX: 20,
+            VELOCITY_MAX: 16,
             DRIFT_MAX: 12,
             DRAG: 0.01,
         },
