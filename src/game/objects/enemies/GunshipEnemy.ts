@@ -3,32 +3,35 @@ import ColliderComponent from '../../components/collider/ColliderComponent';
 import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
-import ScoutInputComponent from '../../components/input/bots/ScoutInputComponent';
+import GunshipInputComponent from '../../components/input/bots/GunshipInputComponent';
 import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
-import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
+import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
+import type { GetGameObjectPosition } from '../objects.types';
 import type { EnemyImplementable } from './enemies.types';
 
-export default class ScoutEnemy extends GameObjects.Container implements EnemyImplementable {
+export default class GunshipEnemy extends GameObjects.Container implements EnemyImplementable {
     #isInitialized = false;
     #eventBusComponent: EventBusComponent;
-    #inputComponent: ScoutInputComponent;
+    #inputComponent: GunshipInputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
-    #verticalMovementComponent: VerticalMovementComponent;
     #healthComponent: HealthComponent;
     #colliderComponent: ColliderComponent;
+    #weaponComponent: WeaponComponent;
     #shipSprite: GameObjects.Sprite;
     #shipEngineSprite: GameObjects.Sprite;
 
     constructor(scene: Scene, x: number, y: number) {
         super(scene, x, y, []);
 
-        this.#shipSprite = scene.add.sprite(0, 0, ENEMY_CONFIG.SCOUT.SHIP_KEY).setScale(ENEMY_CONFIG.SCOUT.SHIP_SCALE);
+        this.#shipSprite = scene.add
+            .sprite(0, 0, ENEMY_CONFIG.GUNSHIP.SHIP_KEY)
+            .setScale(ENEMY_CONFIG.GUNSHIP.SHIP_SCALE);
         this.#shipEngineSprite = scene.add
-            .sprite(0, 0, ENEMY_CONFIG.SCOUT.SHIP_ENGINE_KEY)
-            .setScale(ENEMY_CONFIG.SCOUT.SHIP_ENGINE_SCALE)
+            .sprite(0, 0, ENEMY_CONFIG.GUNSHIP.SHIP_ENGINE_KEY)
+            .setScale(ENEMY_CONFIG.GUNSHIP.SHIP_ENGINE_SCALE)
             .setFlipY(true);
-        this.#shipEngineSprite.play(ENEMY_CONFIG.SCOUT.SHIP_ENGINE_KEY);
+        this.#shipEngineSprite.play(ENEMY_CONFIG.GUNSHIP.SHIP_ENGINE_KEY);
         this.add([
             // Ship is on top, so it's added last.
             this.#shipEngineSprite,
@@ -38,8 +41,8 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if (this.body instanceof Physics.Arcade.Body) {
-            this.body.setSize(ENEMY_CONFIG.SCOUT.HITBOX_SIZE.WIDTH, ENEMY_CONFIG.SCOUT.HITBOX_SIZE.HEIGHT);
-            this.body.setOffset(-ENEMY_CONFIG.SCOUT.HITBOX_SIZE.WIDTH / 2, -ENEMY_CONFIG.SCOUT.HITBOX_SIZE.HEIGHT / 2);
+            this.body.setSize(24, 24);
+            this.body.setOffset(-12, -12);
             this.body.setCollideWorldBounds(false);
         }
         this.setDepth(2);
@@ -62,24 +65,32 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
         return this.#healthComponent;
     }
 
+    get weaponComponent() {
+        return this.#weaponComponent;
+    }
+
+    get projectileGroup() {
+        return this.weaponComponent.projectileGroup;
+    }
+
     get shipAssetKey() {
-        return ENEMY_CONFIG.SCOUT.SHIP_KEY;
+        return ENEMY_CONFIG.GUNSHIP.SHIP_KEY;
     }
 
     get shipDestroyedAnimationKey() {
-        return ENEMY_CONFIG.SCOUT.EXPLOSION_ANIMATION_KEY;
+        return ENEMY_CONFIG.GUNSHIP.EXPLOSION_ANIMATION_KEY;
     }
 
     get shipDestroyedAnimationScale() {
-        return ENEMY_CONFIG.SCOUT.EXPLOSION_ANIMATION_SCALE;
+        return ENEMY_CONFIG.GUNSHIP.EXPLOSION_ANIMATION_SCALE;
     }
 
     get shipDestroyedSoundKey() {
-        return ENEMY_CONFIG.SCOUT.EXPLOSION_SOUND;
+        return ENEMY_CONFIG.GUNSHIP.EXPLOSION_SOUND;
     }
 
-    get score() {
-        return ENEMY_CONFIG.SCOUT.SCORE;
+    get score(): number {
+        return ENEMY_CONFIG.GUNSHIP.SCORE;
     }
 
     getPosition() {
@@ -89,33 +100,37 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
         };
     }
 
-    initialize(eventBusComponent: EventBusComponent) {
+    initialize(eventBusComponent: EventBusComponent, getPlayerPosition: GetGameObjectPosition) {
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
-        this.#inputComponent = new ScoutInputComponent(
-            this,
-            // The direction of the scout's horizontal movement
-            // will rely on its current position.
-            this.x,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.DRIFT_MAX,
-        );
+        this.#inputComponent = new GunshipInputComponent(this, getPlayerPosition, {
+            ai: {
+                relativeXDistanceToPlayerRanges:
+                    ENEMY_CONFIG.GUNSHIP.AI.RANDOM_FIRE.RELATIVE_X_DISTANCE_TO_PLAYER_RANGES,
+            },
+        });
+        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
+            weaponCooldown: ENEMY_CONFIG.GUNSHIP.WEAPON.WEAPON_COOLDOWN,
+            weaponReport: ENEMY_CONFIG.GUNSHIP.WEAPON.WEAPON_REPORT,
+            projectileAnimationKey: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_ANIMATION_KEY,
+            projectileHitboxSize: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_HITBOX_SIZE,
+            projectileScale: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_SCALE,
+            projectileSpeed: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_SPEED,
+            projectileLifespan: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_LIFESPAN,
+            projectileSpawnPoolSize: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_SPAWN_POOL_SIZE,
+            trajectoryFlipY: true,
+            trajectoryYOffset: 10,
+        });
         this.#horizontalMovementComponent = new HorizontalMovementComponent(
             this,
             this.#inputComponent,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_MAX,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.DRAG,
+            ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY,
+            ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_MAX,
+            ENEMY_CONFIG.GUNSHIP.HORIZONTAL.DRAG,
         );
-        this.#verticalMovementComponent = new VerticalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY,
-            ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_MAX,
-            ENEMY_CONFIG.SCOUT.VERTICAL.DRAG,
-        );
-        this.#healthComponent = new HealthComponent(ENEMY_CONFIG.SCOUT.HEALTH);
+        this.#healthComponent = new HealthComponent(ENEMY_CONFIG.GUNSHIP.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
-            hitSound: ENEMY_CONFIG.SCOUT.HIT_SOUND,
+            hitSound: ENEMY_CONFIG.GUNSHIP.HIT_SOUND,
         });
         this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this);
     }
@@ -123,13 +138,10 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
     reset() {
         this.setActive(true);
         this.setVisible(true);
-        this.#horizontalMovementComponent.reset();
-        this.#verticalMovementComponent.reset();
         this.#healthComponent.reset();
-        this.#inputComponent.setStartX(this.x);
     }
 
-    update(_timestamp: number, _delta: number) {
+    update(_timestamp: number, delta: number) {
         if (!this.#isInitialized) {
             return;
         }
@@ -142,9 +154,9 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
             this.#die();
         }
 
-        this.#inputComponent.update();
+        this.#inputComponent.update(delta);
         this.#horizontalMovementComponent.update();
-        this.#verticalMovementComponent.update();
+        this.#weaponComponent.update(delta);
     }
 
     #die() {

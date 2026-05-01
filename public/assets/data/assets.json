@@ -110,6 +110,20 @@
         ]
     },
     {
+        "path": "assets/images/phaser",
+        "files": [
+            {
+                "type": "spritesheet",
+                "key": "enemy-bullet",
+                "url": "enemy-bullet.png",
+                "frameConfig": {
+                    "frameWidth": 10,
+                    "frameHeight": 10
+                }
+            }
+        ]
+    },
+    {
         "path": "assets/audio/ansimuz",
         "files": [
             {

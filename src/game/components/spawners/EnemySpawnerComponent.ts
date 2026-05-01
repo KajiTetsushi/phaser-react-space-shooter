@@ -1,5 +1,7 @@
 import { type GameObjects, Math as MathUtils, Physics, type Scene, Scenes } from 'phaser';
+import { ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG } from '../../config';
 import type { EnemyConstructor, EnemyInstance } from '../../objects/enemies/enemies.types';
+import type { GetGameObjectPosition } from '../../objects/objects.types';
 import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 
@@ -7,7 +9,9 @@ export type EnemySpawnerConfig = Readonly<{
     // TODO: Consider adding some variance to the spawn interval and max center x offset to make the game feel less predictable.
     // interval: 2000,
     // intervalVariance: 0.5,
-    // maxOnScreen: 5,
+    maxOnScreen?: number;
+    minViewportY?: number;
+    maxViewportY?: number;
     minViewportXBoundaryClearance: number;
     recurringInterval: number;
     initialInterval: number;
@@ -24,6 +28,7 @@ export default class EnemySpawnerComponent {
     constructor(
         scene: Scene,
         eventBusComponent: EventBusComponent,
+        getPlayerPosition: GetGameObjectPosition,
         spawnClass: EnemyConstructor,
         spawnConfig: EnemySpawnerConfig,
     ) {
@@ -38,7 +43,7 @@ export default class EnemySpawnerComponent {
             runChildUpdate: true,
             createCallback: (item) => {
                 const enemy = item as EnemyInstance;
-                enemy.initialize(eventBusComponent);
+                enemy.initialize(eventBusComponent, getPlayerPosition);
             },
         });
 
@@ -81,18 +86,40 @@ export default class EnemySpawnerComponent {
             return;
         }
 
+        const { maxOnScreen } = this.#config;
+        const activeEnemyCount = this.#group.getChildren().filter((enemy) => enemy.active).length;
+        if (maxOnScreen && activeEnemyCount >= maxOnScreen) {
+            return;
+        }
+
         this.#intervalCountdown -= delta;
 
         if (this.#intervalCountdown > 0) {
             return;
         }
 
+        const { x, y } = this.spawnCoords;
+        // Find unspawned/despawned enemy from the resource pool to respawn.
+        const enemy: EnemyInstance = this.#group.get(x, y);
+        enemy.reset();
+        this.#intervalCountdown = this.#config.recurringInterval;
+    }
+
+    get spawnCoords() {
         const x = MathUtils.RND.between(
             this.#config.minViewportXBoundaryClearance,
             this.#scene.scale.width - this.#config.minViewportXBoundaryClearance,
         );
-        const enemy: EnemyInstance = this.#group.get(x, -20);
-        enemy.reset();
-        this.#intervalCountdown = this.#config.recurringInterval;
+
+        const { minViewportY, maxViewportY } = this.#config;
+        const y =
+            minViewportY && maxViewportY
+                ? MathUtils.RND.between(this.#config.minViewportY ?? 0, this.#config.maxViewportY ?? 0)
+                : ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG;
+
+        return {
+            x,
+            y,
+        };
     }
 }

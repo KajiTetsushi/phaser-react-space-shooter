@@ -6,6 +6,12 @@
         "assetKey": "bullet"
     },
     {
+        "key": "enemy-bullet",
+        "frameRate": 12,
+        "repeat": -1,
+        "assetKey": "enemy-bullet"
+    },
+    {
         "key": "fighter_engine",
         "frameRate": 12,
         "repeat": -1,

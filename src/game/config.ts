@@ -24,6 +24,7 @@ export const PLAYER_CONFIG = {
     },
 };
 
+export const ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG = -20;
 export const ENEMY_CONFIG = {
     SCOUT: {
         HEALTH: 2,
@@ -78,7 +79,7 @@ export const ENEMY_CONFIG = {
             DRAG: 0.01,
         },
         WEAPON: {
-            WEAPON_COOLDOWN: 2000,
+            WEAPON_COOLDOWN: 3000,
             WEAPON_REPORT: 'shot1',
             PROJECTILE_ANIMATION_KEY: 'bullet',
             PROJECTILE_HITBOX_SIZE: {
@@ -94,6 +95,58 @@ export const ENEMY_CONFIG = {
             MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
             RECURRING_INTERVAL: 3000,
             INITIAL_INTERVAL: 6000,
+        },
+    },
+    GUNSHIP: {
+        HEALTH: 6,
+        SCORE: 600,
+        SHIP_KEY: 'fighter',
+        SHIP_SCALE: 1,
+        SHIP_ENGINE_KEY: 'fighter_engine',
+        SHIP_ENGINE_SCALE: 1,
+        HIT_SOUND: 'hit',
+        EXPLOSION_ANIMATION_KEY: 'fighter_destroy',
+        EXPLOSION_ANIMATION_SCALE: 1,
+        EXPLOSION_SOUND: 'explosion',
+        HITBOX_SIZE: {
+            WIDTH: 24,
+            HEIGHT: 24,
+        },
+        HORIZONTAL: {
+            VELOCITY: 2,
+            VELOCITY_MAX: 20,
+            DRIFT_MAX: 12,
+            DRAG: 0.01,
+        },
+        WEAPON: {
+            WEAPON_COOLDOWN: 50,
+            WEAPON_REPORT: 'shot1',
+            PROJECTILE_ANIMATION_KEY: 'enemy-bullet',
+            PROJECTILE_HITBOX_SIZE: {
+                w: 15,
+                h: 15,
+            },
+            PROJECTILE_LIFESPAN: 3,
+            PROJECTILE_SCALE: 1.5,
+            PROJECTILE_SPAWN_POOL_SIZE: 18,
+            PROJECTILE_SPEED: -500,
+        },
+        SPAWN: {
+            MAX_ON_SCREEN: 2,
+            MIN_VIEWPORT_Y: 50,
+            MAX_VIEWPORT_Y: 100,
+            MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
+            RECURRING_INTERVAL: 5000,
+            INITIAL_INTERVAL: 8000,
+        },
+        AI: {
+            RANDOM_FIRE: {
+                RELATIVE_X_DISTANCE_TO_PLAYER_RANGES: {
+                    150: [50, 1000],
+                    200: [200, 2000],
+                    '*': [500, 3000],
+                } as const,
+            },
         },
     },
 };

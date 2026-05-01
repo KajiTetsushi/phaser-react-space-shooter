@@ -7,8 +7,10 @@ import KeyboardInputComponent from '../../components/input/KeyboardInputComponen
 import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { PLAYER_CONFIG } from '../../config';
+import type { GameObjectPosition } from '../objects.types';
+import type { PlayerImplementable } from './player.types';
 
-export default class Player extends GameObjects.Container {
+export default class Player extends GameObjects.Container implements PlayerImplementable {
     #inputComponent: KeyboardInputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
     #healthComponent: HealthComponent;
@@ -98,6 +100,14 @@ export default class Player extends GameObjects.Container {
 
     get projectileGroup() {
         return this.weaponComponent.projectileGroup;
+    }
+
+    getPosition(): GameObjectPosition {
+        console.log('Player.getPosition');
+        return {
+            x: this.x,
+            y: this.y,
+        };
     }
 
     update(_timestamp: number, delta: number) {
