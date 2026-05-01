@@ -1,5 +1,5 @@
 import { type GameObjects, Math as MathUtils, type Scene } from 'phaser';
-import type { EnemyInstance } from '../../objects/enemies/types';
+import type { EnemyInstance } from '../../objects/enemies/enemies.types';
 import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 
