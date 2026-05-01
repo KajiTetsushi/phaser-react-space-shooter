@@ -15,10 +15,10 @@
 - [x] input-based movement
 
 ## Enemies
-- [ ] creating game objects
+- [x] creating game objects
   - [x] type 1
   - [x] type 2
-  - [ ] type 3
+  - [x] type 3
 - [x] creating animations
 - [x] basic AI movement
 
