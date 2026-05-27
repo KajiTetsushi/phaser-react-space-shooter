@@ -29,6 +29,23 @@ export const PLAYER_CONFIG = {
     },
 };
 
+export const POWERUP_DROP_CONFIG = {
+    HEALTH: 1,
+    SCORE: 100,
+    // TODO: Sprite.
+    SHIP_KEY: 'powerup',
+    HIT_SOUND: 'hit',
+    HITBOX_SIZE: {
+        WIDTH: 24,
+        HEIGHT: 24,
+    },
+    VERTICAL: {
+        VELOCITY: 10,
+        VELOCITY_MAX: 100,
+        DRAG: 0.01,
+    },
+};
+
 export const ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG = -20;
 export const ENEMY_CONFIG = {
     SCOUT: {

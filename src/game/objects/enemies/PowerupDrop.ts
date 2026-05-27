@@ -3,7 +3,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import PowerupDropInputComponent from '../../components/input/bots/PowerupDropInputComponent';
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
-import { ENEMY_CONFIG } from '../../config';
+import { POWERUP_DROP_CONFIG } from '../../config';
 import type { GameObjectImplementable, GameObjectPosition } from '../objects.types';
 
 export default class PowerupDrop extends Phaser.GameObjects.Container implements GameObjectImplementable {
@@ -17,14 +17,17 @@ export default class PowerupDrop extends Phaser.GameObjects.Container implements
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, []);
 
-        const powerupSprite = scene.add.sprite(0, 0, 'powerup').setScale(0.5);
+        const powerupSprite = scene.add.sprite(0, 0, POWERUP_DROP_CONFIG.SHIP_KEY).setScale(0.5);
         this.add(powerupSprite);
 
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if (this.body instanceof Phaser.Physics.Arcade.Body) {
-            this.body.setSize(ENEMY_CONFIG.SCOUT.HITBOX_SIZE.WIDTH, ENEMY_CONFIG.SCOUT.HITBOX_SIZE.HEIGHT);
-            this.body.setOffset(-ENEMY_CONFIG.SCOUT.HITBOX_SIZE.WIDTH / 2, -ENEMY_CONFIG.SCOUT.HITBOX_SIZE.HEIGHT / 2);
+            this.body.setSize(POWERUP_DROP_CONFIG.HITBOX_SIZE.WIDTH, POWERUP_DROP_CONFIG.HITBOX_SIZE.HEIGHT);
+            this.body.setOffset(
+                -POWERUP_DROP_CONFIG.HITBOX_SIZE.WIDTH / 2,
+                -POWERUP_DROP_CONFIG.HITBOX_SIZE.HEIGHT / 2,
+            );
             this.body.setCollideWorldBounds(false);
         }
         this.setDepth(2);
@@ -58,13 +61,13 @@ export default class PowerupDrop extends Phaser.GameObjects.Container implements
             this,
             this.#inputComponent,
             // TODO: Powerup config
-            ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY,
-            ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY_MAX,
-            ENEMY_CONFIG.FIGHTER.VERTICAL.DRAG,
+            POWERUP_DROP_CONFIG.VERTICAL.VELOCITY,
+            POWERUP_DROP_CONFIG.VERTICAL.VELOCITY_MAX,
+            POWERUP_DROP_CONFIG.VERTICAL.DRAG,
         );
-        this.#healthComponent = new HealthComponent(ENEMY_CONFIG.FIGHTER.HEALTH);
+        this.#healthComponent = new HealthComponent(POWERUP_DROP_CONFIG.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
-            hitSound: ENEMY_CONFIG.FIGHTER.HIT_SOUND,
+            hitSound: POWERUP_DROP_CONFIG.HIT_SOUND,
         });
     }
 
