@@ -79,6 +79,7 @@ export default class Player extends GameObjects.Container implements PlayerImple
             },
         });
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
+            weaponClusterOffset: PLAYER_CONFIG.WEAPON.WEAPON_CLUSTER_OFFSET,
             weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
             weaponReport: PLAYER_CONFIG.WEAPON.WEAPON_REPORT,
             projectileAnimationKey: PLAYER_CONFIG.WEAPON.PROJECTILE_ANIMATION_KEY,

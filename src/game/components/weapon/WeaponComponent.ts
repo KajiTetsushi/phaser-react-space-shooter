@@ -10,6 +10,7 @@ type WeaponConfig = {
     weaponCooldown: number;
     weaponReport: string;
     weaponCluster?: number;
+    weaponClusterOffset?: number;
     projectileAnimationKey: string;
     projectileHitboxSize: {
         w: number;
@@ -103,7 +104,7 @@ export default class WeaponComponent {
             return;
         }
 
-        const { weaponCluster = 1 } = this.#weaponConfig;
+        const { weaponCluster = 1, weaponClusterOffset = 0 } = this.#weaponConfig;
 
         for (let iteration = 0; iteration < weaponCluster; iteration++) {
             const weaponBurstSequence = iteration % weaponCluster;
@@ -111,9 +112,9 @@ export default class WeaponComponent {
                 if (weaponBurstSequence === 0) {
                     return 0;
                 } else if (weaponBurstSequence < weaponCluster / 2) {
-                    return weaponBurstSequence * 10;
+                    return weaponBurstSequence * weaponClusterOffset;
                 } else {
-                    return (weaponCluster - weaponBurstSequence) * -10;
+                    return (weaponCluster - weaponBurstSequence) * -weaponClusterOffset;
                 }
             })();
             this.#propelProjectile(xOffset);

@@ -17,6 +17,7 @@ export const PLAYER_CONFIG = {
     WEAPON: {
         WEAPON_COOLDOWN: 300,
         WEAPON_REPORT: 'shot2',
+        WEAPON_CLUSTER_OFFSET: 12,
         PROJECTILE_ANIMATION_KEY: 'bullet',
         PROJECTILE_HITBOX_SIZE: {
             w: 14,
