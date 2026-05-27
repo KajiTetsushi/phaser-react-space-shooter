@@ -173,5 +173,13 @@ export const ENEMY_CONFIG = {
             DRIFT_MAX: 12,
             DRAG: 0.01,
         },
+        SPAWN: {
+            MAX_ON_SCREEN: 2,
+            MIN_VIEWPORT_Y: 50,
+            MAX_VIEWPORT_Y: 100,
+            MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
+            RECURRING_INTERVAL: 4000,
+            INITIAL_INTERVAL: 5000,
+        },
     },
 };

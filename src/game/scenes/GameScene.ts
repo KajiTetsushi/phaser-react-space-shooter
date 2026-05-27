@@ -51,11 +51,11 @@ export default class GameScene extends Scene {
         });
         const powerupEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, PowerupEnemy, {
             maxOnScreen: 1,
-            minViewportY: ENEMY_CONFIG.GUNSHIP.SPAWN.MIN_VIEWPORT_Y,
-            maxViewportY: ENEMY_CONFIG.GUNSHIP.SPAWN.MAX_VIEWPORT_Y,
-            minViewportXBoundaryClearance: ENEMY_CONFIG.GUNSHIP.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
-            recurringInterval: ENEMY_CONFIG.GUNSHIP.SPAWN.RECURRING_INTERVAL,
-            initialInterval: ENEMY_CONFIG.GUNSHIP.SPAWN.INITIAL_INTERVAL,
+            minViewportY: ENEMY_CONFIG.POWERUP.SPAWN.MIN_VIEWPORT_Y,
+            maxViewportY: ENEMY_CONFIG.POWERUP.SPAWN.MAX_VIEWPORT_Y,
+            minViewportXBoundaryClearance: ENEMY_CONFIG.POWERUP.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
+            recurringInterval: ENEMY_CONFIG.POWERUP.SPAWN.RECURRING_INTERVAL,
+            initialInterval: ENEMY_CONFIG.POWERUP.SPAWN.INITIAL_INTERVAL,
         });
         const powerupDropSpawner = new PowerupDropSpawnerComponent(this, eventBusComponent);
         new EnemyDestroyedSpawnerComponent(this, eventBusComponent);
