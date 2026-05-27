@@ -11,7 +11,7 @@ export default class FighterInputComponent extends InputComponent {
     }
 
     update() {
-        // The scout enemy will always move downwards,
+        // The fighter enemy will always move downwards,
         // so we set the down property to true in the constructor
         // and do not update it in the update method.
     }
