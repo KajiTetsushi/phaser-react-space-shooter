@@ -178,7 +178,7 @@ export default class Player extends GameObjects.Container implements PlayerImple
         this.#healthComponent.reset();
         this.#powerupLevelComponent.resetLevel();
         this.#weaponComponent.updateWeaponConfig({
-            weaponCluster: 1,
+            weaponCluster: undefined,
             weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
             projectileSpeed: PLAYER_CONFIG.WEAPON.PROJECTILE_SPEED,
         });
