@@ -18,7 +18,6 @@ export default class PowerupDropSpawnerComponent {
             classType: PowerupDrop,
             runChildUpdate: true,
             createCallback: (item) => {
-                console.log('PowerupDrop created');
                 const powerupDrop = item as PowerupDrop;
                 powerupDrop.initialize(this.#eventBusComponent);
             },
