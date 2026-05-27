@@ -23,10 +23,13 @@ export default class PowerupDropSpawnerComponent {
             },
         });
 
-        this.#scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
         this.#scene.physics.world.on(Phaser.Physics.Arcade.Events.WORLD_STEP, this.worldStep, this);
 
         this.#eventBusComponent.on(CUSTOM_EVENTS.POWERUP_DESTROYED, this.spawnPowerupDrop, this);
+
+        eventBusComponent.on(CUSTOM_EVENTS.GAME_OVER, () => {
+            this.#disabled = true;
+        });
     }
 
     get spawnGroup() {
@@ -34,6 +37,10 @@ export default class PowerupDropSpawnerComponent {
     }
 
     spawnPowerupDrop(powerupEnemy: EnemyInstance) {
+        if (this.#disabled) {
+            return;
+        }
+
         const powerupDrop: PowerupDrop = this.#group.get(powerupEnemy.x, powerupEnemy.y, powerupEnemy.shipAssetKey, 0);
 
         powerupDrop.reset();
@@ -51,11 +58,5 @@ export default class PowerupDropSpawnerComponent {
                 powerupDrop.setVisible(false);
             }
         });
-    }
-
-    update() {
-        if (this.#disabled) {
-            return;
-        }
     }
 }
