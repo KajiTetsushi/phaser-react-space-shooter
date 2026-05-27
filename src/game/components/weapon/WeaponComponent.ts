@@ -77,6 +77,13 @@ export default class WeaponComponent {
         return this.#projectileGroup;
     }
 
+    updateWeaponConfig(weaponConfig: Partial<WeaponConfig>) {
+        this.#weaponConfig = {
+            ...this.#weaponConfig,
+            ...weaponConfig,
+        };
+    }
+
     /**
      * Called on each frame of the game loop to update the state of the weapon component.
      * @param delta Timestep, in milliseconds, tied to the browser `requestAnimationFrame` callback, or roughly 60 times per second.

@@ -1,4 +1,5 @@
 export const PLAYER_CONFIG = {
+    POWERUP_MAX: 4,
     LIVES: 3,
     HEALTH: 4,
     RESPAWN_DELAY: 1500,
@@ -147,6 +148,26 @@ export const ENEMY_CONFIG = {
                     '*': [500, 3000],
                 } as const,
             },
+        },
+    },
+    POWERUP: {
+        HEALTH: 1,
+        SCORE: 100,
+        SHIP_KEY: 'enemy-yellow',
+        SHIP_SCALE: 0.75,
+        HIT_SOUND: 'hit',
+        EXPLOSION_ANIMATION_KEY: 'fighter_destroy',
+        EXPLOSION_ANIMATION_SCALE: 1,
+        EXPLOSION_SOUND: 'explosion',
+        HITBOX_SIZE: {
+            WIDTH: 20,
+            HEIGHT: 20,
+        },
+        HORIZONTAL: {
+            VELOCITY: 4,
+            VELOCITY_MAX: 20,
+            DRIFT_MAX: 12,
+            DRAG: 0.01,
         },
     },
 };

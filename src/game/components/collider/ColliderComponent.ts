@@ -38,4 +38,8 @@ export default class ColliderComponent {
         this.#healthComponent.takeDamage(1);
         this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_HIT, this.#colliderConfig.hitSound);
     }
+
+    collideWithPowerup() {
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.POWERUP_COLLECTED);
+    }
 }

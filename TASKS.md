@@ -44,7 +44,7 @@
 - [x] backgrounds
 
 ## Enhancement Ideas
-- [ ] weapon powerups
+- [x] weapon powerups
 - [ ] mobile support
 - [ ] boss enemies
 - [ ] other enemy types

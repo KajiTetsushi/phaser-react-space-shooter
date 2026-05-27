@@ -4,7 +4,7 @@ export default class HealthComponent {
 
     constructor(hitPoints: number) {
         this.#initial = hitPoints;
-        this.#current = hitPoints;
+        this.#current = this.#initial;
     }
 
     get health() {
@@ -19,15 +19,19 @@ export default class HealthComponent {
         this.#current = this.#initial;
     }
 
-    takeDamage(amount: number | 'one-hit-kill' = 1) {
+    takeDamage(amount: number | 'one-hit-kill' | 'full-heal' = 1) {
         if (this.isHealthDepleted) {
             return;
         }
 
         if (amount === 'one-hit-kill') {
             this.#current = 0;
-        } else {
-            this.#current -= amount;
+        } else if (amount === 'full-heal') {
+            this.#current = this.#initial;
+        } else if (amount > 0) {
+            this.#current -= Math.min(amount, this.#current);
+        } else if (amount < 0) {
+            this.#current += Math.min(amount * -1, this.#initial - this.#current);
         }
     }
 }
