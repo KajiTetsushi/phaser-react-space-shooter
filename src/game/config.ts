@@ -5,6 +5,10 @@ export const PLAYER_CONFIG = {
     RESPAWN_DELAY: 1500,
     HIT_SOUND: 'hit',
     EXPLOSION_SOUND: 'explosion',
+    HITBOX_SIZE: {
+        WIDTH: 24,
+        HEIGHT: 24,
+    },
     HORIZONTAL: {
         VELOCITY: 20,
         VELOCITY_MAX: 200,

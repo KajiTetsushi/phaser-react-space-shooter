@@ -44,8 +44,8 @@ export default class Player extends GameObjects.Container implements PlayerImple
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if (this.body instanceof Physics.Arcade.Body) {
-            this.body.setSize(24, 24);
-            this.body.setOffset(-12, -12);
+            this.body.setSize(PLAYER_CONFIG.HITBOX_SIZE.WIDTH, PLAYER_CONFIG.HITBOX_SIZE.HEIGHT);
+            this.body.setOffset(-PLAYER_CONFIG.HITBOX_SIZE.WIDTH / 2, -PLAYER_CONFIG.HITBOX_SIZE.HEIGHT / 2);
             this.body.setCollideWorldBounds(true);
         }
         this.setDepth(2);
