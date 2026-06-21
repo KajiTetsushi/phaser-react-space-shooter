@@ -12,6 +12,7 @@ import PowerupEnemy from '../objects/enemies/PowerupEnemy';
 import ScoutEnemy from '../objects/enemies/ScoutEnemy';
 import Player from '../objects/player/Player';
 import Lives from '../objects/ui/Lives';
+import PauseGameManager from '../objects/ui/PauseGameManager';
 import Score from '../objects/ui/Score';
 
 export default class GameScene extends Scene {
@@ -242,6 +243,8 @@ export default class GameScene extends Scene {
         new Score(this, eventBusComponent);
         new Lives(this, eventBusComponent);
         new AudioManager(this, eventBusComponent);
+
+        PauseGameManager(this);
     }
 
     #createBackground() {
