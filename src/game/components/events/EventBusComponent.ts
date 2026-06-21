@@ -11,6 +11,8 @@ export const CUSTOM_EVENTS = Object.freeze({
     SHIP_EXPLOSION: 'ship_explosion',
     SHIP_HIT: 'ship_hit',
     SHIP_SHOOT: 'ship_shoot',
+    HEAL: 'heal',
+    HURT: 'hurt',
 });
 
 /**

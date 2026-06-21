@@ -132,20 +132,36 @@ export default class GameScene extends Scene {
                         return;
                     }
 
-                    this.cameras.main.shake(50, new Phaser.Math.Vector2(0, 0.01), true);
-                    // Flash the color white for 300ms
-                    const FLASH_COLOR = {
-                        R: 255,
-                        G: 10,
-                        B: 10,
-                    };
-                    this.cameras.main.flash(50, FLASH_COLOR.R, FLASH_COLOR.G, FLASH_COLOR.B, true);
-
                     enemyGameObject.weaponComponent.destroyProjectile(enemyProjectileGameObject);
                     playerGameObject.colliderComponent.collideWithEnemyProjectile();
                 },
             );
         });
+        eventBusComponent.on(
+            CUSTOM_EVENTS.HEAL,
+            () => {
+                const FLASH_COLOR = {
+                    R: 0,
+                    G: 210,
+                    B: 234,
+                };
+                this.cameras.main.flash(100, FLASH_COLOR.R, FLASH_COLOR.G, FLASH_COLOR.B, true);
+            },
+            this,
+        );
+        eventBusComponent.on(
+            CUSTOM_EVENTS.HURT,
+            () => {
+                this.cameras.main.shake(50, new Phaser.Math.Vector2(0, 0.01), true);
+                const FLASH_COLOR = {
+                    R: 255,
+                    G: 10,
+                    B: 10,
+                };
+                this.cameras.main.flash(50, FLASH_COLOR.R, FLASH_COLOR.G, FLASH_COLOR.B, true);
+            },
+            this,
+        );
         this.physics.add.overlap(
             scoutEnemySpawner.spawnGroup,
             player.projectileGroup,

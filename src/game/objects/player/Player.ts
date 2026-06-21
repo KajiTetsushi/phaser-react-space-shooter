@@ -91,7 +91,7 @@ export default class Player extends GameObjects.Container implements PlayerImple
             trajectoryFlipY: false,
             trajectoryYOffset: -20,
         });
-        this.#healthComponent = new HealthComponent(PLAYER_CONFIG.HEALTH);
+        this.#healthComponent = new HealthComponent(PLAYER_CONFIG.HEALTH, this.#eventBusComponent);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: PLAYER_CONFIG.HIT_SOUND,
         });
