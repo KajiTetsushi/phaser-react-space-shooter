@@ -120,6 +120,11 @@
                     "frameWidth": 10,
                     "frameHeight": 10
                 }
+            },
+            {
+                "type": "image",
+                "key": "enemy-yellow",
+                "url": "enemy-yellow.png"
             }
         ]
     },

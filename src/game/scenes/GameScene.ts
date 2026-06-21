@@ -2,10 +2,13 @@ import { Scene } from 'phaser';
 import EventBusComponent, { CUSTOM_EVENTS } from '../components/events/EventBusComponent';
 import EnemyDestroyedSpawnerComponent from '../components/spawners/EnemyDestroyedSpawnerComponent';
 import EnemySpawnerComponent from '../components/spawners/EnemySpawnerComponent';
+import PowerupDropSpawnerComponent from '../components/spawners/PowerupDropSpawnerComponent';
 import { ENEMY_CONFIG } from '../config';
 import AudioManager from '../objects/audio/AudioManager';
 import FighterEnemy from '../objects/enemies/FighterEnemy';
 import GunshipEnemy from '../objects/enemies/GunshipEnemy';
+import PowerupDrop from '../objects/enemies/PowerupDrop';
+import PowerupEnemy from '../objects/enemies/PowerupEnemy';
 import ScoutEnemy from '../objects/enemies/ScoutEnemy';
 import Player from '../objects/player/Player';
 import Lives from '../objects/ui/Lives';
@@ -46,6 +49,15 @@ export default class GameScene extends Scene {
             recurringInterval: ENEMY_CONFIG.GUNSHIP.SPAWN.RECURRING_INTERVAL,
             initialInterval: ENEMY_CONFIG.GUNSHIP.SPAWN.INITIAL_INTERVAL,
         });
+        const powerupEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, PowerupEnemy, {
+            maxOnScreen: 1,
+            minViewportY: ENEMY_CONFIG.POWERUP.SPAWN.MIN_VIEWPORT_Y,
+            maxViewportY: ENEMY_CONFIG.POWERUP.SPAWN.MAX_VIEWPORT_Y,
+            minViewportXBoundaryClearance: ENEMY_CONFIG.POWERUP.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
+            recurringInterval: ENEMY_CONFIG.POWERUP.SPAWN.RECURRING_INTERVAL,
+            initialInterval: ENEMY_CONFIG.POWERUP.SPAWN.INITIAL_INTERVAL,
+        });
+        const powerupDropSpawner = new PowerupDropSpawnerComponent(this, eventBusComponent);
         new EnemyDestroyedSpawnerComponent(this, eventBusComponent);
 
         // ship-to-ship and ship-to-projectile collisions
@@ -85,6 +97,19 @@ export default class GameScene extends Scene {
             playerGameObject.colliderComponent.collideWithEnemyShip();
             enemyGameObject.colliderComponent.collideWithEnemyShip();
         });
+
+        this.physics.add.overlap(player, powerupDropSpawner.spawnGroup, (playerGameObject, powerupDropGameObject) => {
+            if (!(playerGameObject instanceof Player) || !(powerupDropGameObject instanceof PowerupDrop)) {
+                return;
+            }
+
+            if (!playerGameObject.active || !powerupDropGameObject.active) {
+                return;
+            }
+
+            playerGameObject.colliderComponent.collideWithPowerup();
+            powerupDropGameObject.colliderComponent.collideWithEnemyShip();
+        });
         // NOTE: Phaser always passes an independent sprite first, followed by a sprite from a sprite group.
         // ship-to-projectile collisions
         eventBusComponent.on(CUSTOM_EVENTS.ENEMY_INIT, (enemyGameObject: Phaser.GameObjects.GameObject) => {
@@ -106,6 +131,15 @@ export default class GameScene extends Scene {
                     if (!playerGameObject.active || !enemyProjectileGameObject.active) {
                         return;
                     }
+
+                    this.cameras.main.shake(50, new Phaser.Math.Vector2(0, 0.01), true);
+                    // Flash the color white for 300ms
+                    const FLASH_COLOR = {
+                        R: 255,
+                        G: 10,
+                        B: 10,
+                    };
+                    this.cameras.main.flash(50, FLASH_COLOR.R, FLASH_COLOR.G, FLASH_COLOR.B, true);
 
                     enemyGameObject.weaponComponent.destroyProjectile(enemyProjectileGameObject);
                     playerGameObject.colliderComponent.collideWithEnemyProjectile();
@@ -156,6 +190,25 @@ export default class GameScene extends Scene {
             (enemyGameObject, playerProjectileGameObject) => {
                 if (
                     !(enemyGameObject instanceof GunshipEnemy) ||
+                    !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
+                ) {
+                    return;
+                }
+
+                if (!enemyGameObject.active || !playerProjectileGameObject.active) {
+                    return;
+                }
+
+                player.weaponComponent.destroyProjectile(playerProjectileGameObject);
+                enemyGameObject.colliderComponent.collideWithEnemyProjectile();
+            },
+        );
+        this.physics.add.overlap(
+            powerupEnemySpawner.spawnGroup,
+            player.projectileGroup,
+            (enemyGameObject, playerProjectileGameObject) => {
+                if (
+                    !(enemyGameObject instanceof PowerupEnemy) ||
                     !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
                 ) {
                     return;

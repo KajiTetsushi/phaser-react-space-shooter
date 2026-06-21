@@ -5,6 +5,7 @@ import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import KeyboardInputComponent from '../../components/input/KeyboardInputComponent';
 import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
+import PowerupLevelComponent from '../../components/powerup/PowerupLevelComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { PLAYER_CONFIG } from '../../config';
 import type { GameObjectPosition } from '../objects.types';
@@ -14,6 +15,7 @@ export default class Player extends GameObjects.Container implements PlayerImple
     #inputComponent: KeyboardInputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
     #healthComponent: HealthComponent;
+    #powerupLevelComponent: PowerupLevelComponent;
     #colliderComponent: ColliderComponent;
     #eventBusComponent: EventBusComponent;
     #weaponComponent: WeaponComponent;
@@ -42,8 +44,8 @@ export default class Player extends GameObjects.Container implements PlayerImple
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if (this.body instanceof Physics.Arcade.Body) {
-            this.body.setSize(24, 24);
-            this.body.setOffset(-12, -12);
+            this.body.setSize(PLAYER_CONFIG.HITBOX_SIZE.WIDTH, PLAYER_CONFIG.HITBOX_SIZE.HEIGHT);
+            this.body.setOffset(-PLAYER_CONFIG.HITBOX_SIZE.WIDTH / 2, -PLAYER_CONFIG.HITBOX_SIZE.HEIGHT / 2);
             this.body.setCollideWorldBounds(true);
         }
         this.setDepth(2);
@@ -56,7 +58,28 @@ export default class Player extends GameObjects.Container implements PlayerImple
             PLAYER_CONFIG.HORIZONTAL.VELOCITY_MAX,
             PLAYER_CONFIG.HORIZONTAL.DRAG,
         );
+        this.#powerupLevelComponent = new PowerupLevelComponent({
+            onLevelChange: (nextPowerupLevel) => {
+                if (nextPowerupLevel > PLAYER_CONFIG.POWERUP_MAX) {
+                    this.#healthComponent.takeDamage(-1);
+                    return;
+                }
+
+                if (nextPowerupLevel === PLAYER_CONFIG.POWERUP_MAX) {
+                    this.#weaponComponent.updateWeaponConfig({
+                        weaponCooldown: 200,
+                        projectileSpeed: 400,
+                    });
+                    return;
+                }
+
+                this.#weaponComponent.updateWeaponConfig({
+                    weaponCluster: nextPowerupLevel,
+                });
+            },
+        });
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
+            weaponClusterOffset: PLAYER_CONFIG.WEAPON.WEAPON_CLUSTER_OFFSET,
             weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
             weaponReport: PLAYER_CONFIG.WEAPON.WEAPON_REPORT,
             projectileAnimationKey: PLAYER_CONFIG.WEAPON.PROJECTILE_ANIMATION_KEY,
@@ -84,6 +107,13 @@ export default class Player extends GameObjects.Container implements PlayerImple
 
         this.#hide();
         this.#eventBusComponent.on(CUSTOM_EVENTS.PLAYER_SPAWN, this.#spawn, this);
+        this.#eventBusComponent.on(
+            CUSTOM_EVENTS.POWERUP_COLLECTED,
+            () => {
+                this.#powerupLevelComponent.incrementLevel();
+            },
+            this,
+        );
     }
 
     get colliderComponent() {
@@ -147,6 +177,12 @@ export default class Player extends GameObjects.Container implements PlayerImple
         this.#shipSprite.setTexture('ship', 0);
         this.setPosition(this.scene.scale.width / 2, this.scene.scale.height - 32);
         this.#healthComponent.reset();
+        this.#powerupLevelComponent.resetLevel();
+        this.#weaponComponent.updateWeaponConfig({
+            weaponCluster: undefined,
+            weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
+            projectileSpeed: PLAYER_CONFIG.WEAPON.PROJECTILE_SPEED,
+        });
     }
 
     #hide() {

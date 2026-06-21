@@ -41,8 +41,11 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if (this.body instanceof Physics.Arcade.Body) {
-            this.body.setSize(24, 24);
-            this.body.setOffset(-12, -12);
+            this.body.setSize(ENEMY_CONFIG.GUNSHIP.HITBOX_SIZE.WIDTH, ENEMY_CONFIG.GUNSHIP.HITBOX_SIZE.HEIGHT);
+            this.body.setOffset(
+                -ENEMY_CONFIG.GUNSHIP.HITBOX_SIZE.WIDTH / 2,
+                -ENEMY_CONFIG.GUNSHIP.HITBOX_SIZE.HEIGHT / 2,
+            );
             this.body.setCollideWorldBounds(false);
         }
         this.setDepth(2);

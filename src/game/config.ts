@@ -1,9 +1,14 @@
 export const PLAYER_CONFIG = {
+    POWERUP_MAX: 4,
     LIVES: 3,
     HEALTH: 4,
     RESPAWN_DELAY: 1500,
     HIT_SOUND: 'hit',
     EXPLOSION_SOUND: 'explosion',
+    HITBOX_SIZE: {
+        WIDTH: 24,
+        HEIGHT: 24,
+    },
     HORIZONTAL: {
         VELOCITY: 20,
         VELOCITY_MAX: 200,
@@ -12,6 +17,7 @@ export const PLAYER_CONFIG = {
     WEAPON: {
         WEAPON_COOLDOWN: 300,
         WEAPON_REPORT: 'shot2',
+        WEAPON_CLUSTER_OFFSET: 12,
         PROJECTILE_ANIMATION_KEY: 'bullet',
         PROJECTILE_HITBOX_SIZE: {
             w: 14,
@@ -19,8 +25,25 @@ export const PLAYER_CONFIG = {
         },
         PROJECTILE_LIFESPAN: 3,
         PROJECTILE_SCALE: 0.8,
-        PROJECTILE_SPAWN_POOL_SIZE: 10,
+        PROJECTILE_SPAWN_POOL_SIZE: 60,
         PROJECTILE_SPEED: 300,
+    },
+};
+
+export const POWERUP_DROP_CONFIG = {
+    HEALTH: 1,
+    SCORE: 100,
+    // TODO: Sprite.
+    SHIP_KEY: 'powerup',
+    HIT_SOUND: 'hit',
+    HITBOX_SIZE: {
+        WIDTH: 24,
+        HEIGHT: 24,
+    },
+    VERTICAL: {
+        VELOCITY: 10,
+        VELOCITY_MAX: 100,
+        DRAG: 0.01,
     },
 };
 
@@ -147,6 +170,34 @@ export const ENEMY_CONFIG = {
                     '*': [500, 3000],
                 } as const,
             },
+        },
+    },
+    POWERUP: {
+        HEALTH: 1,
+        SCORE: 100,
+        SHIP_KEY: 'enemy-yellow',
+        SHIP_SCALE: 0.75,
+        HIT_SOUND: 'hit',
+        EXPLOSION_ANIMATION_KEY: 'fighter_destroy',
+        EXPLOSION_ANIMATION_SCALE: 1,
+        EXPLOSION_SOUND: 'explosion',
+        HITBOX_SIZE: {
+            WIDTH: 20,
+            HEIGHT: 20,
+        },
+        HORIZONTAL: {
+            VELOCITY: 4,
+            VELOCITY_MAX: 20,
+            DRIFT_MAX: 12,
+            DRAG: 0.01,
+        },
+        SPAWN: {
+            MAX_ON_SCREEN: 2,
+            MIN_VIEWPORT_Y: 50,
+            MAX_VIEWPORT_Y: 100,
+            MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
+            RECURRING_INTERVAL: 4000,
+            INITIAL_INTERVAL: 5000,
         },
     },
 };

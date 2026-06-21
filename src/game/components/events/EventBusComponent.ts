@@ -3,6 +3,8 @@ import { Events } from 'phaser';
 export const CUSTOM_EVENTS = Object.freeze({
     ENEMY_INIT: 'enemy_init',
     ENEMY_DESTROYED: 'enemy_destroyed',
+    POWERUP_DESTROYED: 'powerup_destroyed',
+    POWERUP_COLLECTED: 'powerup_collected',
     PLAYER_SPAWN: 'player_spawn',
     PLAYER_DESTROYED: 'player_destroyed',
     GAME_OVER: 'game_over',
