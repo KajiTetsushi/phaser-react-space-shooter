@@ -52,4 +52,5 @@
 - [ ] high scores
 - [ ] increased difficulty (score or time based)
 - [ ] spawn with shield or be invulnable for period of time
+- [ ] pause game
 - [ ] title, options, and credits scenes
