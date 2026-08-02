@@ -7,6 +7,7 @@ import FighterInputComponent from '../../components/input/bots/FighterInputCompo
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
+import assert from '../../utils/assert';
 import type { EnemyImplementable } from './enemies.types';
 
 export default class FighterEnemy extends GameObjects.Container implements EnemyImplementable {
@@ -39,14 +40,14 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
 
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
-        if (this.body instanceof Physics.Arcade.Body) {
-            this.body.setSize(ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.WIDTH, ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.HEIGHT);
-            this.body.setOffset(
-                -ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.WIDTH / 2,
-                -ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.HEIGHT / 2,
-            );
-            this.body.setCollideWorldBounds(false);
-        }
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        body.setSize(ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.WIDTH, ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.HEIGHT);
+        body.setOffset(-ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.WIDTH / 2, -ENEMY_CONFIG.FIGHTER.HITBOX_SIZE.HEIGHT / 2);
+        body.setCollideWorldBounds(false);
+
         this.setDepth(2);
 
         this.scene.events.on(Scenes.Events.UPDATE, this.update, this);

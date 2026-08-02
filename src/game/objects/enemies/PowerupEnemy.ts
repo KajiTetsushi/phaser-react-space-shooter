@@ -1,3 +1,5 @@
+import { GameObjects, Math as PhaserMath, Physics, type Scene, Scenes } from 'phaser';
+
 import ColliderComponent from '../../components/collider/ColliderComponent';
 import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
@@ -5,24 +7,25 @@ import HealthComponent from '../../components/health/HealthComponent';
 import PowerupInputComponent from '../../components/input/bots/PowerupInputComponent';
 import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import { ENEMY_CONFIG } from '../../config';
+import assert from '../../utils/assert';
 import type { EnemyImplementable } from './enemies.types';
 
-export default class PowerupEnemy extends Phaser.GameObjects.Container implements EnemyImplementable {
+export default class PowerupEnemy extends GameObjects.Container implements EnemyImplementable {
     #isInitialized = false;
     #eventBusComponent: EventBusComponent;
     #inputComponent: PowerupInputComponent;
     #horizontalMovementComponent: HorizontalMovementComponent;
     #healthComponent: HealthComponent;
     #colliderComponent: ColliderComponent;
-    #shipSprite: Phaser.GameObjects.Sprite;
+    #shipSprite: GameObjects.Sprite;
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
+    constructor(scene: Scene, x: number, y: number) {
         super(scene, x, y, []);
 
         this.#shipSprite = scene.add
             .sprite(0, 0, ENEMY_CONFIG.POWERUP.SHIP_KEY)
             .setScale(ENEMY_CONFIG.POWERUP.SHIP_SCALE)
-            .setRotation(Phaser.Math.DegToRad(-90));
+            .setRotation(PhaserMath.DegToRad(-90));
         this.add([
             // Ship is on top, so it's added last.
             this.#shipSprite,
@@ -30,21 +33,21 @@ export default class PowerupEnemy extends Phaser.GameObjects.Container implement
 
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
-        if (this.body instanceof Phaser.Physics.Arcade.Body) {
-            this.body.setSize(ENEMY_CONFIG.POWERUP.HITBOX_SIZE.WIDTH, ENEMY_CONFIG.POWERUP.HITBOX_SIZE.HEIGHT);
-            this.body.setOffset(
-                -ENEMY_CONFIG.POWERUP.HITBOX_SIZE.WIDTH / 2,
-                -ENEMY_CONFIG.POWERUP.HITBOX_SIZE.HEIGHT / 2,
-            );
-            this.body.setCollideWorldBounds(false);
-        }
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        body.setSize(ENEMY_CONFIG.POWERUP.HITBOX_SIZE.WIDTH, ENEMY_CONFIG.POWERUP.HITBOX_SIZE.HEIGHT);
+        body.setOffset(-ENEMY_CONFIG.POWERUP.HITBOX_SIZE.WIDTH / 2, -ENEMY_CONFIG.POWERUP.HITBOX_SIZE.HEIGHT / 2);
+        body.setCollideWorldBounds(false);
+
         this.setDepth(2);
 
-        this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+        this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
-            Phaser.Scenes.Events.DESTROY,
+            Scenes.Events.DESTROY,
             () => {
-                this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
+                this.scene.events.off(Scenes.Events.UPDATE, this.update, this);
             },
             this,
         );

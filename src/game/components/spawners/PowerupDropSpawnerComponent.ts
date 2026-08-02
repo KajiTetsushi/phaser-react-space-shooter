@@ -1,20 +1,22 @@
+import { type GameObjects, Math as PhaserMath, Physics, type Scene } from 'phaser';
+
 import type { EnemyInstance } from '../../objects/enemies/enemies.types';
 import PowerupDrop from '../../objects/enemies/PowerupDrop';
 import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 
 export default class PowerupDropSpawnerComponent {
-    #scene: Phaser.Scene;
+    #scene: Scene;
     #eventBusComponent: EventBusComponent;
-    #group: Phaser.GameObjects.Group;
+    #group: GameObjects.Group;
     #disabled = false;
 
-    constructor(scene: Phaser.Scene, eventBusComponent: EventBusComponent) {
+    constructor(scene: Scene, eventBusComponent: EventBusComponent) {
         this.#scene = scene;
         this.#eventBusComponent = eventBusComponent;
 
         this.#group = this.#scene.add.group({
-            name: `${this.constructor.name}-${Phaser.Math.RND.uuid()}`,
+            name: `${this.constructor.name}-${PhaserMath.RND.uuid()}`,
             classType: PowerupDrop,
             runChildUpdate: true,
             createCallback: (item) => {
@@ -23,7 +25,7 @@ export default class PowerupDropSpawnerComponent {
             },
         });
 
-        this.#scene.physics.world.on(Phaser.Physics.Arcade.Events.WORLD_STEP, this.worldStep, this);
+        this.#scene.physics.world.on(Physics.Arcade.Events.WORLD_STEP, this.worldStep, this);
 
         this.#eventBusComponent.on(CUSTOM_EVENTS.POWERUP_DESTROYED, this.spawnPowerupDrop, this);
 

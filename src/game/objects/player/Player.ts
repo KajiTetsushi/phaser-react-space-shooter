@@ -1,4 +1,5 @@
 import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
+
 import ColliderComponent from '../../components/collider/ColliderComponent';
 import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
@@ -8,6 +9,7 @@ import HorizontalMovementComponent from '../../components/movement/HorizontalMov
 import PowerupLevelComponent from '../../components/powerup/PowerupLevelComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { PLAYER_CONFIG } from '../../config';
+import assert from '../../utils/assert';
 import type { GameObjectPosition } from '../objects.types';
 import type { PlayerImplementable } from './player.types';
 
@@ -43,11 +45,14 @@ export default class Player extends GameObjects.Container implements PlayerImple
 
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
-        if (this.body instanceof Physics.Arcade.Body) {
-            this.body.setSize(PLAYER_CONFIG.HITBOX_SIZE.WIDTH, PLAYER_CONFIG.HITBOX_SIZE.HEIGHT);
-            this.body.setOffset(-PLAYER_CONFIG.HITBOX_SIZE.WIDTH / 2, -PLAYER_CONFIG.HITBOX_SIZE.HEIGHT / 2);
-            this.body.setCollideWorldBounds(true);
-        }
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        body.setSize(PLAYER_CONFIG.HITBOX_SIZE.WIDTH, PLAYER_CONFIG.HITBOX_SIZE.HEIGHT);
+        body.setOffset(-PLAYER_CONFIG.HITBOX_SIZE.WIDTH / 2, -PLAYER_CONFIG.HITBOX_SIZE.HEIGHT / 2);
+        body.setCollideWorldBounds(true);
+
         this.setDepth(2);
 
         this.#inputComponent = new KeyboardInputComponent(this.scene);
