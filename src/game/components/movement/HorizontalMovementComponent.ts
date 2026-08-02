@@ -1,5 +1,6 @@
 import { type GameObjects, Physics } from 'phaser';
 
+import assert from '../../utils/assert';
 import type InputComponent from '../input/InputComponent';
 
 export default class HorizontalMovementComponent {
@@ -22,29 +23,32 @@ export default class HorizontalMovementComponent {
         this.#maxVelocity = maxVelocity;
         this.#drag = drag;
 
-        if (this.#gameObject.body instanceof Physics.Arcade.Body) {
-            this.#gameObject.body.setDamping(true);
-            this.#gameObject.body.setDrag(this.#drag);
-            this.#gameObject.body.setMaxVelocity(this.#maxVelocity);
-        }
+        const { body } = this.#gameObject;
+        assert(body instanceof Physics.Arcade.Body, 'body is not valid body type');
+
+        body.setDamping(true);
+        body.setDrag(this.#drag);
+        body.setMaxVelocity(this.#maxVelocity);
     }
 
     reset() {
-        if (this.#gameObject.body instanceof Physics.Arcade.Body) {
-            this.#gameObject.body.setVelocity(0, 0);
-            this.#gameObject.body.setAngularAcceleration(0);
-        }
+        const { body } = this.#gameObject;
+        assert(body instanceof Physics.Arcade.Body, 'body is not valid body type');
+
+        body.setVelocity(0, 0);
+        body.setAngularAcceleration(0);
     }
 
     update() {
-        if (this.#gameObject.body instanceof Physics.Arcade.Body) {
-            if (this.#inputComponent.leftIsDown) {
-                this.#gameObject.body.velocity.x -= this.#velocity;
-            } else if (this.#inputComponent.rightIsDown) {
-                this.#gameObject.body.velocity.x += this.#velocity;
-            } else {
-                this.#gameObject.body.setAngularAcceleration(0);
-            }
+        const { body } = this.#gameObject;
+        assert(body instanceof Physics.Arcade.Body, 'body is not valid body type');
+
+        if (this.#inputComponent.leftIsDown) {
+            body.velocity.x -= this.#velocity;
+        } else if (this.#inputComponent.rightIsDown) {
+            body.velocity.x += this.#velocity;
+        } else {
+            body.setAngularAcceleration(0);
         }
     }
 }

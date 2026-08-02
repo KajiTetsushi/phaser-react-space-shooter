@@ -1,4 +1,5 @@
-import { Scene } from 'phaser';
+import { type GameObjects, Math as PhaserMath, Physics, Scene } from 'phaser';
+
 import EventBusComponent, { CUSTOM_EVENTS } from '../components/events/EventBusComponent';
 import EnemyDestroyedSpawnerComponent from '../components/spawners/EnemyDestroyedSpawnerComponent';
 import EnemySpawnerComponent from '../components/spawners/EnemySpawnerComponent';
@@ -113,7 +114,7 @@ export default class GameScene extends Scene {
         });
         // NOTE: Phaser always passes an independent sprite first, followed by a sprite from a sprite group.
         // ship-to-projectile collisions
-        eventBusComponent.on(CUSTOM_EVENTS.ENEMY_INIT, (enemyGameObject: Phaser.GameObjects.GameObject) => {
+        eventBusComponent.on(CUSTOM_EVENTS.ENEMY_INIT, (enemyGameObject: GameObjects.GameObject) => {
             if (!(enemyGameObject instanceof FighterEnemy) && !(enemyGameObject instanceof GunshipEnemy)) {
                 return;
             }
@@ -124,7 +125,7 @@ export default class GameScene extends Scene {
                 (playerGameObject, enemyProjectileGameObject) => {
                     if (
                         !(playerGameObject instanceof Player) ||
-                        !(enemyProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
+                        !(enemyProjectileGameObject instanceof Physics.Arcade.Sprite)
                     ) {
                         return;
                     }
@@ -153,7 +154,7 @@ export default class GameScene extends Scene {
         eventBusComponent.on(
             CUSTOM_EVENTS.HURT,
             () => {
-                this.cameras.main.shake(50, new Phaser.Math.Vector2(0, 0.01), true);
+                this.cameras.main.shake(50, new PhaserMath.Vector2(0, 0.01), true);
                 const FLASH_COLOR = {
                     R: 255,
                     G: 10,
@@ -169,7 +170,7 @@ export default class GameScene extends Scene {
             (enemyGameObject, playerProjectileGameObject) => {
                 if (
                     !(enemyGameObject instanceof ScoutEnemy) ||
-                    !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
+                    !(playerProjectileGameObject instanceof Physics.Arcade.Sprite)
                 ) {
                     return;
                 }
@@ -188,7 +189,7 @@ export default class GameScene extends Scene {
             (enemyGameObject, playerProjectileGameObject) => {
                 if (
                     !(enemyGameObject instanceof FighterEnemy) ||
-                    !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
+                    !(playerProjectileGameObject instanceof Physics.Arcade.Sprite)
                 ) {
                     return;
                 }
@@ -207,7 +208,7 @@ export default class GameScene extends Scene {
             (enemyGameObject, playerProjectileGameObject) => {
                 if (
                     !(enemyGameObject instanceof GunshipEnemy) ||
-                    !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
+                    !(playerProjectileGameObject instanceof Physics.Arcade.Sprite)
                 ) {
                     return;
                 }
@@ -226,7 +227,7 @@ export default class GameScene extends Scene {
             (enemyGameObject, playerProjectileGameObject) => {
                 if (
                     !(enemyGameObject instanceof PowerupEnemy) ||
-                    !(playerProjectileGameObject instanceof Phaser.Physics.Arcade.Sprite)
+                    !(playerProjectileGameObject instanceof Physics.Arcade.Sprite)
                 ) {
                     return;
                 }

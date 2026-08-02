@@ -1,4 +1,5 @@
 import { type GameObjects, Math as MathUtils } from 'phaser';
+
 import type {
     GameObjectImplementable,
     GameObjectPosition,
