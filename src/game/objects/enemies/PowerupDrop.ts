@@ -1,12 +1,15 @@
+import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
+
 import ColliderComponent from '../../components/collider/ColliderComponent';
 import type EventBusComponent from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import PowerupDropInputComponent from '../../components/input/bots/PowerupDropInputComponent';
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
 import { POWERUP_DROP_CONFIG } from '../../config';
+import assert from '../../utils/assert';
 import type { GameObjectImplementable, GameObjectPosition } from '../objects.types';
 
-export default class PowerupDrop extends Phaser.GameObjects.Container implements GameObjectImplementable {
+export default class PowerupDrop extends GameObjects.Container implements GameObjectImplementable {
     #isInitialized = false;
     #eventBusComponent: EventBusComponent;
     #inputComponent: PowerupDropInputComponent;
@@ -14,7 +17,7 @@ export default class PowerupDrop extends Phaser.GameObjects.Container implements
     #healthComponent: HealthComponent;
     #colliderComponent: ColliderComponent;
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
+    constructor(scene: Scene, x: number, y: number) {
         super(scene, x, y, []);
 
         const powerupSprite = scene.add.sprite(0, 0, POWERUP_DROP_CONFIG.SHIP_KEY).setScale(0.5);
@@ -22,21 +25,21 @@ export default class PowerupDrop extends Phaser.GameObjects.Container implements
 
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
-        if (this.body instanceof Phaser.Physics.Arcade.Body) {
-            this.body.setSize(POWERUP_DROP_CONFIG.HITBOX_SIZE.WIDTH, POWERUP_DROP_CONFIG.HITBOX_SIZE.HEIGHT);
-            this.body.setOffset(
-                -POWERUP_DROP_CONFIG.HITBOX_SIZE.WIDTH / 2,
-                -POWERUP_DROP_CONFIG.HITBOX_SIZE.HEIGHT / 2,
-            );
-            this.body.setCollideWorldBounds(false);
-        }
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        body.setSize(POWERUP_DROP_CONFIG.HITBOX_SIZE.WIDTH, POWERUP_DROP_CONFIG.HITBOX_SIZE.HEIGHT);
+        body.setOffset(-POWERUP_DROP_CONFIG.HITBOX_SIZE.WIDTH / 2, -POWERUP_DROP_CONFIG.HITBOX_SIZE.HEIGHT / 2);
+        body.setCollideWorldBounds(false);
+
         this.setDepth(2);
 
-        this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+        this.scene.events.on(Scenes.Events.UPDATE, this.update, this);
         this.once(
-            Phaser.Scenes.Events.DESTROY,
+            Scenes.Events.DESTROY,
             () => {
-                this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
+                this.scene.events.off(Scenes.Events.UPDATE, this.update, this);
             },
             this,
         );

@@ -1,4 +1,6 @@
 import { GameObjects, Math as MathUtils, Physics } from 'phaser';
+
+import assert from '../../utils/assert';
 import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 import type InputComponent from '../input/InputComponent';
@@ -134,13 +136,13 @@ export default class WeaponComponent {
         const x = this.#gameObject.x + xOffset;
         const y = this.#gameObject.y + this.#weaponConfig.trajectoryYOffset;
         projectile.enableBody(true, x, y, true, true);
-        if (projectile.body instanceof Physics.Arcade.Body) {
-            projectile.body.velocity.y -= this.#weaponConfig.projectileSpeed;
-            projectile.body.setSize(
-                this.#weaponConfig.projectileHitboxSize.w,
-                this.#weaponConfig.projectileHitboxSize.h,
-            );
-        }
+
+        const { body } = projectile;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        body.velocity.y -= this.#weaponConfig.projectileSpeed;
+        body.setSize(this.#weaponConfig.projectileHitboxSize.w, this.#weaponConfig.projectileHitboxSize.h);
+
         projectile.setState(this.#weaponConfig.projectileLifespan);
         projectile.play(this.#weaponConfig.projectileAnimationKey);
         projectile.setScale(this.#weaponConfig.projectileScale);

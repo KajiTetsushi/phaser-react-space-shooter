@@ -1,4 +1,5 @@
-import { GameObjects } from 'phaser';
+import { GameObjects, type Scene } from 'phaser';
+
 import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import type { EnemyInstance } from '../enemies/enemies.types';
@@ -7,7 +8,7 @@ export default class Score extends GameObjects.Text {
     #score: number;
     #eventBusComponent: EventBusComponent;
 
-    constructor(scene: Phaser.Scene, eventBusComponent: EventBusComponent) {
+    constructor(scene: Scene, eventBusComponent: EventBusComponent) {
         super(scene, scene.scale.width / 2, 20, '0', {
             fontSize: '24px',
             color: '#ff2f66',
