@@ -5,7 +5,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import KeyboardInputComponent from '../../components/input/KeyboardInputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
+import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent2';
 import PowerupLevelComponent from '../../components/powerup/PowerupLevelComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { PLAYER_CONFIG } from '../../config';
@@ -56,13 +56,11 @@ export default class Player extends GameObjects.Container implements PlayerImple
         this.setDepth(2);
 
         this.#inputComponent = new KeyboardInputComponent(this.scene);
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(
-            this,
-            this.#inputComponent,
-            PLAYER_CONFIG.HORIZONTAL.VELOCITY,
-            PLAYER_CONFIG.HORIZONTAL.VELOCITY_MAX,
-            PLAYER_CONFIG.HORIZONTAL.DRAG,
-        );
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
+            velocity: PLAYER_CONFIG.HORIZONTAL.VELOCITY,
+            maxVelocity: PLAYER_CONFIG.HORIZONTAL.VELOCITY_MAX,
+            drag: PLAYER_CONFIG.HORIZONTAL.DRAG,
+        });
         this.#powerupLevelComponent = new PowerupLevelComponent({
             onLevelChange: (nextPowerupLevel) => {
                 if (nextPowerupLevel > PLAYER_CONFIG.POWERUP_MAX) {
