@@ -63,8 +63,8 @@ export const ENEMY_CONFIG = {
             HEIGHT: 24,
         },
         HORIZONTAL: {
-            VELOCITY: 12,
-            VELOCITY_MAX: 120,
+            VELOCITY_INCREMENT: 12,
+            VELOCITY_MAXIMUM: 120,
             DRIFT_MAX: 40,
             DRAG: 0.01,
         },
@@ -134,8 +134,8 @@ export const ENEMY_CONFIG = {
             HEIGHT: 24,
         },
         HORIZONTAL: {
-            VELOCITY: 2,
-            VELOCITY_MAX: 16,
+            VELOCITY_INCREMENT: 2,
+            VELOCITY_MAXIMUM: 16,
             DRIFT_MAX: 12,
             DRAG: 0.01,
         },
@@ -184,8 +184,8 @@ export const ENEMY_CONFIG = {
             HEIGHT: 20,
         },
         HORIZONTAL: {
-            VELOCITY: 4,
-            VELOCITY_MAX: 20,
+            VELOCITY_INCREMENT: 4,
+            VELOCITY_MAXIMUM: 20,
             DRIFT_MAX: 12,
             DRAG: 0.01,
         },

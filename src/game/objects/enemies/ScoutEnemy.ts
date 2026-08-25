@@ -109,8 +109,8 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
         assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
 
         this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
-            velocity: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY,
-            maxVelocity: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_MAX,
+            velocityIncrement: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_INCREMENT,
+            velocityMaximum: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_MAXIMUM,
             drag: ENEMY_CONFIG.SCOUT.HORIZONTAL.DRAG,
         });
         this.#verticalMovementComponent = new VerticalMovementComponent(

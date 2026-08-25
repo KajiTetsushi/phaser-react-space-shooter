@@ -131,8 +131,8 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
         assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
 
         this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
-            velocity: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY,
-            maxVelocity: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_MAX,
+            velocityIncrement: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_INCREMENT,
+            velocityMaximum: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_MAXIMUM,
             drag: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.DRAG,
         });
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.GUNSHIP.HEALTH);

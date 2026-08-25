@@ -2,11 +2,34 @@ import type { Physics } from 'phaser';
 
 import type InputComponent from '../input/InputComponent';
 
-type MovementComponentConfig = {
+interface MovementComponentConfigInertialess {
+    /**
+     * Fixed value of how fast the object will move in the given direction.
+     */
     velocity: number;
-    maxVelocity?: number;
+}
+
+interface MovementComponentConfigPhysical {
+    /**
+     * A value to increase, per frame, of how fast the object will move in the given direction.
+     */
+    velocityIncrement?: number;
+    /**
+     * An upper limit value to how fast the object can increase to in the given direction.
+     */
+    velocityMaximum?: number;
+    /**
+     * A value to set the amount of directional slow down in pixels per second when the directional control is released.
+     */
     drag?: number;
-};
+}
+
+type MovementComponentConfig = MovementComponentConfigInertialess | MovementComponentConfigPhysical;
+
+const DIRECTION = {
+    LEFT: -1,
+    RIGHT: +1,
+} as const;
 
 export default class HorizontalMovementComponent {
     #body: Physics.Arcade.Body;
@@ -17,17 +40,6 @@ export default class HorizontalMovementComponent {
         this.#body = body;
         this.#inputComponent = inputComponent;
         this.#config = config;
-
-        const { drag, maxVelocity, velocity } = this.#config;
-
-        this.#body.setMaxVelocityX(maxVelocity ?? velocity);
-
-        if (typeof drag !== 'number') {
-            return;
-        }
-
-        this.#body.setDragX(drag);
-        this.#body.setDamping(true);
     }
 
     reset() {
@@ -36,6 +48,7 @@ export default class HorizontalMovementComponent {
     }
 
     update() {
+        this.updateMovementType();
         if (this.#inputComponent.leftIsDown) {
             this.pushLeft();
         } else if (this.#inputComponent.rightIsDown) {
@@ -45,29 +58,43 @@ export default class HorizontalMovementComponent {
         }
     }
 
+    private updateMovementType() {
+        if ('velocity' in this.#config) {
+            return;
+        }
+
+        const { velocityMaximum = 0, drag = 0 } = this.#config;
+
+        this.#body.setMaxVelocityX(velocityMaximum);
+        this.#body.setDragX(drag);
+        this.#body.setDamping(!!drag);
+    }
+
     private pushLeft() {
-        const { velocity, maxVelocity } = this.#config;
-        if (typeof maxVelocity === 'number') {
-            this.#body.setVelocityX(this.#body.velocity.x - velocity);
+        if ('velocity' in this.#config) {
+            const { velocity } = this.#config;
+            this.#body.setVelocityX(velocity * DIRECTION.LEFT);
         } else {
-            this.#body.setVelocityX(velocity * -1);
+            const { velocityIncrement = 0 } = this.#config;
+            this.#body.setVelocityX(this.#body.velocity.x + velocityIncrement * DIRECTION.LEFT);
         }
     }
 
     private pushRight() {
-        const { velocity, maxVelocity } = this.#config;
-        if (typeof maxVelocity === 'number') {
-            this.#body.setVelocityX(this.#body.velocity.x + velocity);
+        if ('velocity' in this.#config) {
+            const { velocity } = this.#config;
+            this.#body.setVelocityX(velocity * DIRECTION.RIGHT);
         } else {
-            this.#body.setVelocityX(velocity * +1);
+            const { velocityIncrement = 0 } = this.#config;
+            this.#body.setVelocityX(this.#body.velocity.x + velocityIncrement * DIRECTION.RIGHT);
         }
     }
 
     private stopPush() {
-        if (typeof this.#config.maxVelocity === 'number') {
-            this.#body.setAccelerationX(0);
-        } else {
+        if ('velocity' in this.#config) {
             this.#body.setVelocityX(0);
+        } else {
+            this.#body.setAccelerationX(0);
         }
     }
 }
