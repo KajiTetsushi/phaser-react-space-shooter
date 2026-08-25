@@ -55,11 +55,11 @@ export default class GunshipInputComponent extends InputComponent {
         this.#fireInterval -= delta;
 
         if (this.#fireInterval > 0) {
-            this.shoot = false;
+            this.setShoot(false);
             return;
         }
 
-        this.shoot = true;
+        this.setShoot(true);
 
         this.#fireInterval = MathUtils.RND.integerInRange(...this.getFireIntervalRange());
     }

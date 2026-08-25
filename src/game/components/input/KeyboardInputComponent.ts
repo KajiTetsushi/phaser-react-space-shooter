@@ -34,7 +34,7 @@ export default class KeyboardInputComponent extends InputComponent {
 
         this.setXDirection(this.selectedXDirection);
         this.setYDirection(this.selectedYDirection);
-        this.shoot = this.#cursorKeys.space.isDown;
+        this.setShoot(this.#cursorKeys.space.isDown);
     }
 
     get selectedXDirection(): XDirection {

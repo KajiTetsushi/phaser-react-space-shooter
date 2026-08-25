@@ -4,7 +4,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import FighterInputComponent from '../../components/input/bots/FighterInputComponent';
-import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
+import MovementComponent from '../../components/movement/MovementComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
 import assert from '../../utils/assert';
@@ -14,7 +14,7 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
     #isInitialized = false;
     #eventBusComponent: EventBusComponent;
     #inputComponent: FighterInputComponent;
-    #verticalMovementComponent: VerticalMovementComponent;
+    #movementComponent: MovementComponent;
     #healthComponent: HealthComponent;
     #colliderComponent: ColliderComponent;
     #weaponComponent: WeaponComponent;
@@ -111,26 +111,16 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
         const { body } = this;
         assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
 
-        this.#verticalMovementComponent = new VerticalMovementComponent(body, this.#inputComponent, {
-            velocityIncrement: ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY_INCREMENT,
-            velocityMaximum: ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY_MAXIMUM,
-            drag: ENEMY_CONFIG.FIGHTER.VERTICAL.DRAG,
-        });
-        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
-            weaponCooldown: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_COOLDOWN,
-            weaponReport: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_REPORT,
-            projectileAnimationKey: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_ANIMATION_KEY,
-            projectileHitboxSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_HITBOX_SIZE,
-            projectileScale: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SCALE,
-            projectileSpeed: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPEED,
-            projectileLifespan: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_LIFESPAN,
-            projectileSpawnPoolSize: ENEMY_CONFIG.FIGHTER.WEAPON.PROJECTILE_SPAWN_POOL_SIZE,
-            trajectoryFlipY: true,
-            trajectoryYOffset: 10,
-        });
+        this.#movementComponent = new MovementComponent(body, this.#inputComponent, ENEMY_CONFIG.FIGHTER.movement);
+        this.#weaponComponent = new WeaponComponent(
+            this,
+            this.#inputComponent,
+            this.#eventBusComponent,
+            ENEMY_CONFIG.FIGHTER.weapon!,
+        );
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.FIGHTER.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
-            hitSound: ENEMY_CONFIG.SCOUT.HIT_SOUND,
+            hitSound: ENEMY_CONFIG.FIGHTER.HIT_SOUND,
         });
         this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this);
     }
@@ -139,7 +129,7 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
         this.setActive(true);
         this.setVisible(true);
         this.#healthComponent.reset();
-        this.#verticalMovementComponent.reset();
+        this.#movementComponent.reset();
     }
 
     update(_timestamp: number, delta: number) {
@@ -156,7 +146,7 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
         }
 
         this.#inputComponent.update();
-        this.#verticalMovementComponent.update();
+        this.#movementComponent.update();
         this.#weaponComponent.update(delta);
     }
 
