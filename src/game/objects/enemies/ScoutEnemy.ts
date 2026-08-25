@@ -113,13 +113,11 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
             velocityMaximum: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_MAXIMUM,
             drag: ENEMY_CONFIG.SCOUT.HORIZONTAL.DRAG,
         });
-        this.#verticalMovementComponent = new VerticalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY,
-            ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_MAX,
-            ENEMY_CONFIG.SCOUT.VERTICAL.DRAG,
-        );
+        this.#verticalMovementComponent = new VerticalMovementComponent(body, this.#inputComponent, {
+            velocityIncrement: ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_INCREMENT,
+            velocityMaximum: ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_MAXIMUM,
+            drag: ENEMY_CONFIG.SCOUT.VERTICAL.DRAG,
+        });
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.SCOUT.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: ENEMY_CONFIG.SCOUT.HIT_SOUND,

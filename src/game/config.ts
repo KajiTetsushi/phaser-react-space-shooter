@@ -39,8 +39,8 @@ export const POWERUP_DROP_CONFIG = {
         HEIGHT: 24,
     },
     VERTICAL: {
-        VELOCITY: 10,
-        VELOCITY_MAX: 100,
+        VELOCITY_INCREMENT: 10,
+        VELOCITY_MAXIMUM: 100,
         DRAG: 0.01,
     },
 };
@@ -69,8 +69,8 @@ export const ENEMY_CONFIG = {
             DRAG: 0.01,
         },
         VERTICAL: {
-            VELOCITY: 10,
-            VELOCITY_MAX: 100,
+            VELOCITY_INCREMENT: 10,
+            VELOCITY_MAXIMUM: 100,
             DRAG: 0.01,
         },
         SPAWN: {
@@ -95,8 +95,8 @@ export const ENEMY_CONFIG = {
             HEIGHT: 24,
         },
         VERTICAL: {
-            VELOCITY: 12,
-            VELOCITY_MAX: 120,
+            VELOCITY_INCREMENT: 12,
+            VELOCITY_MAXIMUM: 120,
             DRAG: 0.01,
         },
         WEAPON: {
