@@ -5,7 +5,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import KeyboardInputComponent from '../../components/input/KeyboardInputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent2';
+import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import PowerupLevelComponent from '../../components/powerup/PowerupLevelComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { PLAYER_CONFIG } from '../../config';

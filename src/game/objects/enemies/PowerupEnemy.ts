@@ -5,7 +5,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import PowerupInputComponent from '../../components/input/bots/PowerupInputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent2';
+import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import { ENEMY_CONFIG } from '../../config';
 import assert from '../../utils/assert';
 import type { EnemyImplementable } from './enemies.types';

@@ -5,7 +5,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import GunshipInputComponent from '../../components/input/bots/GunshipInputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent2';
+import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
 import assert from '../../utils/assert';
