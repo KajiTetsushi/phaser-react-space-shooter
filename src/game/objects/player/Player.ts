@@ -58,8 +58,6 @@ export default class Player extends GameObjects.Container implements PlayerImple
         this.#inputComponent = new KeyboardInputComponent(this.scene);
         this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
             velocity: PLAYER_CONFIG.HORIZONTAL.VELOCITY,
-            maxVelocity: PLAYER_CONFIG.HORIZONTAL.VELOCITY_MAX,
-            drag: PLAYER_CONFIG.HORIZONTAL.DRAG,
         });
         this.#powerupLevelComponent = new PowerupLevelComponent({
             onLevelChange: (nextPowerupLevel) => {

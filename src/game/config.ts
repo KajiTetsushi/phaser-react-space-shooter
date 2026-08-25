@@ -10,9 +10,7 @@ export const PLAYER_CONFIG = {
         HEIGHT: 24,
     },
     HORIZONTAL: {
-        VELOCITY: 20,
-        VELOCITY_MAX: 200,
-        DRAG: 0.01,
+        VELOCITY: 200,
     },
     WEAPON: {
         WEAPON_COOLDOWN: 300,
