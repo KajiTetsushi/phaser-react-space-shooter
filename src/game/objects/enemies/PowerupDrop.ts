@@ -60,14 +60,15 @@ export default class PowerupDrop extends GameObjects.Container implements GameOb
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
         this.#inputComponent = new PowerupDropInputComponent();
-        this.#verticalMovementComponent = new VerticalMovementComponent(
-            this,
-            this.#inputComponent,
-            // TODO: Powerup config
-            POWERUP_DROP_CONFIG.VERTICAL.VELOCITY,
-            POWERUP_DROP_CONFIG.VERTICAL.VELOCITY_MAX,
-            POWERUP_DROP_CONFIG.VERTICAL.DRAG,
-        );
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        this.#verticalMovementComponent = new VerticalMovementComponent(body, this.#inputComponent, {
+            velocityIncrement: POWERUP_DROP_CONFIG.VERTICAL.VELOCITY_INCREMENT,
+            velocityMaximum: POWERUP_DROP_CONFIG.VERTICAL.VELOCITY_MAXIMUM,
+            drag: POWERUP_DROP_CONFIG.VERTICAL.DRAG,
+        });
         this.#healthComponent = new HealthComponent(POWERUP_DROP_CONFIG.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: POWERUP_DROP_CONFIG.HIT_SOUND,

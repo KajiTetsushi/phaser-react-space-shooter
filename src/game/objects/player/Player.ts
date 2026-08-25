@@ -56,13 +56,9 @@ export default class Player extends GameObjects.Container implements PlayerImple
         this.setDepth(2);
 
         this.#inputComponent = new KeyboardInputComponent(this.scene);
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(
-            this,
-            this.#inputComponent,
-            PLAYER_CONFIG.HORIZONTAL.VELOCITY,
-            PLAYER_CONFIG.HORIZONTAL.VELOCITY_MAX,
-            PLAYER_CONFIG.HORIZONTAL.DRAG,
-        );
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
+            velocity: PLAYER_CONFIG.HORIZONTAL.VELOCITY,
+        });
         this.#powerupLevelComponent = new PowerupLevelComponent({
             onLevelChange: (nextPowerupLevel) => {
                 if (nextPowerupLevel > PLAYER_CONFIG.POWERUP_MAX) {

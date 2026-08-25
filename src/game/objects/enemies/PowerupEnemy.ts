@@ -92,13 +92,15 @@ export default class PowerupEnemy extends GameObjects.Container implements Enemy
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
         this.#inputComponent = new PowerupInputComponent(this);
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.POWERUP.HORIZONTAL.VELOCITY,
-            ENEMY_CONFIG.POWERUP.HORIZONTAL.VELOCITY_MAX,
-            ENEMY_CONFIG.POWERUP.HORIZONTAL.DRAG,
-        );
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
+            velocityIncrement: ENEMY_CONFIG.POWERUP.HORIZONTAL.VELOCITY_INCREMENT,
+            velocityMaximum: ENEMY_CONFIG.POWERUP.HORIZONTAL.VELOCITY_MAXIMUM,
+            drag: ENEMY_CONFIG.POWERUP.HORIZONTAL.DRAG,
+        });
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.POWERUP.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: ENEMY_CONFIG.GUNSHIP.HIT_SOUND,

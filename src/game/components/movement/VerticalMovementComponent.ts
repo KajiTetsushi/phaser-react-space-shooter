@@ -1,54 +1,77 @@
-import { type GameObjects, Physics } from 'phaser';
+import type { Physics } from 'phaser';
 
-import assert from '../../utils/assert';
 import type InputComponent from '../input/InputComponent';
+import type { MovementComponentConfig } from './movement.types';
+
+const DIRECTION = {
+    UP: -1,
+    DOWN: +1,
+} as const;
 
 export default class VerticalMovementComponent {
-    #gameObject: GameObjects.GameObject;
+    #body: Physics.Arcade.Body;
     #inputComponent: InputComponent;
-    #velocity: number;
-    #maxVelocity: number;
-    #drag: number;
+    #config: MovementComponentConfig;
 
-    constructor(
-        gameObject: GameObjects.GameObject,
-        inputComponent: InputComponent,
-        velocity: number,
-        maxVelocity: number,
-        drag: number,
-    ) {
-        this.#gameObject = gameObject;
+    constructor(body: Physics.Arcade.Body, inputComponent: InputComponent, config: MovementComponentConfig) {
+        this.#body = body;
         this.#inputComponent = inputComponent;
-        this.#velocity = velocity;
-        this.#maxVelocity = maxVelocity;
-        this.#drag = drag;
-
-        const { body } = this.#gameObject;
-        assert(body instanceof Physics.Arcade.Body, 'body is not Physics.Arcade.Body type');
-
-        body.setDamping(true);
-        body.setDrag(this.#drag);
-        body.setMaxVelocity(this.#maxVelocity);
+        this.#config = config;
     }
 
     reset() {
-        const { body } = this.#gameObject;
-        assert(body instanceof Physics.Arcade.Body, 'body is not Physics.Arcade.Body type');
-
-        body.setVelocity(0, 0);
-        body.setAngularAcceleration(0);
+        this.#body.setVelocityY(0);
+        this.#body.setAccelerationY(0);
     }
 
     update() {
-        const { body } = this.#gameObject;
-        assert(body instanceof Physics.Arcade.Body, 'body is not Physics.Arcade.Body type');
-
+        this.updateMovementType();
         if (this.#inputComponent.upIsDown) {
-            body.velocity.y -= this.#velocity;
+            this.pushUp();
         } else if (this.#inputComponent.downIsDown) {
-            body.velocity.y += this.#velocity;
+            this.pushDown();
         } else {
-            body.setAngularAcceleration(0);
+            this.stopPush();
+        }
+    }
+
+    private updateMovementType() {
+        if ('velocity' in this.#config) {
+            return;
+        }
+
+        const { velocityMaximum = 0, drag = 0 } = this.#config;
+
+        this.#body.setMaxVelocityY(velocityMaximum);
+        this.#body.setDragY(drag);
+        this.#body.setDamping(!!drag);
+    }
+
+    private pushUp() {
+        if ('velocity' in this.#config) {
+            const { velocity } = this.#config;
+            this.#body.setVelocityY(velocity * DIRECTION.UP);
+        } else {
+            const { velocityIncrement = 0 } = this.#config;
+            this.#body.setVelocityY(this.#body.velocity.y + velocityIncrement * DIRECTION.UP);
+        }
+    }
+
+    private pushDown() {
+        if ('velocity' in this.#config) {
+            const { velocity } = this.#config;
+            this.#body.setVelocityY(velocity * DIRECTION.DOWN);
+        } else {
+            const { velocityIncrement = 0 } = this.#config;
+            this.#body.setVelocityY(this.#body.velocity.y + velocityIncrement * DIRECTION.DOWN);
+        }
+    }
+
+    private stopPush() {
+        if ('velocity' in this.#config) {
+            this.#body.setVelocityY(0);
+        } else {
+            this.#body.setAccelerationY(0);
         }
     }
 }

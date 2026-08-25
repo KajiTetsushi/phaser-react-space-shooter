@@ -126,13 +126,15 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
             trajectoryFlipY: true,
             trajectoryYOffset: 10,
         });
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY,
-            ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_MAX,
-            ENEMY_CONFIG.GUNSHIP.HORIZONTAL.DRAG,
-        );
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
+            velocityIncrement: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_INCREMENT,
+            velocityMaximum: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_MAXIMUM,
+            drag: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.DRAG,
+        });
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.GUNSHIP.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: ENEMY_CONFIG.GUNSHIP.HIT_SOUND,

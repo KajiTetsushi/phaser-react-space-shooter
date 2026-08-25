@@ -107,13 +107,15 @@ export default class FighterEnemy extends GameObjects.Container implements Enemy
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
         this.#inputComponent = new FighterInputComponent();
-        this.#verticalMovementComponent = new VerticalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY,
-            ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY_MAX,
-            ENEMY_CONFIG.FIGHTER.VERTICAL.DRAG,
-        );
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        this.#verticalMovementComponent = new VerticalMovementComponent(body, this.#inputComponent, {
+            velocityIncrement: ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY_INCREMENT,
+            velocityMaximum: ENEMY_CONFIG.FIGHTER.VERTICAL.VELOCITY_MAXIMUM,
+            drag: ENEMY_CONFIG.FIGHTER.VERTICAL.DRAG,
+        });
         this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
             weaponCooldown: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_COOLDOWN,
             weaponReport: ENEMY_CONFIG.FIGHTER.WEAPON.WEAPON_REPORT,

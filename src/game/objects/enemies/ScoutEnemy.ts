@@ -104,20 +104,20 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
             this.x,
             ENEMY_CONFIG.SCOUT.HORIZONTAL.DRIFT_MAX,
         );
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_MAX,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.DRAG,
-        );
-        this.#verticalMovementComponent = new VerticalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY,
-            ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_MAX,
-            ENEMY_CONFIG.SCOUT.VERTICAL.DRAG,
-        );
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
+            velocityIncrement: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_INCREMENT,
+            velocityMaximum: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_MAXIMUM,
+            drag: ENEMY_CONFIG.SCOUT.HORIZONTAL.DRAG,
+        });
+        this.#verticalMovementComponent = new VerticalMovementComponent(body, this.#inputComponent, {
+            velocityIncrement: ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_INCREMENT,
+            velocityMaximum: ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_MAXIMUM,
+            drag: ENEMY_CONFIG.SCOUT.VERTICAL.DRAG,
+        });
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.SCOUT.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: ENEMY_CONFIG.SCOUT.HIT_SOUND,

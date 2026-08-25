@@ -45,6 +45,7 @@
 
 ## Enhancement Ideas
 - [x] weapon powerups
+- [x] inertialess player movement
 - [ ] mobile support
 - [ ] boss enemies
 - [ ] other enemy types

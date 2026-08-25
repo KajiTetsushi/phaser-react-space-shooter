@@ -10,9 +10,7 @@ export const PLAYER_CONFIG = {
         HEIGHT: 24,
     },
     HORIZONTAL: {
-        VELOCITY: 20,
-        VELOCITY_MAX: 200,
-        DRAG: 0.01,
+        VELOCITY: 200,
     },
     WEAPON: {
         WEAPON_COOLDOWN: 300,
@@ -41,8 +39,8 @@ export const POWERUP_DROP_CONFIG = {
         HEIGHT: 24,
     },
     VERTICAL: {
-        VELOCITY: 10,
-        VELOCITY_MAX: 100,
+        VELOCITY_INCREMENT: 10,
+        VELOCITY_MAXIMUM: 100,
         DRAG: 0.01,
     },
 };
@@ -65,14 +63,14 @@ export const ENEMY_CONFIG = {
             HEIGHT: 24,
         },
         HORIZONTAL: {
-            VELOCITY: 12,
-            VELOCITY_MAX: 120,
+            VELOCITY_INCREMENT: 12,
+            VELOCITY_MAXIMUM: 120,
             DRIFT_MAX: 40,
             DRAG: 0.01,
         },
         VERTICAL: {
-            VELOCITY: 10,
-            VELOCITY_MAX: 100,
+            VELOCITY_INCREMENT: 10,
+            VELOCITY_MAXIMUM: 100,
             DRAG: 0.01,
         },
         SPAWN: {
@@ -97,8 +95,8 @@ export const ENEMY_CONFIG = {
             HEIGHT: 24,
         },
         VERTICAL: {
-            VELOCITY: 12,
-            VELOCITY_MAX: 120,
+            VELOCITY_INCREMENT: 12,
+            VELOCITY_MAXIMUM: 120,
             DRAG: 0.01,
         },
         WEAPON: {
@@ -136,8 +134,8 @@ export const ENEMY_CONFIG = {
             HEIGHT: 24,
         },
         HORIZONTAL: {
-            VELOCITY: 2,
-            VELOCITY_MAX: 16,
+            VELOCITY_INCREMENT: 2,
+            VELOCITY_MAXIMUM: 16,
             DRIFT_MAX: 12,
             DRAG: 0.01,
         },
@@ -186,8 +184,8 @@ export const ENEMY_CONFIG = {
             HEIGHT: 20,
         },
         HORIZONTAL: {
-            VELOCITY: 4,
-            VELOCITY_MAX: 20,
+            VELOCITY_INCREMENT: 4,
+            VELOCITY_MAXIMUM: 20,
             DRIFT_MAX: 12,
             DRAG: 0.01,
         },
