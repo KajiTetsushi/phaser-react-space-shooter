@@ -5,7 +5,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import GunshipInputComponent from '../../components/input/bots/GunshipInputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
+import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent2';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
 import assert from '../../utils/assert';
@@ -126,13 +126,15 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
             trajectoryFlipY: true,
             trajectoryYOffset: 10,
         });
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY,
-            ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_MAX,
-            ENEMY_CONFIG.GUNSHIP.HORIZONTAL.DRAG,
-        );
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
+            velocity: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY,
+            maxVelocity: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_MAX,
+            drag: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.DRAG,
+        });
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.GUNSHIP.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: ENEMY_CONFIG.GUNSHIP.HIT_SOUND,

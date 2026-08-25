@@ -5,7 +5,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import ScoutInputComponent from '../../components/input/bots/ScoutInputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
+import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent2';
 import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
 import { ENEMY_CONFIG } from '../../config';
 import assert from '../../utils/assert';
@@ -104,13 +104,15 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
             this.x,
             ENEMY_CONFIG.SCOUT.HORIZONTAL.DRIFT_MAX,
         );
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_MAX,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.DRAG,
-        );
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
+            velocity: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY,
+            maxVelocity: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_MAX,
+            drag: ENEMY_CONFIG.SCOUT.HORIZONTAL.DRAG,
+        });
         this.#verticalMovementComponent = new VerticalMovementComponent(
             this,
             this.#inputComponent,

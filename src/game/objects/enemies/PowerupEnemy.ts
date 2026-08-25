@@ -5,7 +5,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import PowerupInputComponent from '../../components/input/bots/PowerupInputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
+import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent2';
 import { ENEMY_CONFIG } from '../../config';
 import assert from '../../utils/assert';
 import type { EnemyImplementable } from './enemies.types';
@@ -92,13 +92,15 @@ export default class PowerupEnemy extends GameObjects.Container implements Enemy
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
         this.#inputComponent = new PowerupInputComponent(this);
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(
-            this,
-            this.#inputComponent,
-            ENEMY_CONFIG.POWERUP.HORIZONTAL.VELOCITY,
-            ENEMY_CONFIG.POWERUP.HORIZONTAL.VELOCITY_MAX,
-            ENEMY_CONFIG.POWERUP.HORIZONTAL.DRAG,
-        );
+
+        const { body } = this;
+        assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
+
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
+            velocity: ENEMY_CONFIG.POWERUP.HORIZONTAL.VELOCITY,
+            maxVelocity: ENEMY_CONFIG.POWERUP.HORIZONTAL.VELOCITY_MAX,
+            drag: ENEMY_CONFIG.POWERUP.HORIZONTAL.DRAG,
+        });
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.POWERUP.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: ENEMY_CONFIG.GUNSHIP.HIT_SOUND,
