@@ -2,6 +2,11 @@ import { Input, type Scene, type Types } from 'phaser';
 
 import InputComponent, { type XDirection, type YDirection } from './InputComponent';
 
+/**
+ * @deprecated For demonstration of MovementComponent to move an object in any direction. To be removed in future iterations.
+ */
+const directions: ('horizontal' | 'vertical')[] = ['horizontal'];
+
 export default class KeyboardInputComponent extends InputComponent {
     #cursorKeys: Types.Input.Keyboard.CursorKeys & {
         w: Input.Keyboard.Key; // alt up
@@ -38,6 +43,10 @@ export default class KeyboardInputComponent extends InputComponent {
     }
 
     get selectedXDirection(): XDirection {
+        if (!directions.includes('horizontal')) {
+            return 'neutral';
+        }
+
         const leftIsDown = this.#cursorKeys.left.isDown || this.#cursorKeys.a.isDown;
         const rightIsDown = this.#cursorKeys.right.isDown || this.#cursorKeys.d.isDown;
 
@@ -59,6 +68,10 @@ export default class KeyboardInputComponent extends InputComponent {
     }
 
     get selectedYDirection(): YDirection {
+        if (!directions.includes('vertical')) {
+            return 'neutral';
+        }
+
         const upIsDown = this.#cursorKeys.up.isDown || this.#cursorKeys.w.isDown;
         const downIsDown = this.#cursorKeys.down.isDown || this.#cursorKeys.s.isDown;
 
