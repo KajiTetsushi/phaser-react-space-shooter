@@ -1,3 +1,22 @@
+import type { GunshipInputComponentOptions } from './components/input/bots/GunshipInputComponent';
+import type { MovementComponentConfig } from './components/movement/movement.types';
+import type { WeaponConfig } from './components/weapon/WeaponComponent';
+
+type PlayerConfig = {
+    POWERUP_MAX: number;
+    LIVES: number;
+    HEALTH: number;
+    RESPAWN_DELAY: number;
+    HIT_SOUND: string;
+    EXPLOSION_SOUND: string;
+    movement: MovementComponentConfig;
+    weapon: WeaponConfig;
+    HITBOX_SIZE: {
+        WIDTH: number;
+        HEIGHT: number;
+    };
+};
+
 export const PLAYER_CONFIG = {
     POWERUP_MAX: 4,
     LIVES: 3,
@@ -9,23 +28,38 @@ export const PLAYER_CONFIG = {
         WIDTH: 24,
         HEIGHT: 24,
     },
-    HORIZONTAL: {
-        VELOCITY: 200,
+    movement: {
+        accelerates: false,
+        velocity: 200,
     },
-    WEAPON: {
-        WEAPON_COOLDOWN: 300,
-        WEAPON_REPORT: 'shot2',
-        WEAPON_CLUSTER_OFFSET: 12,
-        PROJECTILE_ANIMATION_KEY: 'bullet',
-        PROJECTILE_HITBOX_SIZE: {
+    weapon: {
+        weaponCooldown: 300,
+        weaponReport: 'shot2',
+        weaponClusterOffset: 12,
+        projectileAnimationKey: 'bullet',
+        projectileHitboxSize: {
             w: 14,
             h: 18,
         },
-        PROJECTILE_LIFESPAN: 3,
-        PROJECTILE_SCALE: 0.8,
-        PROJECTILE_SPAWN_POOL_SIZE: 60,
-        PROJECTILE_SPEED: 300,
+        projectileLifespan: 3,
+        projectileScale: 0.8,
+        projectileSpawnPoolSize: 60,
+        projectileSpeed: 300,
+        trajectoryFlipY: false,
+        trajectoryYOffset: -20,
     },
+} satisfies PlayerConfig;
+
+type PowerupDropConfig = {
+    HEALTH: number;
+    SCORE: number;
+    SHIP_KEY: string;
+    HIT_SOUND: string;
+    HITBOX_SIZE: {
+        WIDTH: number;
+        HEIGHT: number;
+    };
+    movement: MovementComponentConfig;
 };
 
 export const POWERUP_DROP_CONFIG = {
@@ -38,11 +72,56 @@ export const POWERUP_DROP_CONFIG = {
         WIDTH: 24,
         HEIGHT: 24,
     },
-    VERTICAL: {
-        VELOCITY_INCREMENT: 10,
-        VELOCITY_MAXIMUM: 100,
-        DRAG: 0.01,
+    movement: {
+        accelerates: true,
+        velocityIncrement: 10,
+        velocityMaximum: 100,
+        drag: 0.01,
     },
+} satisfies PowerupDropConfig;
+
+type EnemyConfigBase<SpawnExtraConfigs extends object = Record<string, unknown>> = {
+    HEALTH: number;
+    SCORE: number;
+    SHIP_KEY: string;
+    SHIP_SCALE: number;
+    SHIP_ENGINE_KEY: string;
+    SHIP_ENGINE_SCALE: number;
+    HIT_SOUND: string;
+    EXPLOSION_ANIMATION_KEY: string;
+    EXPLOSION_ANIMATION_SCALE: number;
+    EXPLOSION_SOUND: string;
+    HITBOX_SIZE: {
+        WIDTH: number;
+        HEIGHT: number;
+    };
+    movement: MovementComponentConfig;
+    weapon?: WeaponConfig;
+    SPAWN: {
+        MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: number;
+        RECURRING_INTERVAL: number;
+        INITIAL_INTERVAL: number;
+    } & SpawnExtraConfigs;
+};
+
+type EnemySpawnLimit = {
+    MAX_ON_SCREEN: number;
+    MIN_VIEWPORT_Y: number;
+    MAX_VIEWPORT_Y: number;
+};
+
+type EnemyConfig = {
+    SCOUT: EnemyConfigBase & {
+        /**
+         * Maximum horizontal drift from the initial spawn position.
+         */
+        movementHorizontalDriftMax: number;
+    };
+    FIGHTER: EnemyConfigBase;
+    GUNSHIP: EnemyConfigBase<EnemySpawnLimit> & {
+        ai: GunshipInputComponentOptions;
+    };
+    POWERUP: EnemyConfigBase<EnemySpawnLimit>;
 };
 
 export const ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG = -20;
@@ -62,17 +141,13 @@ export const ENEMY_CONFIG = {
             WIDTH: 24,
             HEIGHT: 24,
         },
-        HORIZONTAL: {
-            VELOCITY_INCREMENT: 12,
-            VELOCITY_MAXIMUM: 120,
-            DRIFT_MAX: 40,
-            DRAG: 0.01,
+        movement: {
+            accelerates: true,
+            velocityIncrement: 12,
+            velocityMaximum: 120,
+            drag: 0.01,
         },
-        VERTICAL: {
-            VELOCITY_INCREMENT: 10,
-            VELOCITY_MAXIMUM: 100,
-            DRAG: 0.01,
-        },
+        movementHorizontalDriftMax: 40,
         SPAWN: {
             MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
             RECURRING_INTERVAL: 5000,
@@ -94,23 +169,26 @@ export const ENEMY_CONFIG = {
             WIDTH: 24,
             HEIGHT: 24,
         },
-        VERTICAL: {
-            VELOCITY_INCREMENT: 12,
-            VELOCITY_MAXIMUM: 120,
-            DRAG: 0.01,
+        movement: {
+            accelerates: true,
+            velocityIncrement: 12,
+            velocityMaximum: 120,
+            drag: 0.01,
         },
-        WEAPON: {
-            WEAPON_COOLDOWN: 3000,
-            WEAPON_REPORT: 'shot1',
-            PROJECTILE_ANIMATION_KEY: 'bullet',
-            PROJECTILE_HITBOX_SIZE: {
+        weapon: {
+            weaponCooldown: 3000,
+            weaponReport: 'shot1',
+            projectileAnimationKey: 'bullet',
+            projectileHitboxSize: {
                 w: 14,
                 h: 18,
             },
-            PROJECTILE_LIFESPAN: 3,
-            PROJECTILE_SCALE: 0.8,
-            PROJECTILE_SPAWN_POOL_SIZE: 10,
-            PROJECTILE_SPEED: -250,
+            projectileLifespan: 3,
+            projectileScale: 0.8,
+            projectileSpawnPoolSize: 10,
+            projectileSpeed: -250,
+            trajectoryFlipY: true,
+            trajectoryYOffset: 10,
         },
         SPAWN: {
             MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
@@ -133,24 +211,26 @@ export const ENEMY_CONFIG = {
             WIDTH: 24,
             HEIGHT: 24,
         },
-        HORIZONTAL: {
-            VELOCITY_INCREMENT: 2,
-            VELOCITY_MAXIMUM: 16,
-            DRIFT_MAX: 12,
-            DRAG: 0.01,
+        movement: {
+            accelerates: true,
+            velocityIncrement: 2,
+            velocityMaximum: 16,
+            drag: 0.01,
         },
-        WEAPON: {
-            WEAPON_COOLDOWN: 50,
-            WEAPON_REPORT: 'shot1',
-            PROJECTILE_ANIMATION_KEY: 'enemy-bullet',
-            PROJECTILE_HITBOX_SIZE: {
+        weapon: {
+            weaponCooldown: 50,
+            weaponReport: 'shot1',
+            projectileAnimationKey: 'enemy-bullet',
+            projectileHitboxSize: {
                 w: 15,
                 h: 15,
             },
-            PROJECTILE_LIFESPAN: 3,
-            PROJECTILE_SCALE: 1.5,
-            PROJECTILE_SPAWN_POOL_SIZE: 18,
-            PROJECTILE_SPEED: -500,
+            projectileLifespan: 3,
+            projectileScale: 1.5,
+            projectileSpawnPoolSize: 18,
+            projectileSpeed: -500,
+            trajectoryFlipY: true,
+            trajectoryYOffset: 10,
         },
         SPAWN: {
             MAX_ON_SCREEN: 2,
@@ -160,13 +240,13 @@ export const ENEMY_CONFIG = {
             RECURRING_INTERVAL: 5000,
             INITIAL_INTERVAL: 8000,
         },
-        AI: {
-            RANDOM_FIRE: {
-                RELATIVE_X_DISTANCE_TO_PLAYER_RANGES: {
+        ai: {
+            ai: {
+                relativeXDistanceToPlayerRanges: {
                     150: [50, 1000],
                     200: [200, 2000],
                     '*': [500, 3000],
-                } as const,
+                },
             },
         },
     },
@@ -175,6 +255,8 @@ export const ENEMY_CONFIG = {
         SCORE: 100,
         SHIP_KEY: 'enemy-yellow',
         SHIP_SCALE: 0.75,
+        SHIP_ENGINE_KEY: '',
+        SHIP_ENGINE_SCALE: 0,
         HIT_SOUND: 'hit',
         EXPLOSION_ANIMATION_KEY: 'fighter_destroy',
         EXPLOSION_ANIMATION_SCALE: 1,
@@ -183,11 +265,11 @@ export const ENEMY_CONFIG = {
             WIDTH: 20,
             HEIGHT: 20,
         },
-        HORIZONTAL: {
-            VELOCITY_INCREMENT: 4,
-            VELOCITY_MAXIMUM: 20,
-            DRIFT_MAX: 12,
-            DRAG: 0.01,
+        movement: {
+            accelerates: true,
+            velocityIncrement: 4,
+            velocityMaximum: 20,
+            drag: 0.01,
         },
         SPAWN: {
             MAX_ON_SCREEN: 2,
@@ -198,4 +280,4 @@ export const ENEMY_CONFIG = {
             INITIAL_INTERVAL: 5000,
         },
     },
-};
+} satisfies EnemyConfig;

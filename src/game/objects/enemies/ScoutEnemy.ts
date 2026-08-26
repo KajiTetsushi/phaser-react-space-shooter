@@ -5,8 +5,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import ScoutInputComponent from '../../components/input/bots/ScoutInputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
-import VerticalMovementComponent from '../../components/movement/VerticalMovementComponent';
+import MovementComponent from '../../components/movement/MovementComponent';
 import { ENEMY_CONFIG } from '../../config';
 import assert from '../../utils/assert';
 import type { EnemyImplementable } from './enemies.types';
@@ -15,8 +14,7 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
     #isInitialized = false;
     #eventBusComponent: EventBusComponent;
     #inputComponent: ScoutInputComponent;
-    #horizontalMovementComponent: HorizontalMovementComponent;
-    #verticalMovementComponent: VerticalMovementComponent;
+    #movementComponent: MovementComponent;
     #healthComponent: HealthComponent;
     #colliderComponent: ColliderComponent;
     #shipSprite: GameObjects.Sprite;
@@ -102,22 +100,13 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
             // The direction of the scout's horizontal movement
             // will rely on its current position.
             this.x,
-            ENEMY_CONFIG.SCOUT.HORIZONTAL.DRIFT_MAX,
+            ENEMY_CONFIG.SCOUT.movementHorizontalDriftMax,
         );
 
         const { body } = this;
         assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
 
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
-            velocityIncrement: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_INCREMENT,
-            velocityMaximum: ENEMY_CONFIG.SCOUT.HORIZONTAL.VELOCITY_MAXIMUM,
-            drag: ENEMY_CONFIG.SCOUT.HORIZONTAL.DRAG,
-        });
-        this.#verticalMovementComponent = new VerticalMovementComponent(body, this.#inputComponent, {
-            velocityIncrement: ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_INCREMENT,
-            velocityMaximum: ENEMY_CONFIG.SCOUT.VERTICAL.VELOCITY_MAXIMUM,
-            drag: ENEMY_CONFIG.SCOUT.VERTICAL.DRAG,
-        });
+        this.#movementComponent = new MovementComponent(body, this.#inputComponent, ENEMY_CONFIG.SCOUT.movement);
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.SCOUT.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: ENEMY_CONFIG.SCOUT.HIT_SOUND,
@@ -128,8 +117,7 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
     reset() {
         this.setActive(true);
         this.setVisible(true);
-        this.#horizontalMovementComponent.reset();
-        this.#verticalMovementComponent.reset();
+        this.#movementComponent.reset();
         this.#healthComponent.reset();
         this.#inputComponent.setStartX(this.x);
     }
@@ -148,8 +136,7 @@ export default class ScoutEnemy extends GameObjects.Container implements EnemyIm
         }
 
         this.#inputComponent.update();
-        this.#horizontalMovementComponent.update();
-        this.#verticalMovementComponent.update();
+        this.#movementComponent.update();
     }
 
     #die() {

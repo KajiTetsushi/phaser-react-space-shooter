@@ -2,52 +2,56 @@ export type XDirection = 'left' | 'right' | 'neutral';
 export type YDirection = 'up' | 'down' | 'neutral';
 
 export default abstract class InputComponent {
-    private up: boolean;
-    private down: boolean;
-    private left: boolean;
-    private right: boolean;
-    protected shoot: boolean;
+    #up: boolean;
+    #down: boolean;
+    #left: boolean;
+    #right: boolean;
+    #shoot: boolean;
 
     constructor() {
         this.reset();
     }
 
     reset() {
-        this.up = false;
-        this.down = false;
-        this.left = false;
-        this.right = false;
-        this.shoot = false;
+        this.#up = false;
+        this.#down = false;
+        this.#left = false;
+        this.#right = false;
+        this.#shoot = false;
     }
 
-    get upIsDown() {
-        return this.up;
+    get up() {
+        return this.#up;
     }
 
-    get downIsDown() {
-        return this.down;
+    get down() {
+        return this.#down;
     }
 
-    get leftIsDown() {
-        return this.left;
+    get left() {
+        return this.#left;
     }
 
-    get rightIsDown() {
-        return this.right;
+    get right() {
+        return this.#right;
     }
 
-    get shootIsDown() {
-        return this.shoot;
+    get shoot() {
+        return this.#shoot;
     }
 
     protected setXDirection(direction: XDirection) {
-        this.left = direction === 'left';
-        this.right = direction === 'right';
+        this.#left = direction === 'left';
+        this.#right = direction === 'right';
     }
 
     protected setYDirection(direction: YDirection) {
-        this.up = direction === 'up';
-        this.down = direction === 'down';
+        this.#up = direction === 'up';
+        this.#down = direction === 'down';
+    }
+
+    protected setShoot(isShootDown: boolean) {
+        this.#shoot = isShootDown;
     }
 
     abstract update(delta: number): void;

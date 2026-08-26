@@ -1,11 +1,13 @@
 interface MovementComponentConfigInertialess {
+    accelerates: false;
     /**
      * Fixed value of how fast the object will move in the given direction.
      */
-    velocity: number;
+    velocity?: number;
 }
 
 interface MovementComponentConfigPhysical {
+    accelerates: true;
     /**
      * A value to increase, per frame, of how fast the object will move in the given direction.
      */

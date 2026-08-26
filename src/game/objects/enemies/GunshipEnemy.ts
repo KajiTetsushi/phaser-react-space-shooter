@@ -5,7 +5,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import GunshipInputComponent from '../../components/input/bots/GunshipInputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
+import MovementComponent from '../../components/movement/MovementComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { ENEMY_CONFIG } from '../../config';
 import assert from '../../utils/assert';
@@ -16,7 +16,7 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
     #isInitialized = false;
     #eventBusComponent: EventBusComponent;
     #inputComponent: GunshipInputComponent;
-    #horizontalMovementComponent: HorizontalMovementComponent;
+    #movementComponent: MovementComponent;
     #healthComponent: HealthComponent;
     #colliderComponent: ColliderComponent;
     #weaponComponent: WeaponComponent;
@@ -108,33 +108,18 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
     initialize(eventBusComponent: EventBusComponent, getPlayerPosition: GetGameObjectPosition) {
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
-        this.#inputComponent = new GunshipInputComponent(this, getPlayerPosition, {
-            ai: {
-                relativeXDistanceToPlayerRanges:
-                    ENEMY_CONFIG.GUNSHIP.AI.RANDOM_FIRE.RELATIVE_X_DISTANCE_TO_PLAYER_RANGES,
-            },
-        });
-        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
-            weaponCooldown: ENEMY_CONFIG.GUNSHIP.WEAPON.WEAPON_COOLDOWN,
-            weaponReport: ENEMY_CONFIG.GUNSHIP.WEAPON.WEAPON_REPORT,
-            projectileAnimationKey: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_ANIMATION_KEY,
-            projectileHitboxSize: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_HITBOX_SIZE,
-            projectileScale: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_SCALE,
-            projectileSpeed: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_SPEED,
-            projectileLifespan: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_LIFESPAN,
-            projectileSpawnPoolSize: ENEMY_CONFIG.GUNSHIP.WEAPON.PROJECTILE_SPAWN_POOL_SIZE,
-            trajectoryFlipY: true,
-            trajectoryYOffset: 10,
-        });
+        this.#inputComponent = new GunshipInputComponent(this, getPlayerPosition, ENEMY_CONFIG.GUNSHIP.ai);
+        this.#weaponComponent = new WeaponComponent(
+            this,
+            this.#inputComponent,
+            this.#eventBusComponent,
+            ENEMY_CONFIG.GUNSHIP.weapon!,
+        );
 
         const { body } = this;
         assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
 
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
-            velocityIncrement: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_INCREMENT,
-            velocityMaximum: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.VELOCITY_MAXIMUM,
-            drag: ENEMY_CONFIG.GUNSHIP.HORIZONTAL.DRAG,
-        });
+        this.#movementComponent = new MovementComponent(body, this.#inputComponent, ENEMY_CONFIG.GUNSHIP.movement);
         this.#healthComponent = new HealthComponent(ENEMY_CONFIG.GUNSHIP.HEALTH);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: ENEMY_CONFIG.GUNSHIP.HIT_SOUND,
@@ -162,7 +147,7 @@ export default class GunshipEnemy extends GameObjects.Container implements Enemy
         }
 
         this.#inputComponent.update(delta);
-        this.#horizontalMovementComponent.update();
+        this.#movementComponent.update();
         this.#weaponComponent.update(delta);
     }
 

@@ -5,7 +5,7 @@ import type EventBusComponent from '../../components/events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
 import KeyboardInputComponent from '../../components/input/KeyboardInputComponent';
-import HorizontalMovementComponent from '../../components/movement/HorizontalMovementComponent';
+import MovementComponent from '../../components/movement/MovementComponent';
 import PowerupLevelComponent from '../../components/powerup/PowerupLevelComponent';
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { PLAYER_CONFIG } from '../../config';
@@ -15,7 +15,7 @@ import type { PlayerImplementable } from './player.types';
 
 export default class Player extends GameObjects.Container implements PlayerImplementable {
     #inputComponent: KeyboardInputComponent;
-    #horizontalMovementComponent: HorizontalMovementComponent;
+    #movementComponent: MovementComponent;
     #healthComponent: HealthComponent;
     #powerupLevelComponent: PowerupLevelComponent;
     #colliderComponent: ColliderComponent;
@@ -56,9 +56,7 @@ export default class Player extends GameObjects.Container implements PlayerImple
         this.setDepth(2);
 
         this.#inputComponent = new KeyboardInputComponent(this.scene);
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(body, this.#inputComponent, {
-            velocity: PLAYER_CONFIG.HORIZONTAL.VELOCITY,
-        });
+        this.#movementComponent = new MovementComponent(body, this.#inputComponent, PLAYER_CONFIG.movement);
         this.#powerupLevelComponent = new PowerupLevelComponent({
             onLevelChange: (nextPowerupLevel) => {
                 if (nextPowerupLevel > PLAYER_CONFIG.POWERUP_MAX) {
@@ -79,19 +77,12 @@ export default class Player extends GameObjects.Container implements PlayerImple
                 });
             },
         });
-        this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, this.#eventBusComponent, {
-            weaponClusterOffset: PLAYER_CONFIG.WEAPON.WEAPON_CLUSTER_OFFSET,
-            weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
-            weaponReport: PLAYER_CONFIG.WEAPON.WEAPON_REPORT,
-            projectileAnimationKey: PLAYER_CONFIG.WEAPON.PROJECTILE_ANIMATION_KEY,
-            projectileHitboxSize: PLAYER_CONFIG.WEAPON.PROJECTILE_HITBOX_SIZE,
-            projectileScale: PLAYER_CONFIG.WEAPON.PROJECTILE_SCALE,
-            projectileSpeed: PLAYER_CONFIG.WEAPON.PROJECTILE_SPEED,
-            projectileLifespan: PLAYER_CONFIG.WEAPON.PROJECTILE_LIFESPAN,
-            projectileSpawnPoolSize: PLAYER_CONFIG.WEAPON.PROJECTILE_SPAWN_POOL_SIZE,
-            trajectoryFlipY: false,
-            trajectoryYOffset: -20,
-        });
+        this.#weaponComponent = new WeaponComponent(
+            this,
+            this.#inputComponent,
+            this.#eventBusComponent,
+            PLAYER_CONFIG.weapon,
+        );
         this.#healthComponent = new HealthComponent(PLAYER_CONFIG.HEALTH, this.#eventBusComponent);
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent, {
             hitSound: PLAYER_CONFIG.HIT_SOUND,
@@ -152,7 +143,7 @@ export default class Player extends GameObjects.Container implements PlayerImple
 
         this.#shipSprite.setFrame(PLAYER_CONFIG.HEALTH - this.#healthComponent.health);
         this.#inputComponent.update();
-        this.#horizontalMovementComponent.update();
+        this.#movementComponent.update();
         this.#weaponComponent.update(delta);
     }
 
@@ -181,8 +172,8 @@ export default class Player extends GameObjects.Container implements PlayerImple
         this.#powerupLevelComponent.resetLevel();
         this.#weaponComponent.updateWeaponConfig({
             weaponCluster: undefined,
-            weaponCooldown: PLAYER_CONFIG.WEAPON.WEAPON_COOLDOWN,
-            projectileSpeed: PLAYER_CONFIG.WEAPON.PROJECTILE_SPEED,
+            weaponCooldown: PLAYER_CONFIG.weapon.weaponCooldown,
+            projectileSpeed: PLAYER_CONFIG.weapon.projectileSpeed,
         });
     }
 

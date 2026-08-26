@@ -7,7 +7,7 @@ export default class FighterInputComponent extends InputComponent {
     constructor() {
         super();
         this.setYDirection('down');
-        this.shoot = true;
+        this.setShoot(true);
     }
 
     update() {

@@ -5,7 +5,7 @@ import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 import type InputComponent from '../input/InputComponent';
 
-type WeaponConfig = {
+export type WeaponConfig = {
     /**
      * In milliseconds. The minimum time between firing two consecutive projectiles. This is used to control the firing rate of the weapon, preventing it from firing too rapidly and overwhelming the game with too many projectiles at once.
      */
@@ -102,7 +102,7 @@ export default class WeaponComponent {
             return;
         }
 
-        if (!this.#inputComponent.shootIsDown) {
+        if (!this.#inputComponent.shoot) {
             return;
         }
 
