@@ -50,6 +50,7 @@
 - [ ] boss enemies
 - [ ] other enemy types
 - [ ] enemy waves
+- [ ] levels / maps / missions / stages
 - [ ] high scores
 - [ ] increased difficulty (score or time based)
 - [ ] spawn with shield or be invulnable for period of time
