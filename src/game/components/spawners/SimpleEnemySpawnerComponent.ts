@@ -32,7 +32,7 @@ export default class SimpleEnemySpawnerComponent {
     #config?: SimpleEnemySpawnerComponentConfig | null = null;
 
     constructor(
-        private scene: Scene,
+        scene: Scene,
         eventBusComponent: EventBusComponent,
         player: Player,
         config?: SimpleEnemySpawnerComponentConfig,
@@ -43,7 +43,7 @@ export default class SimpleEnemySpawnerComponent {
         this.#config = config ?? null;
         this.#intervalCountdown = this.#config?.initialInterval ?? 0;
 
-        this.#spawnGroup = this.scene.add.group({
+        this.#spawnGroup = this.#scene.add.group({
             name: `${this.constructor.name}-${PhaserMath.RND.uuid()}`,
             classType: SimpleEnemy,
             runChildUpdate: true,
