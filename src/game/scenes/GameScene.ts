@@ -1,16 +1,13 @@
 import { type GameObjects, Math as PhaserMath, Physics, Scene } from 'phaser';
 
 import EventBusComponent, { CUSTOM_EVENTS } from '../components/events/EventBusComponent';
-import EnemyDestroyedSpawnerComponent from '../components/spawners/EnemyDestroyedSpawnerComponent';
-import EnemySpawnerComponent from '../components/spawners/EnemySpawnerComponent';
 import PowerupDropSpawnerComponent from '../components/spawners/PowerupDropSpawnerComponent';
-import { ENEMY_CONFIG } from '../config';
+import SimpleEnemyDestroyedSpawnerComponent from '../components/spawners/SimpleEnemyDestroyedSpawnerComponent';
+import SimpleEnemySpawnerComponent from '../components/spawners/SimpleEnemySpawnerComponent';
+import { SIMPLE_ENEMIES } from '../config';
 import AudioManager from '../objects/audio/AudioManager';
-import FighterEnemy from '../objects/enemies/FighterEnemy';
-import GunshipEnemy from '../objects/enemies/GunshipEnemy';
 import PowerupDrop from '../objects/enemies/PowerupDrop';
-import PowerupEnemy from '../objects/enemies/PowerupEnemy';
-import ScoutEnemy from '../objects/enemies/ScoutEnemy';
+import SimpleEnemy from '../objects/enemies/SimpleEnemy';
 import Player from '../objects/player/Player';
 import Lives from '../objects/ui/Lives';
 import PauseGameManager from '../objects/ui/PauseGameManager';
@@ -32,74 +29,51 @@ export default class GameScene extends Scene {
         const player = new Player(this, eventBusComponent);
 
         // enemy spawners
-        const spawnerComponentArgs = [this, eventBusComponent, player.getPosition.bind(player)] as const;
-        const scoutEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, ScoutEnemy, {
-            minViewportXBoundaryClearance: ENEMY_CONFIG.SCOUT.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
-            recurringInterval: ENEMY_CONFIG.SCOUT.SPAWN.RECURRING_INTERVAL,
-            initialInterval: ENEMY_CONFIG.SCOUT.SPAWN.INITIAL_INTERVAL,
-        });
-        const fighterEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, FighterEnemy, {
-            minViewportXBoundaryClearance: ENEMY_CONFIG.FIGHTER.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
-            recurringInterval: ENEMY_CONFIG.FIGHTER.SPAWN.RECURRING_INTERVAL,
-            initialInterval: ENEMY_CONFIG.FIGHTER.SPAWN.INITIAL_INTERVAL,
-        });
-        const gunshipEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, GunshipEnemy, {
-            maxOnScreen: ENEMY_CONFIG.GUNSHIP.SPAWN.MAX_ON_SCREEN,
-            minViewportY: ENEMY_CONFIG.GUNSHIP.SPAWN.MIN_VIEWPORT_Y,
-            maxViewportY: ENEMY_CONFIG.GUNSHIP.SPAWN.MAX_VIEWPORT_Y,
-            minViewportXBoundaryClearance: ENEMY_CONFIG.GUNSHIP.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
-            recurringInterval: ENEMY_CONFIG.GUNSHIP.SPAWN.RECURRING_INTERVAL,
-            initialInterval: ENEMY_CONFIG.GUNSHIP.SPAWN.INITIAL_INTERVAL,
-        });
-        const powerupEnemySpawner = new EnemySpawnerComponent(...spawnerComponentArgs, PowerupEnemy, {
-            maxOnScreen: 1,
-            minViewportY: ENEMY_CONFIG.POWERUP.SPAWN.MIN_VIEWPORT_Y,
-            maxViewportY: ENEMY_CONFIG.POWERUP.SPAWN.MAX_VIEWPORT_Y,
-            minViewportXBoundaryClearance: ENEMY_CONFIG.POWERUP.SPAWN.MIN_VIEWPORT_X_BOUNDARY_CLEARANCE,
-            recurringInterval: ENEMY_CONFIG.POWERUP.SPAWN.RECURRING_INTERVAL,
-            initialInterval: ENEMY_CONFIG.POWERUP.SPAWN.INITIAL_INTERVAL,
+        const spawnerComponentArgs = [this, eventBusComponent, player] as const;
+        Object.entries(SIMPLE_ENEMIES).forEach(([_unitName, unitConfig]) => {
+            const simpleEnemySpawnerComponent = new SimpleEnemySpawnerComponent(...spawnerComponentArgs, unitConfig);
+
+            this.physics.add.overlap(
+                player,
+                simpleEnemySpawnerComponent.spawnGroup,
+                (playerGameObject, simpleEnemyGameObject) => {
+                    if (!(playerGameObject instanceof Player) || !(simpleEnemyGameObject instanceof SimpleEnemy)) {
+                        return;
+                    }
+
+                    if (!playerGameObject.active || !simpleEnemyGameObject.active) {
+                        return;
+                    }
+
+                    playerGameObject.colliderComponent.collideWithEnemyShip();
+                    simpleEnemyGameObject.colliderComponent.collideWithEnemyShip();
+                },
+            );
+
+            this.physics.add.overlap(
+                player.projectileGroup,
+                simpleEnemySpawnerComponent.spawnGroup,
+                (simpleEnemyGameObject, playerProjectileGameObject) => {
+                    if (
+                        !(simpleEnemyGameObject instanceof SimpleEnemy) ||
+                        !(playerProjectileGameObject instanceof Physics.Arcade.Sprite)
+                    ) {
+                        return;
+                    }
+
+                    if (!simpleEnemyGameObject.active || !playerProjectileGameObject.active) {
+                        return;
+                    }
+
+                    player.weaponComponent.destroyProjectile(playerProjectileGameObject);
+                    simpleEnemyGameObject.colliderComponent.collideWithEnemyProjectile();
+                },
+            );
         });
         const powerupDropSpawner = new PowerupDropSpawnerComponent(this, eventBusComponent);
-        new EnemyDestroyedSpawnerComponent(this, eventBusComponent);
+        new SimpleEnemyDestroyedSpawnerComponent(this, eventBusComponent);
 
         // ship-to-ship and ship-to-projectile collisions
-        this.physics.add.overlap(player, scoutEnemySpawner.spawnGroup, (playerGameObject, enemyGameObject) => {
-            if (!(playerGameObject instanceof Player) || !(enemyGameObject instanceof ScoutEnemy)) {
-                return;
-            }
-
-            if (!playerGameObject.active || !enemyGameObject.active) {
-                return;
-            }
-
-            playerGameObject.colliderComponent.collideWithEnemyShip();
-            enemyGameObject.colliderComponent.collideWithEnemyShip();
-        });
-        this.physics.add.overlap(player, fighterEnemySpawner.spawnGroup, (playerGameObject, enemyGameObject) => {
-            if (!(playerGameObject instanceof Player) || !(enemyGameObject instanceof FighterEnemy)) {
-                return;
-            }
-
-            if (!playerGameObject.active || !enemyGameObject.active) {
-                return;
-            }
-
-            playerGameObject.colliderComponent.collideWithEnemyShip();
-            enemyGameObject.colliderComponent.collideWithEnemyShip();
-        });
-        this.physics.add.overlap(player, gunshipEnemySpawner.spawnGroup, (playerGameObject, enemyGameObject) => {
-            if (!(playerGameObject instanceof Player) || !(enemyGameObject instanceof GunshipEnemy)) {
-                return;
-            }
-
-            if (!playerGameObject.active || !enemyGameObject.active) {
-                return;
-            }
-
-            playerGameObject.colliderComponent.collideWithEnemyShip();
-            enemyGameObject.colliderComponent.collideWithEnemyShip();
-        });
-
         this.physics.add.overlap(player, powerupDropSpawner.spawnGroup, (playerGameObject, powerupDropGameObject) => {
             if (!(playerGameObject instanceof Player) || !(powerupDropGameObject instanceof PowerupDrop)) {
                 return;
@@ -115,7 +89,7 @@ export default class GameScene extends Scene {
         // NOTE: Phaser always passes an independent sprite first, followed by a sprite from a sprite group.
         // ship-to-projectile collisions
         eventBusComponent.on(CUSTOM_EVENTS.ENEMY_INIT, (enemyGameObject: GameObjects.GameObject) => {
-            if (!(enemyGameObject instanceof FighterEnemy) && !(enemyGameObject instanceof GunshipEnemy)) {
+            if (!(enemyGameObject instanceof SimpleEnemy)) {
                 return;
             }
 
@@ -163,82 +137,6 @@ export default class GameScene extends Scene {
                 this.cameras.main.flash(50, FLASH_COLOR.R, FLASH_COLOR.G, FLASH_COLOR.B, true);
             },
             this,
-        );
-        this.physics.add.overlap(
-            scoutEnemySpawner.spawnGroup,
-            player.projectileGroup,
-            (enemyGameObject, playerProjectileGameObject) => {
-                if (
-                    !(enemyGameObject instanceof ScoutEnemy) ||
-                    !(playerProjectileGameObject instanceof Physics.Arcade.Sprite)
-                ) {
-                    return;
-                }
-
-                if (!enemyGameObject.active || !playerProjectileGameObject.active) {
-                    return;
-                }
-
-                player.weaponComponent.destroyProjectile(playerProjectileGameObject);
-                enemyGameObject.colliderComponent.collideWithEnemyProjectile();
-            },
-        );
-        this.physics.add.overlap(
-            fighterEnemySpawner.spawnGroup,
-            player.projectileGroup,
-            (enemyGameObject, playerProjectileGameObject) => {
-                if (
-                    !(enemyGameObject instanceof FighterEnemy) ||
-                    !(playerProjectileGameObject instanceof Physics.Arcade.Sprite)
-                ) {
-                    return;
-                }
-
-                if (!enemyGameObject.active || !playerProjectileGameObject.active) {
-                    return;
-                }
-
-                player.weaponComponent.destroyProjectile(playerProjectileGameObject);
-                enemyGameObject.colliderComponent.collideWithEnemyProjectile();
-            },
-        );
-        this.physics.add.overlap(
-            gunshipEnemySpawner.spawnGroup,
-            player.projectileGroup,
-            (enemyGameObject, playerProjectileGameObject) => {
-                if (
-                    !(enemyGameObject instanceof GunshipEnemy) ||
-                    !(playerProjectileGameObject instanceof Physics.Arcade.Sprite)
-                ) {
-                    return;
-                }
-
-                if (!enemyGameObject.active || !playerProjectileGameObject.active) {
-                    return;
-                }
-
-                player.weaponComponent.destroyProjectile(playerProjectileGameObject);
-                enemyGameObject.colliderComponent.collideWithEnemyProjectile();
-            },
-        );
-        this.physics.add.overlap(
-            powerupEnemySpawner.spawnGroup,
-            player.projectileGroup,
-            (enemyGameObject, playerProjectileGameObject) => {
-                if (
-                    !(enemyGameObject instanceof PowerupEnemy) ||
-                    !(playerProjectileGameObject instanceof Physics.Arcade.Sprite)
-                ) {
-                    return;
-                }
-
-                if (!enemyGameObject.active || !playerProjectileGameObject.active) {
-                    return;
-                }
-
-                player.weaponComponent.destroyProjectile(playerProjectileGameObject);
-                enemyGameObject.colliderComponent.collideWithEnemyProjectile();
-            },
         );
 
         new Score(this, eventBusComponent);

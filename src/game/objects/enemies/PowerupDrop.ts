@@ -3,13 +3,12 @@ import { GameObjects, Physics, type Scene, Scenes } from 'phaser';
 import ColliderComponent from '../../components/collider/ColliderComponent';
 import type EventBusComponent from '../../components/events/EventBusComponent';
 import HealthComponent from '../../components/health/HealthComponent';
-import PowerupDropInputComponent from '../../components/input/bots/PowerupDropInputComponent';
+import PowerupDropInputComponent from '../../components/input/PowerupDropInputComponent';
 import MovementComponent from '../../components/movement/MovementComponent';
 import { POWERUP_DROP_CONFIG } from '../../config';
 import assert from '../../utils/assert';
-import type { GameObjectImplementable, GameObjectPosition } from '../objects.types';
 
-export default class PowerupDrop extends GameObjects.Container implements GameObjectImplementable {
+export default class PowerupDrop extends GameObjects.Container {
     #isInitialized = false;
     #eventBusComponent: EventBusComponent;
     #inputComponent: PowerupDropInputComponent;
@@ -49,13 +48,6 @@ export default class PowerupDrop extends GameObjects.Container implements GameOb
         return this.#colliderComponent;
     }
 
-    getPosition(): GameObjectPosition {
-        return {
-            x: this.x,
-            y: this.y,
-        };
-    }
-
     initialize(eventBusComponent: EventBusComponent) {
         this.#isInitialized = true;
         this.#eventBusComponent = eventBusComponent;
@@ -77,7 +69,7 @@ export default class PowerupDrop extends GameObjects.Container implements GameOb
         this.#healthComponent.reset();
     }
 
-    update(_timestamp: number, _delta: number) {
+    update(time: number, delta: number) {
         if (!this.#isInitialized) {
             return;
         }
@@ -90,8 +82,8 @@ export default class PowerupDrop extends GameObjects.Container implements GameOb
             this.#die();
         }
 
-        this.#inputComponent.update();
-        this.#movementComponent.update();
+        this.#inputComponent.update(time, delta);
+        this.#movementComponent.update(time, delta);
     }
 
     #die() {

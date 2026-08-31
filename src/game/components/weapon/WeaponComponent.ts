@@ -9,32 +9,32 @@ export type WeaponConfig = {
     /**
      * In milliseconds. The minimum time between firing two consecutive projectiles. This is used to control the firing rate of the weapon, preventing it from firing too rapidly and overwhelming the game with too many projectiles at once.
      */
-    weaponCooldown: number;
-    weaponReport: string;
+    weaponCooldown?: number;
+    weaponReport?: string;
     weaponCluster?: number;
     weaponClusterOffset?: number;
-    projectileAnimationKey: string;
-    projectileHitboxSize: {
-        w: number;
-        h: number;
+    projectileAnimationKey?: string;
+    projectileHitboxSize?: {
+        w?: number;
+        h?: number;
     };
     /**
      * In seconds. The time it takes for a projectile to disappear after being propelled.
      * This is used to determine how long a projectile should remain active before being despawned and returned to the pool for reuse.
      */
-    projectileLifespan: number;
-    projectileScale: number;
-    projectileSpawnPoolSize: number;
-    projectileSpeed: number;
-    trajectoryYOffset: number;
-    trajectoryFlipY: boolean;
+    projectileLifespan?: number;
+    projectileScale?: number;
+    projectileSpawnPoolSize?: number;
+    projectileSpeed?: number;
+    trajectoryYOffset?: number;
+    trajectoryFlipY?: boolean;
 };
 
 export default class WeaponComponent {
     #gameObject: GameObjects.Container;
     #eventBusComponent: EventBusComponent;
     #inputComponent: InputComponent;
-    #weaponConfig: WeaponConfig;
+    #config?: WeaponConfig | null = null;
     /**
      * Group to manage projectiles propelled by this weapon. It serves as a pool of projectile sprites that can be reused to optimize performance.
      */
@@ -48,12 +48,12 @@ export default class WeaponComponent {
         gameObject: GameObjects.Container,
         inputComponent: InputComponent,
         eventBusComponent: EventBusComponent,
-        projectileConfig: WeaponConfig,
+        config: WeaponConfig,
     ) {
         this.#gameObject = gameObject;
         this.#inputComponent = inputComponent;
         this.#eventBusComponent = eventBusComponent;
-        this.#weaponConfig = projectileConfig;
+        this.#config = config;
 
         this.#projectileGroup = this.#gameObject.scene.physics.add.group({
             name: `projectiles-${MathUtils.RND.uuid()}`,
@@ -61,7 +61,7 @@ export default class WeaponComponent {
         });
         this.#projectileGroup.createMultiple({
             key: 'projectile',
-            quantity: this.#weaponConfig.projectileSpawnPoolSize,
+            quantity: this.#config?.projectileSpawnPoolSize,
             active: false,
             visible: false,
         });
@@ -80,18 +80,22 @@ export default class WeaponComponent {
         return this.#projectileGroup;
     }
 
-    updateWeaponConfig(weaponConfig: Partial<WeaponConfig>) {
-        this.#weaponConfig = {
-            ...this.#weaponConfig,
-            ...weaponConfig,
-        };
+    updateWeaponConfig(config: Partial<WeaponConfig>) {
+        if (!this.#config) {
+            this.#config = config;
+        } else {
+            this.#config = {
+                ...this.#config,
+                ...config,
+            };
+        }
     }
 
     /**
      * Called on each frame of the game loop to update the state of the weapon component.
      * @param delta Timestep, in milliseconds, tied to the browser `requestAnimationFrame` callback, or roughly 60 times per second.
      */
-    update(delta: number) {
+    update(_time: number, delta: number) {
         this.#propelProjectiles(delta);
     }
 
@@ -106,7 +110,7 @@ export default class WeaponComponent {
             return;
         }
 
-        const { weaponCluster = 1, weaponClusterOffset = 0 } = this.#weaponConfig;
+        const { weaponCluster = 1, weaponClusterOffset = 0 } = this.#config ?? {};
 
         for (let iteration = 0; iteration < weaponCluster; iteration++) {
             const weaponBurstSequence = iteration % weaponCluster;
@@ -122,7 +126,7 @@ export default class WeaponComponent {
             this.#propelProjectile(xOffset);
         }
 
-        this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_SHOOT, this.#weaponConfig.weaponReport);
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_SHOOT, this.#config?.weaponReport);
     }
 
     #propelProjectile(xOffset: number = 0) {
@@ -134,21 +138,21 @@ export default class WeaponComponent {
         }
 
         const x = this.#gameObject.x + xOffset;
-        const y = this.#gameObject.y + this.#weaponConfig.trajectoryYOffset;
+        const y = this.#gameObject.y + (this.#config?.trajectoryYOffset ?? 0);
         projectile.enableBody(true, x, y, true, true);
 
         const { body } = projectile;
         assert(body instanceof Physics.Arcade.Body, 'body is not a Physics.Arcade.Body type');
 
-        body.velocity.y -= this.#weaponConfig.projectileSpeed;
-        body.setSize(this.#weaponConfig.projectileHitboxSize.w, this.#weaponConfig.projectileHitboxSize.h);
+        body.velocity.y -= this.#config?.projectileSpeed ?? 0;
+        body.setSize(this.#config?.projectileHitboxSize?.w, this.#config?.projectileHitboxSize?.h);
 
-        projectile.setState(this.#weaponConfig.projectileLifespan);
-        projectile.play(this.#weaponConfig.projectileAnimationKey);
-        projectile.setScale(this.#weaponConfig.projectileScale);
-        projectile.setFlipY(this.#weaponConfig.trajectoryFlipY);
+        projectile.setState(this.#config?.projectileLifespan ?? 0);
+        projectile.play(this.#config?.projectileAnimationKey ?? '');
+        projectile.setScale(this.#config?.projectileScale ?? 0);
+        projectile.setFlipY(this.#config?.trajectoryFlipY ?? false);
 
-        this.#propelProjectileInterval = this.#weaponConfig.weaponCooldown;
+        this.#propelProjectileInterval = this.#config?.weaponCooldown ?? 0;
     }
 
     /**
