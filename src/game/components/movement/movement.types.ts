@@ -1,4 +1,7 @@
 interface MovementComponentConfigInertialess {
+    /**
+     * The object does not gradually increase velocity when moving.
+     */
     accelerates: false;
     /**
      * Fixed value of how fast the object will move in the given direction.
@@ -7,6 +10,9 @@ interface MovementComponentConfigInertialess {
 }
 
 interface MovementComponentConfigPhysical {
+    /**
+     * The object gradually increases velocity when moving.
+     */
     accelerates: true;
     /**
      * A value to increase, per frame, of how fast the object will move in the given direction.

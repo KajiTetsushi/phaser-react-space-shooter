@@ -43,7 +43,12 @@ export default class PowerupDropSpawnerComponent {
             return;
         }
 
-        const powerupDrop: PowerupDrop = this.#group.get(powerupEnemy.x, powerupEnemy.y, powerupEnemy.shipAssetKey, 0);
+        const powerupDrop: PowerupDrop = this.#group.get(
+            powerupEnemy.x,
+            powerupEnemy.y,
+            powerupEnemy.shipSpriteAssetKey,
+            0,
+        );
 
         powerupDrop.reset();
     }

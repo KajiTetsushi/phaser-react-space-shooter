@@ -31,7 +31,7 @@ export default class KeyboardInputComponent extends InputComponent {
         this.#inputLocked = value;
     }
 
-    update() {
+    update(_time: number, _delta: number) {
         if (this.#inputLocked) {
             this.reset();
             return;

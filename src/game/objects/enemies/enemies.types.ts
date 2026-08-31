@@ -1,14 +1,16 @@
 import type { GameObjects, Scene } from 'phaser';
 import type EventBusComponent from '../../components/events/EventBusComponent';
-import type { GameObjectImplementable, GetGameObjectPosition } from '../objects.types';
+import type Player from '../player/Player';
 
-export interface EnemyImplementable extends GameObjectImplementable {
-    get score(): number;
-    get shipAssetKey(): string;
-    get shipDestroyedAnimationKey(): string;
-    get shipDestroyedAnimationScale(): number;
-    get shipDestroyedSoundKey(): string;
-    initialize(eventBusComponent: EventBusComponent, getPlayerPosition: GetGameObjectPosition): void;
+export interface EnemyImplementable {
+    get score(): number | undefined;
+    get shipSpriteAssetKey(): string | undefined;
+    get shipDestroyedSpriteAnimationKey(): string | undefined;
+    get shipDestroyedSpriteAnimationXScale(): number | undefined;
+    get shipDestroyedSpriteAnimationYScale(): number | undefined;
+    get shipDestroyedSoundKey(): string | undefined;
+    get shipAngle(): number;
+    initialize(eventBusComponent: EventBusComponent, player: Player): void;
     reset(): void;
 }
 

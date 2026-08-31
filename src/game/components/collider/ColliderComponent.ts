@@ -3,7 +3,7 @@ import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 import type HealthComponent from '../health/HealthComponent';
 
 type ColliderComponentConfig = {
-    hitSound: string;
+    hitSound?: string;
 };
 
 export default class ColliderComponent {
