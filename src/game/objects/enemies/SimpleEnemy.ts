@@ -163,7 +163,6 @@ export default class SimpleEnemy extends GameObjects.Container implements EnemyI
             this,
             this.#inputComponent,
             this.#eventBusComponent,
-            // @ts-expect-error
             this.#config?.weapon,
         );
         this.#healthComponent = new HealthComponent(this.#config?.health ?? 0);

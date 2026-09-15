@@ -48,12 +48,12 @@ export default class WeaponComponent {
         gameObject: GameObjects.Container,
         inputComponent: InputComponent,
         eventBusComponent: EventBusComponent,
-        config: WeaponConfig,
+        config?: WeaponConfig,
     ) {
         this.#gameObject = gameObject;
         this.#inputComponent = inputComponent;
         this.#eventBusComponent = eventBusComponent;
-        this.#config = config;
+        this.#config = config ?? null;
 
         this.#projectileGroup = this.#gameObject.scene.physics.add.group({
             name: `projectiles-${MathUtils.RND.uuid()}`,
