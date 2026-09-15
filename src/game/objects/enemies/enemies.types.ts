@@ -11,6 +11,8 @@ export interface EnemyImplementable {
     get shipDestroyedSoundKey(): string | undefined;
     get shipAngle(): number;
     initialize(eventBusComponent: EventBusComponent, player: Player): void;
+    activate(): void;
+    deactivate(): void;
     reset(): void;
 }
 

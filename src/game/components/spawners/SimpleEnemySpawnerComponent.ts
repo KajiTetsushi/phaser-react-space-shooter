@@ -89,8 +89,7 @@ export default class SimpleEnemySpawnerComponent {
 
             // TODO: Check out what happens when we remove this magic number offset.
             if (enemy.y > this.#scene.scale.height + 50) {
-                enemy.setActive(false);
-                enemy.setVisible(false);
+                enemy.deactivate();
             }
         });
     }

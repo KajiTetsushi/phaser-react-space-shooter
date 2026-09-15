@@ -7,8 +7,11 @@ import PowerupDropInputComponent from '../../components/input/PowerupDropInputCo
 import MovementComponent from '../../components/movement/MovementComponent';
 import { POWERUP_DROP_CONFIG } from '../../config';
 import assert from '../../utils/assert';
+import type { EnemyImplementable } from './enemies.types';
 
-export default class PowerupDrop extends GameObjects.Container {
+type PowerupDropImplementable = Pick<EnemyImplementable, 'activate' | 'deactivate' | 'reset'>;
+
+export default class PowerupDrop extends GameObjects.Container implements PowerupDropImplementable {
     #isInitialized = false;
     #eventBusComponent: EventBusComponent;
     #inputComponent: PowerupDropInputComponent;
@@ -63,9 +66,18 @@ export default class PowerupDrop extends GameObjects.Container {
         });
     }
 
-    reset() {
+    activate() {
         this.setActive(true);
         this.setVisible(true);
+    }
+
+    deactivate() {
+        this.setActive(false);
+        this.setVisible(false);
+    }
+
+    reset() {
+        this.activate();
         this.#healthComponent.reset();
     }
 
@@ -87,7 +99,6 @@ export default class PowerupDrop extends GameObjects.Container {
     }
 
     #die() {
-        this.setActive(false);
-        this.setVisible(false);
+        this.deactivate();
     }
 }

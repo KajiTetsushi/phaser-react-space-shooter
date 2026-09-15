@@ -173,9 +173,18 @@ export default class SimpleEnemy extends GameObjects.Container implements EnemyI
         this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this);
     }
 
-    reset(): void {
+    activate() {
         this.setActive(true);
         this.setVisible(true);
+    }
+
+    deactivate() {
+        this.setActive(false);
+        this.setVisible(false);
+    }
+
+    reset(): void {
+        this.activate();
         this.#healthComponent.reset();
         this.#movementComponent.reset();
     }
@@ -199,8 +208,7 @@ export default class SimpleEnemy extends GameObjects.Container implements EnemyI
     }
 
     #die() {
-        this.setActive(false);
-        this.setVisible(false);
+        this.deactivate();
         this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_DESTROYED, this);
 
         if (!this.#config?.dropsPowerup) {

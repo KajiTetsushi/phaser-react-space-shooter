@@ -60,9 +60,11 @@ export default class PowerupDropSpawnerComponent {
                 return;
             }
 
+            // Stop consuming update loop resources unnecessarily when
+            // the powerup as soon as the powerup leaves the bottom of the screen
+            // since it's not visible to the player, anyway.
             if (powerupDrop.y > this.#scene.scale.height + powerupDrop.height) {
-                powerupDrop.setActive(false);
-                powerupDrop.setVisible(false);
+                powerupDrop.deactivate();
             }
         });
     }
