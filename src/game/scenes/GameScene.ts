@@ -71,9 +71,8 @@ export default class GameScene extends Scene {
                 },
             );
         });
-        const powerupDropSpawner = new PowerupDropSpawnerComponent(this, eventBusComponent);
 
-        // ship-to-ship and ship-to-projectile collisions
+        const powerupDropSpawner = new PowerupDropSpawnerComponent(this, eventBusComponent);
         this.physics.add.overlap(player, powerupDropSpawner.spawnGroup, (playerGameObject, powerupDropGameObject) => {
             if (!(playerGameObject instanceof Player) || !(powerupDropGameObject instanceof PowerupDrop)) {
                 return;
@@ -86,6 +85,7 @@ export default class GameScene extends Scene {
             playerGameObject.colliderComponent.collideWithPowerup();
             powerupDropGameObject.colliderComponent.collideWithEnemyShip();
         });
+
         // NOTE: Phaser always passes an independent sprite first, followed by a sprite from a sprite group.
         // ship-to-projectile collisions
         eventBusComponent.on(CUSTOM_EVENTS.ENEMY_INIT, (enemyGameObject: GameObjects.GameObject) => {
