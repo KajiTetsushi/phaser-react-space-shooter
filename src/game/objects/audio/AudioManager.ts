@@ -11,13 +11,25 @@ export default class AudioManager {
         this.#scene.sound.play('bg', { volume: 0.025, loop: true });
 
         this.#eventBusComponent = eventBusComponent;
-        this.#eventBusComponent.on(CUSTOM_EVENTS.SHIP_EXPLOSION, (explosionSound: string) => {
+        this.#eventBusComponent.on(CUSTOM_EVENTS.SHIP_EXPLOSION, (explosionSound: string | undefined) => {
+            if (!explosionSound) {
+                return;
+            }
+
             this.#scene.sound.play(explosionSound, { volume: 0.05 });
         });
-        this.#eventBusComponent.on(CUSTOM_EVENTS.SHIP_HIT, (hitSound: string) => {
+        this.#eventBusComponent.on(CUSTOM_EVENTS.SHIP_HIT, (hitSound: string | undefined) => {
+            if (!hitSound) {
+                return;
+            }
+
             this.#scene.sound.play(hitSound, { volume: 0.025 });
         });
-        this.#eventBusComponent.on(CUSTOM_EVENTS.SHIP_SHOOT, (weaponReport: string) => {
+        this.#eventBusComponent.on(CUSTOM_EVENTS.SHIP_SHOOT, (weaponReport: string | undefined) => {
+            if (!weaponReport) {
+                return;
+            }
+
             this.#scene.sound.play(weaponReport, { volume: 0.0125 });
         });
     }

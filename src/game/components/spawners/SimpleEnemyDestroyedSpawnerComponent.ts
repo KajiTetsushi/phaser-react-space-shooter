@@ -4,7 +4,7 @@ import type { EnemyInstance } from '../../objects/enemies/enemies.types';
 import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 
-export default class EnemyDestroyedSpawnerComponent {
+export default class SimpleEnemyDestroyedSpawnerComponent {
     #scene: Scene;
     #eventBusComponent: EventBusComponent;
     #group: GameObjects.Group;
@@ -18,8 +18,20 @@ export default class EnemyDestroyedSpawnerComponent {
         });
 
         this.#eventBusComponent.on(CUSTOM_EVENTS.ENEMY_DESTROYED, (enemy: EnemyInstance) => {
-            const gameObject: GameObjects.Sprite | null = this.#group.get(enemy.x, enemy.y, enemy.shipAssetKey, 0);
-            gameObject?.play(enemy.shipDestroyedAnimationKey).setScale(enemy.shipDestroyedAnimationScale);
+            const gameObject: GameObjects.Sprite | null = this.#group.get(
+                enemy.x,
+                enemy.y,
+                enemy.shipSpriteAssetKey,
+                0,
+            );
+
+            if (enemy.shipDestroyedSpriteAnimationKey) {
+                gameObject
+                    ?.play(enemy.shipDestroyedSpriteAnimationKey)
+                    ?.setScale(enemy.shipDestroyedSpriteAnimationXScale, enemy.shipDestroyedSpriteAnimationYScale)
+                    ?.setAngle(enemy.shipAngle);
+            }
+
             this.#eventBusComponent.emit(CUSTOM_EVENTS.SHIP_EXPLOSION, enemy.shipDestroyedSoundKey);
         });
     }

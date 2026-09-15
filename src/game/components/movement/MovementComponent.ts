@@ -7,27 +7,27 @@ export default class MovementComponent {
     #body: Physics.Arcade.Body;
     #inputComponent: InputComponent;
     #currentDirection: PhaserMath.Vector2 = new PhaserMath.Vector2(0, 0);
-    #config: MovementComponentConfig;
+    #config: MovementComponentConfig | null = null;
 
-    constructor(body: Physics.Arcade.Body, inputComponent: InputComponent, config: MovementComponentConfig) {
+    constructor(body: Physics.Arcade.Body, inputComponent: InputComponent, config?: MovementComponentConfig) {
         this.#body = body;
         this.#inputComponent = inputComponent;
-        this.#config = config;
+        this.#config = config ?? null;
     }
 
     reset() {
         stopMoving(this.#body);
     }
 
-    update() {
+    update(_time: number, _delta: number) {
         updateMovementType(this.#body, this.#config);
         updateDirectionCoefficients(this.#inputComponent, this.#currentDirection);
         move(this.#body, this.#config, this.#currentDirection);
     }
 }
 
-const updateMovementType = (body: Physics.Arcade.Body, config: MovementComponentConfig) => {
-    if (!config.accelerates) {
+const updateMovementType = (body: Physics.Arcade.Body, config: MovementComponentConfig | null) => {
+    if (!config?.accelerates) {
         return;
     }
 
@@ -49,7 +49,11 @@ const updateDirectionCoefficients = (inputComponent: InputComponent, outVector: 
     outVector.normalize();
 };
 
-const move = (body: Physics.Arcade.Body, config: MovementComponentConfig, direction: PhaserMath.Vector2) => {
+const move = (body: Physics.Arcade.Body, config: MovementComponentConfig | null, direction: PhaserMath.Vector2) => {
+    if (!config) {
+        return;
+    }
+
     if (!config.accelerates) {
         const { velocity = 0 } = config;
         body.setVelocity(direction.x * velocity, direction.y * velocity);

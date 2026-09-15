@@ -10,10 +10,8 @@ import PowerupLevelComponent from '../../components/powerup/PowerupLevelComponen
 import WeaponComponent from '../../components/weapon/WeaponComponent';
 import { PLAYER_CONFIG } from '../../config';
 import assert from '../../utils/assert';
-import type { GameObjectPosition } from '../objects.types';
-import type { PlayerImplementable } from './player.types';
 
-export default class Player extends GameObjects.Container implements PlayerImplementable {
+export default class Player extends GameObjects.Container {
     #inputComponent: KeyboardInputComponent;
     #movementComponent: MovementComponent;
     #healthComponent: HealthComponent;
@@ -124,14 +122,7 @@ export default class Player extends GameObjects.Container implements PlayerImple
         return this.weaponComponent.projectileGroup;
     }
 
-    getPosition(): GameObjectPosition {
-        return {
-            x: this.x,
-            y: this.y,
-        };
-    }
-
-    update(_timestamp: number, delta: number) {
+    update(time: number, delta: number) {
         if (!this.active) {
             return;
         }
@@ -142,9 +133,9 @@ export default class Player extends GameObjects.Container implements PlayerImple
         }
 
         this.#shipSprite.setFrame(PLAYER_CONFIG.HEALTH - this.#healthComponent.health);
-        this.#inputComponent.update();
-        this.#movementComponent.update();
-        this.#weaponComponent.update(delta);
+        this.#inputComponent.update(time, delta);
+        this.#movementComponent.update(time, delta);
+        this.#weaponComponent.update(time, delta);
     }
 
     #die() {

@@ -1,5 +1,5 @@
-import type { GunshipInputComponentOptions } from './components/input/bots/GunshipInputComponent';
 import type { MovementComponentConfig } from './components/movement/movement.types';
+import type { SimpleEnemySpawnerComponentConfig } from './components/spawners/SimpleEnemySpawnerComponent';
 import type { WeaponConfig } from './components/weapon/WeaponComponent';
 
 type PlayerConfig = {
@@ -80,204 +80,199 @@ export const POWERUP_DROP_CONFIG = {
     },
 } satisfies PowerupDropConfig;
 
-type EnemyConfigBase<SpawnExtraConfigs extends object = Record<string, unknown>> = {
-    HEALTH: number;
-    SCORE: number;
-    SHIP_KEY: string;
-    SHIP_SCALE: number;
-    SHIP_ENGINE_KEY: string;
-    SHIP_ENGINE_SCALE: number;
-    HIT_SOUND: string;
-    EXPLOSION_ANIMATION_KEY: string;
-    EXPLOSION_ANIMATION_SCALE: number;
-    EXPLOSION_SOUND: string;
-    HITBOX_SIZE: {
-        WIDTH: number;
-        HEIGHT: number;
-    };
-    movement: MovementComponentConfig;
-    weapon?: WeaponConfig;
-    SPAWN: {
-        MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: number;
-        RECURRING_INTERVAL: number;
-        INITIAL_INTERVAL: number;
-    } & SpawnExtraConfigs;
-};
+type SimpleEnemyNames = 'Scout' | 'Fighter' | 'Gunship' | 'Powerup';
 
-type EnemySpawnLimit = {
-    MAX_ON_SCREEN: number;
-    MIN_VIEWPORT_Y: number;
-    MAX_VIEWPORT_Y: number;
-};
-
-type EnemyConfig = {
-    SCOUT: EnemyConfigBase & {
-        /**
-         * Maximum horizontal drift from the initial spawn position.
-         */
-        movementHorizontalDriftMax: number;
-    };
-    FIGHTER: EnemyConfigBase;
-    GUNSHIP: EnemyConfigBase<EnemySpawnLimit> & {
-        ai: GunshipInputComponentOptions;
-    };
-    POWERUP: EnemyConfigBase<EnemySpawnLimit>;
-};
-
-export const ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG = -20;
-export const ENEMY_CONFIG = {
-    SCOUT: {
-        HEALTH: 1,
-        SCORE: 100,
-        SHIP_KEY: 'scout',
-        SHIP_SCALE: 1,
-        SHIP_ENGINE_KEY: 'scout_engine',
-        SHIP_ENGINE_SCALE: 1,
-        HIT_SOUND: 'hit',
-        EXPLOSION_ANIMATION_KEY: 'scout_destroy',
-        EXPLOSION_ANIMATION_SCALE: 1,
-        EXPLOSION_SOUND: 'explosion',
-        HITBOX_SIZE: {
-            WIDTH: 24,
-            HEIGHT: 24,
-        },
-        movement: {
-            accelerates: true,
-            velocityIncrement: 12,
-            velocityMaximum: 120,
-            drag: 0.01,
-        },
-        movementHorizontalDriftMax: 40,
-        SPAWN: {
-            MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
-            RECURRING_INTERVAL: 5000,
-            INITIAL_INTERVAL: 1000,
-        },
-    },
-    FIGHTER: {
-        HEALTH: 1,
-        SCORE: 200,
-        SHIP_KEY: 'fighter',
-        SHIP_SCALE: 1,
-        SHIP_ENGINE_KEY: 'fighter_engine',
-        SHIP_ENGINE_SCALE: 1,
-        HIT_SOUND: 'hit',
-        EXPLOSION_ANIMATION_KEY: 'fighter_destroy',
-        EXPLOSION_ANIMATION_SCALE: 1,
-        EXPLOSION_SOUND: 'explosion',
-        HITBOX_SIZE: {
-            WIDTH: 24,
-            HEIGHT: 24,
-        },
-        movement: {
-            accelerates: true,
-            velocityIncrement: 12,
-            velocityMaximum: 120,
-            drag: 0.01,
-        },
-        weapon: {
-            weaponCooldown: 3000,
-            weaponReport: 'shot1',
-            projectileAnimationKey: 'bullet',
-            projectileHitboxSize: {
-                w: 14,
-                h: 18,
+export const SIMPLE_ENEMIES: Readonly<Record<SimpleEnemyNames, SimpleEnemySpawnerComponentConfig>> = {
+    Scout: {
+        minViewportXBoundaryClearance: 30,
+        recurringInterval: 5000,
+        initialInterval: 1000,
+        unit: {
+            angle: 180,
+            health: 1,
+            hitboxHeight: 24,
+            hitboxWidth: 24,
+            score: 200,
+            shipSpriteAssetKey: 'scout',
+            shipSpriteAssetXScale: 1,
+            shipSpriteAssetYScale: 1,
+            shipEngineSpriteAssetKey: 'scout_engine',
+            shipEngineSpriteAssetXScale: 1,
+            shipEngineSpriteAssetYScale: 1,
+            shipDestroyedSoundKey: 'explosion',
+            shipDestroyedSpriteAnimationKey: 'scout_destroy',
+            shipDestroyedSpriteAnimationXScale: 1,
+            shipDestroyedSpriteAnimationYScale: 1,
+            movement: {
+                accelerates: true,
+                velocityIncrement: 12,
+                velocityMaximum: 120,
+                drag: 0.01,
             },
-            projectileLifespan: 3,
-            projectileScale: 0.8,
-            projectileSpawnPoolSize: 10,
-            projectileSpeed: -250,
-            trajectoryFlipY: true,
-            trajectoryYOffset: 10,
-        },
-        SPAWN: {
-            MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
-            RECURRING_INTERVAL: 3000,
-            INITIAL_INTERVAL: 6000,
-        },
-    },
-    GUNSHIP: {
-        HEALTH: 6,
-        SCORE: 600,
-        SHIP_KEY: 'fighter',
-        SHIP_SCALE: 1,
-        SHIP_ENGINE_KEY: 'fighter_engine',
-        SHIP_ENGINE_SCALE: 1,
-        HIT_SOUND: 'hit',
-        EXPLOSION_ANIMATION_KEY: 'fighter_destroy',
-        EXPLOSION_ANIMATION_SCALE: 1,
-        EXPLOSION_SOUND: 'explosion',
-        HITBOX_SIZE: {
-            WIDTH: 24,
-            HEIGHT: 24,
-        },
-        movement: {
-            accelerates: true,
-            velocityIncrement: 2,
-            velocityMaximum: 16,
-            drag: 0.01,
-        },
-        weapon: {
-            weaponCooldown: 50,
-            weaponReport: 'shot1',
-            projectileAnimationKey: 'enemy-bullet',
-            projectileHitboxSize: {
-                w: 15,
-                h: 15,
-            },
-            projectileLifespan: 3,
-            projectileScale: 1.5,
-            projectileSpawnPoolSize: 18,
-            projectileSpeed: -500,
-            trajectoryFlipY: true,
-            trajectoryYOffset: 10,
-        },
-        SPAWN: {
-            MAX_ON_SCREEN: 2,
-            MIN_VIEWPORT_Y: 50,
-            MAX_VIEWPORT_Y: 100,
-            MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
-            RECURRING_INTERVAL: 5000,
-            INITIAL_INTERVAL: 8000,
-        },
-        ai: {
             ai: {
-                relativeXDistanceToPlayerRanges: {
-                    150: [50, 1000],
-                    200: [200, 2000],
-                    '*': [500, 3000],
+                initialize: {
+                    direction: {
+                        x: 'random',
+                        y: 'down',
+                    },
+                },
+                update: {
+                    zigzagFromInitialPosition: {
+                        x: 40,
+                    },
                 },
             },
         },
     },
-    POWERUP: {
-        HEALTH: 1,
-        SCORE: 100,
-        SHIP_KEY: 'enemy-yellow',
-        SHIP_SCALE: 0.75,
-        SHIP_ENGINE_KEY: '',
-        SHIP_ENGINE_SCALE: 0,
-        HIT_SOUND: 'hit',
-        EXPLOSION_ANIMATION_KEY: 'fighter_destroy',
-        EXPLOSION_ANIMATION_SCALE: 1,
-        EXPLOSION_SOUND: 'explosion',
-        HITBOX_SIZE: {
-            WIDTH: 20,
-            HEIGHT: 20,
-        },
-        movement: {
-            accelerates: true,
-            velocityIncrement: 4,
-            velocityMaximum: 20,
-            drag: 0.01,
-        },
-        SPAWN: {
-            MAX_ON_SCREEN: 2,
-            MIN_VIEWPORT_Y: 50,
-            MAX_VIEWPORT_Y: 100,
-            MIN_VIEWPORT_X_BOUNDARY_CLEARANCE: 30,
-            RECURRING_INTERVAL: 4000,
-            INITIAL_INTERVAL: 5000,
+    Fighter: {
+        minViewportXBoundaryClearance: 30,
+        recurringInterval: 3000,
+        initialInterval: 6000,
+        unit: {
+            angle: 180,
+            health: 1,
+            hitboxHeight: 24,
+            hitboxWidth: 24,
+            score: 200,
+            shipSpriteAssetKey: 'fighter',
+            shipSpriteAssetXScale: 1,
+            shipSpriteAssetYScale: 1,
+            shipEngineSpriteAssetKey: 'fighter_engine',
+            shipEngineSpriteAssetXScale: 1,
+            shipEngineSpriteAssetYScale: 1,
+            shipDestroyedSoundKey: 'explosion',
+            shipDestroyedSpriteAnimationKey: 'fighter_destroy',
+            shipDestroyedSpriteAnimationXScale: 1,
+            shipDestroyedSpriteAnimationYScale: 1,
+            movement: {
+                accelerates: true,
+                velocityIncrement: 12,
+                velocityMaximum: 120,
+                drag: 0.01,
+            },
+            weapon: {
+                weaponCooldown: 3000,
+                weaponReport: 'shot1',
+                projectileAnimationKey: 'bullet',
+                projectileHitboxSize: {
+                    w: 14,
+                    h: 18,
+                },
+                projectileLifespan: 3,
+                projectileScale: 0.8,
+                projectileSpawnPoolSize: 10,
+                projectileSpeed: -250,
+                trajectoryFlipY: true,
+                trajectoryYOffset: 10,
+            },
+            ai: {
+                initialize: {
+                    direction: {
+                        y: 'down',
+                    },
+                    shoot: true,
+                },
+            },
         },
     },
-} satisfies EnemyConfig;
+    Gunship: {
+        maxOnScreen: 2,
+        minViewportY: 50,
+        maxViewportY: 100,
+        minViewportXBoundaryClearance: 30,
+        recurringInterval: 5000,
+        initialInterval: 8000,
+        unit: {
+            angle: 180,
+            health: 6,
+            hitboxHeight: 24,
+            hitboxWidth: 24,
+            hitSound: 'hit',
+            score: 600,
+            shipSpriteAssetKey: 'fighter',
+            shipSpriteAssetXScale: 1,
+            shipSpriteAssetYScale: 1,
+            shipEngineSpriteAssetKey: 'fighter_engine',
+            shipEngineSpriteAssetXScale: 1,
+            shipEngineSpriteAssetYScale: 1,
+            shipDestroyedSoundKey: 'explosion',
+            shipDestroyedSpriteAnimationKey: 'fighter_destroy',
+            shipDestroyedSpriteAnimationXScale: 1,
+            shipDestroyedSpriteAnimationYScale: 1,
+            movement: {
+                accelerates: false,
+                velocity: 16,
+            },
+            weapon: {
+                weaponCooldown: 50,
+                weaponReport: 'shot1',
+                projectileAnimationKey: 'enemy-bullet',
+                projectileHitboxSize: {
+                    w: 15,
+                    h: 15,
+                },
+                projectileLifespan: 3,
+                projectileScale: 1.5,
+                projectileSpawnPoolSize: 18,
+                projectileSpeed: -500,
+                trajectoryFlipY: true,
+                trajectoryYOffset: 10,
+            },
+            ai: {
+                update: {
+                    followPlayerDirections: {
+                        x: true,
+                    },
+                    shootRandomly: {
+                        relativeXDistanceToPlayerRanges: {
+                            150: [50, 1000],
+                            200: [200, 2000],
+                            '*': [500, 3000],
+                        },
+                    },
+                },
+            },
+        },
+    },
+    Powerup: {
+        maxOnScreen: 1,
+        minViewportY: 50,
+        maxViewportY: 100,
+        minViewportXBoundaryClearance: 50,
+        recurringInterval: 4000,
+        initialInterval: 5000,
+        unit: {
+            angle: 180,
+            dropsPowerup: true,
+            health: 1,
+            hitboxHeight: 20,
+            hitboxWidth: 20,
+            score: 100,
+            shipSpriteAssetKey: 'enemy-yellow',
+            shipSpriteAssetXScale: 0.75,
+            shipSpriteAssetYScale: 0.75,
+            shipDestroyedSoundKey: 'explosion',
+            shipDestroyedSpriteAnimationKey: 'fighter_destroy',
+            shipDestroyedSpriteAnimationXScale: 1,
+            shipDestroyedSpriteAnimationYScale: 1,
+            movement: {
+                accelerates: true,
+                velocityIncrement: 4,
+                velocityMaximum: 20,
+                drag: 0.01,
+            },
+            ai: {
+                initialize: {
+                    direction: {
+                        x: 'random',
+                    },
+                },
+                update: {
+                    zigzagWithinBounds: {
+                        x: 0,
+                    },
+                },
+            },
+        },
+    },
+};

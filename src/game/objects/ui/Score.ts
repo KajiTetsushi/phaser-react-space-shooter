@@ -20,6 +20,10 @@ export default class Score extends GameObjects.Text {
         this.setOrigin();
 
         this.#eventBusComponent.on(CUSTOM_EVENTS.ENEMY_DESTROYED, (enemy: EnemyInstance) => {
+            if (!enemy.score) {
+                return;
+            }
+
             this.#score += enemy.score;
             this.setText(this.#score.toString());
         });
