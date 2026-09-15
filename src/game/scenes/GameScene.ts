@@ -29,6 +29,7 @@ export default class GameScene extends Scene {
         const player = new Player(this, eventBusComponent);
 
         // enemy spawners
+        new SimpleEnemyDestroyedSpawnerComponent(this, eventBusComponent);
         const spawnerComponentArgs = [this, eventBusComponent, player] as const;
         Object.entries(SIMPLE_ENEMIES).forEach(([_unitName, unitConfig]) => {
             const simpleEnemySpawnerComponent = new SimpleEnemySpawnerComponent(...spawnerComponentArgs, unitConfig);
@@ -71,7 +72,6 @@ export default class GameScene extends Scene {
             );
         });
         const powerupDropSpawner = new PowerupDropSpawnerComponent(this, eventBusComponent);
-        new SimpleEnemyDestroyedSpawnerComponent(this, eventBusComponent);
 
         // ship-to-ship and ship-to-projectile collisions
         this.physics.add.overlap(player, powerupDropSpawner.spawnGroup, (playerGameObject, powerupDropGameObject) => {
