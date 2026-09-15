@@ -87,8 +87,11 @@ export default class SimpleEnemySpawnerComponent {
                 return;
             }
 
-            // TODO: Check out what happens when we remove this magic number offset.
-            if (enemy.y > this.#scene.scale.height + 50) {
+            // Stop consuming update loop resources unnecessarily when
+            // the enemy as soon as the enemy leaves the bottom of the screen
+            // since it's not visible to the player, anyway.
+            const enemyHeight = this.#config?.unit?.hitboxHeight ?? 0;
+            if (enemy.y > this.#scene.scale.height + enemyHeight) {
                 enemy.deactivate();
             }
         });
