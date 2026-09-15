@@ -96,6 +96,10 @@ export default class SimpleEnemySpawnerComponent {
     }
 
     update(_time: number, delta: number) {
+        this.spawnSimpleEnemy(delta);
+    }
+
+    private spawnSimpleEnemy(delta: number) {
         if (this.#disabled) {
             return;
         }
