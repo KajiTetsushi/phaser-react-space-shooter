@@ -5,9 +5,6 @@ import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 
 export type SimpleEnemySpawnerComponentConfig = {
-    // TODO: Consider adding some variance to the spawn interval and max center x offset to make the game feel less predictable.
-    // interval: 2000,
-    // intervalVariance: 0.5,
     maxOnScreen?: number;
     minViewportY?: number;
     maxViewportY?: number;
