@@ -115,7 +115,11 @@ export default class SimpleEnemySpawnerComponent {
             return;
         }
 
-        const { x, y } = this.spawnCoords;
+        const { x, y } = SimpleEnemySpawnerComponent.getSpawnCoords({
+            config: this.#config,
+            scene: this.#scene,
+        });
+
         // Find unspawned/despawned enemy from the resource pool to respawn.
         const enemy: SimpleEnemy = this.#spawnGroup.get(x, y);
         enemy.reset();
@@ -123,16 +127,22 @@ export default class SimpleEnemySpawnerComponent {
         this.#intervalCountdown = this.#config?.recurringInterval ?? 0;
     }
 
-    get spawnCoords() {
+    static getSpawnCoords = ({
+        config,
+        scene,
+    }: {
+        config: SimpleEnemySpawnerComponentConfig | null | undefined;
+        scene: Scene;
+    }) => {
         const x = PhaserMath.RND.between(
-            this.#config?.minViewportXBoundaryClearance ?? 0,
-            this.#scene.scale.width - (this.#config?.minViewportXBoundaryClearance ?? 0),
+            config?.minViewportXBoundaryClearance ?? 0,
+            scene.scale.width - (config?.minViewportXBoundaryClearance ?? 0),
         );
 
-        const { minViewportY, maxViewportY } = this.#config || {};
+        const { minViewportY, maxViewportY } = config || {};
         const y =
             minViewportY && maxViewportY
-                ? PhaserMath.RND.between(this.#config?.minViewportY ?? 0, this.#config?.maxViewportY ?? 0)
+                ? PhaserMath.RND.between(config?.minViewportY ?? 0, config?.maxViewportY ?? 0)
                 : // TODO: Find a way to not need this magic number offset.
                   ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG;
 
@@ -140,5 +150,5 @@ export default class SimpleEnemySpawnerComponent {
             x,
             y,
         };
-    }
+    };
 }
