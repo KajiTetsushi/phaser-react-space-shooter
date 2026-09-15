@@ -4,11 +4,6 @@ import type Player from '../../objects/player/Player';
 import type EventBusComponent from '../events/EventBusComponent';
 import { CUSTOM_EVENTS } from '../events/EventBusComponent';
 
-/**
- * @deprecated
- */
-const ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG = -20;
-
 export type SimpleEnemySpawnerComponentConfig = {
     // TODO: Consider adding some variance to the spawn interval and max center x offset to make the game feel less predictable.
     // interval: 2000,
@@ -141,12 +136,14 @@ export default class SimpleEnemySpawnerComponent {
             scene.scale.width - (config?.minViewportXBoundaryClearance ?? 0),
         );
 
+        // We let content authoring allow the unit to spawn in either-or:
+        // 1. the given range
+        // 2. always off-screen from the top
         const { minViewportY, maxViewportY } = config || {};
         const y =
             minViewportY && maxViewportY
                 ? PhaserMath.RND.between(config?.minViewportY ?? 0, config?.maxViewportY ?? 0)
-                : // TODO: Find a way to not need this magic number offset.
-                  ENEMY_OFFSCREEN_FLIGHT_PATTERN_SPAWN_Y_CONFIG;
+                : (config?.unit?.hitboxHeight ?? 0) * -1;
 
         return {
             x,
